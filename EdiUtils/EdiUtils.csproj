@@ -148,8 +148,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>copy /Y  "$(ProjectDir)WeekOfYearKroger.cs" "$(TargetDir)"
+copy /Y  "$(ProjectDir)EdiUtils.config" "$(TargetDir)"
+copy /Y  "$(ProjectDir)Resources\template_850_List2.xlsx" "$(TargetDir)"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>

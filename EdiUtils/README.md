@@ -24,6 +24,13 @@
 - NuGet Package Manager에서  **Microsoft.Office.Interop.Excel** 찾아서 설치해야한다.
 - [엑셀에 필요한 라이브러리](https://www.freecodespot.com/blog/csharp-import-excel/)
 
+## 같이 배포되어야 할 파일들
+
+이 파일들은 실행파일과 같은 디렉토리에 존재해야한다
+
+- WeekOfYear-Kroger.csv
+- template_850_List2.xlsx
+- EdiUtils.config
 
 ## history
 
