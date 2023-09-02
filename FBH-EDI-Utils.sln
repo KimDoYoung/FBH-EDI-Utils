@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29318.209
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiDbUploader", "EdiDbUploader\EdiDbUploader.csproj", "{9AA2A4AE-3AF4-4F00-9D59-A81A719EB7A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiViewer", "EdiViewer\EdiViewer.csproj", "{BE541DA6-7999-491B-8CE7-2024A312C905}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBH-EDI-Common-Lib", "FBH-EDI-Common-Lib\FBH-EDI-Common-Lib.csproj", "{AB93DA60-7BBE-4747-8468-9F18467A054B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiDiff", "EdiDiff\EdiDiff.csproj", "{51E823C0-4798-4371-A919-5CE440A92C52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiUtils", "EdiUtils\EdiUtils.csproj", "{DBAEEE35-9008-476A-930D-ED7703FFCAD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiRename", "EdiRename\EdiRename.csproj", "{99AEE455-6140-4BCE-A27C-DDA325E50F1F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9AA2A4AE-3AF4-4F00-9D59-A81A719EB7A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA2A4AE-3AF4-4F00-9D59-A81A719EB7A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA2A4AE-3AF4-4F00-9D59-A81A719EB7A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA2A4AE-3AF4-4F00-9D59-A81A719EB7A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE541DA6-7999-491B-8CE7-2024A312C905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE541DA6-7999-491B-8CE7-2024A312C905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE541DA6-7999-491B-8CE7-2024A312C905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE541DA6-7999-491B-8CE7-2024A312C905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB93DA60-7BBE-4747-8468-9F18467A054B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB93DA60-7BBE-4747-8468-9F18467A054B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB93DA60-7BBE-4747-8468-9F18467A054B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB93DA60-7BBE-4747-8468-9F18467A054B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51E823C0-4798-4371-A919-5CE440A92C52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51E823C0-4798-4371-A919-5CE440A92C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51E823C0-4798-4371-A919-5CE440A92C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51E823C0-4798-4371-A919-5CE440A92C52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBAEEE35-9008-476A-930D-ED7703FFCAD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBAEEE35-9008-476A-930D-ED7703FFCAD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBAEEE35-9008-476A-930D-ED7703FFCAD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBAEEE35-9008-476A-930D-ED7703FFCAD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99AEE455-6140-4BCE-A27C-DDA325E50F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99AEE455-6140-4BCE-A27C-DDA325E50F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99AEE455-6140-4BCE-A27C-DDA325E50F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99AEE455-6140-4BCE-A27C-DDA325E50F1F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {802B3E99-3980-4788-8A29-F72A4ECFA0C6}
+	EndGlobalSection
+EndGlobal
