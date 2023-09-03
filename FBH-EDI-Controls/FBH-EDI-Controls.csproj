@@ -4,11 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AB93DA60-7BBE-4747-8468-9F18467A054B}</ProjectGuid>
+    <ProjectGuid>{17C90D62-6A25-42F3-A146-1AD77CE998E6}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FBH_EDI_Common_Lib</RootNamespace>
-    <AssemblyName>FBH-EDI-Common-Lib</AssemblyName>
+    <RootNamespace>FBH_EDI_Controls</RootNamespace>
+    <AssemblyName>FBH-EDI-Controls</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -37,30 +36,40 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BizRule.cs" />
-    <Compile Include="Const.cs" />
-    <Compile Include="Exception\EdiException.cs" />
-    <Compile Include="MessageEventArgs.cs" />
-    <Compile Include="Model\FreightInvoice210.cs" />
-    <Compile Include="Model\FreightInvoice210Detail.cs" />
-    <Compile Include="Model\Inquiry846.cs" />
-    <Compile Include="Model\Inquiry846Detail.cs" />
-    <Compile Include="Model\Invoice810.cs" />
-    <Compile Include="Model\Invoice810Detail.cs" />
-    <Compile Include="Model\PurchaseOrder850.cs" />
-    <Compile Include="Model\PurchaseOrder850Allowance.cs" />
-    <Compile Include="Model\PurchaseOrder850Detail.cs" />
-    <Compile Include="Model\ShippingOrder940.cs" />
-    <Compile Include="Model\ShippingOrder940Detail.cs" />
-    <Compile Include="Model\Transfer944.cs" />
-    <Compile Include="Model\Transfer944Detail.cs" />
-    <Compile Include="Model\ShippingAdvice945.cs" />
-    <Compile Include="Model\ShippingAdvice945Detail.cs" />
+    <Compile Include="EdiListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EdiListView.Designer.cs">
+      <DependentUpon>EdiListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogTextBox.Designer.cs">
+      <DependentUpon>LogTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EdiListView.resx">
+      <DependentUpon>EdiListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogTextBox.resx">
+      <DependentUpon>LogTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FBH-EDI-Common-Lib\FBH-EDI-Common-Lib.csproj">
+      <Project>{AB93DA60-7BBE-4747-8468-9F18467A054B}</Project>
+      <Name>FBH-EDI-Common-Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

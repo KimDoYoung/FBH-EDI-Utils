@@ -4,16 +4,41 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29318.209
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiDbUploader", "EdiDbUploader\EdiDbUploader.csproj", "{9AA2A4AE-3AF4-4F00-9D59-A81A719EB7A1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AB93DA60-7BBE-4747-8468-9F18467A054B} = {AB93DA60-7BBE-4747-8468-9F18467A054B}
+		{17C90D62-6A25-42F3-A146-1AD77CE998E6} = {17C90D62-6A25-42F3-A146-1AD77CE998E6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiViewer", "EdiViewer\EdiViewer.csproj", "{BE541DA6-7999-491B-8CE7-2024A312C905}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AB93DA60-7BBE-4747-8468-9F18467A054B} = {AB93DA60-7BBE-4747-8468-9F18467A054B}
+		{17C90D62-6A25-42F3-A146-1AD77CE998E6} = {17C90D62-6A25-42F3-A146-1AD77CE998E6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBH-EDI-Common-Lib", "FBH-EDI-Common-Lib\FBH-EDI-Common-Lib.csproj", "{AB93DA60-7BBE-4747-8468-9F18467A054B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiDiff", "EdiDiff\EdiDiff.csproj", "{51E823C0-4798-4371-A919-5CE440A92C52}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AB93DA60-7BBE-4747-8468-9F18467A054B} = {AB93DA60-7BBE-4747-8468-9F18467A054B}
+		{17C90D62-6A25-42F3-A146-1AD77CE998E6} = {17C90D62-6A25-42F3-A146-1AD77CE998E6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiUtils", "EdiUtils\EdiUtils.csproj", "{DBAEEE35-9008-476A-930D-ED7703FFCAD3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AB93DA60-7BBE-4747-8468-9F18467A054B} = {AB93DA60-7BBE-4747-8468-9F18467A054B}
+		{17C90D62-6A25-42F3-A146-1AD77CE998E6} = {17C90D62-6A25-42F3-A146-1AD77CE998E6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdiRename", "EdiRename\EdiRename.csproj", "{99AEE455-6140-4BCE-A27C-DDA325E50F1F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AB93DA60-7BBE-4747-8468-9F18467A054B} = {AB93DA60-7BBE-4747-8468-9F18467A054B}
+		{17C90D62-6A25-42F3-A146-1AD77CE998E6} = {17C90D62-6A25-42F3-A146-1AD77CE998E6}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBH-EDI-Controls", "FBH-EDI-Controls\FBH-EDI-Controls.csproj", "{17C90D62-6A25-42F3-A146-1AD77CE998E6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AB93DA60-7BBE-4747-8468-9F18467A054B} = {AB93DA60-7BBE-4747-8468-9F18467A054B}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +70,10 @@ Global
 		{99AEE455-6140-4BCE-A27C-DDA325E50F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99AEE455-6140-4BCE-A27C-DDA325E50F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99AEE455-6140-4BCE-A27C-DDA325E50F1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17C90D62-6A25-42F3-A146-1AD77CE998E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17C90D62-6A25-42F3-A146-1AD77CE998E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17C90D62-6A25-42F3-A146-1AD77CE998E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17C90D62-6A25-42F3-A146-1AD77CE998E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
