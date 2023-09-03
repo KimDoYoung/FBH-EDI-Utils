@@ -58,4 +58,5 @@ namespace FBH.EDI.Common.Model
              + $"misc3SizeUnit : {misc3SizeUnit}, "
              + $"misc3ColorDescription : {misc3ColorDescription}";
         }
+    }
 }
