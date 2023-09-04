@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FBH.EDI.Common
@@ -123,6 +124,13 @@ namespace FBH.EDI.Common
         {
             for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
                 yield return day;
+        }
+
+        public static object YmdFormat(string s)
+        {
+            string t = Regex.Replace(s, @"\D", "");
+            if (t.Length != 8) return s;
+            return t.Substring(0, 4) + "-" + t.Substring(4, 2) + "-" + t.Substring(6);
         }
     }
 }

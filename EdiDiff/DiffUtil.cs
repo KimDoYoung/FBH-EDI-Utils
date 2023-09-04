@@ -29,7 +29,7 @@ namespace EdiDiff
                     worksheet.SetCell(row, "B", item.item850.Company, "@");
                     worksheet.SetCell(row, "C", item.item850.Seq, "@");
                     worksheet.SetCell(row, "D", item.item850.PoNumber, "@");
-                    worksheet.SetCell(row, "E", item.item850.PoOrderDate, "@");
+                    worksheet.SetCell(row, "E", CommonUtil.YmdFormat(item.item850.PoOrderDate), "@");
                     worksheet.SetCell(row, "F", item.item850.QuantityCarton, "@");
                     if (item.item945 != null)
                     {
