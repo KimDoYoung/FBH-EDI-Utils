@@ -17,7 +17,12 @@ namespace EdiDiff
             this.Text = this.Text + " - " + version;
 
             ComponentInitializer();
+            DiffUtil.MessageEventHandler += DiffUtil_MessageEventHandler;
+        }
 
+        private void DiffUtil_MessageEventHandler(object sender, MessageEventArgs e)
+        {
+            logTextBox1.Write(e.Message);
         }
 
         private void ComponentInitializer()

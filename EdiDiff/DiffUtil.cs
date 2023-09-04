@@ -13,8 +13,13 @@ namespace EdiDiff
 {
     internal class DiffUtil
     {
+        public static event EventHandler<MessageEventArgs> MessageEventHandler;
+
         internal static string CreateResultExcel(string templateDiffPath, List<DiffItem> listResult)
         {
+
+            MessageEventHandler?.Invoke(null, new MessageEventArgs($"{templateDiffPath} 생성 시작"));
+
             string path = templateDiffPath;
 
             Excel.Application app = new Excel.Application();
