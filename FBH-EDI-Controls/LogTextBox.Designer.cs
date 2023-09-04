@@ -28,13 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogTextBox));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.btnSaveToFile = new System.Windows.Forms.ToolStripButton();
             this.btnCopyToClipboard = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnClear = new System.Windows.Forms.ToolStripButton();
-            this.txtLog = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,52 +47,53 @@
             this.btnClear});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(511, 38);
+            this.toolStrip1.Size = new System.Drawing.Size(511, 33);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // btnSaveToFile
-            // 
-            this.btnSaveToFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSaveToFile.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveToFile.Image")));
-            this.btnSaveToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSaveToFile.Name = "btnSaveToFile";
-            this.btnSaveToFile.Size = new System.Drawing.Size(34, 33);
-            this.btnSaveToFile.Text = "toolStripButton1";
-            // 
-            // btnCopyToClipboard
-            // 
-            this.btnCopyToClipboard.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnCopyToClipboard.Image = ((System.Drawing.Image)(resources.GetObject("btnCopyToClipboard.Image")));
-            this.btnCopyToClipboard.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnCopyToClipboard.Name = "btnCopyToClipboard";
-            this.btnCopyToClipboard.Size = new System.Drawing.Size(34, 28);
-            this.btnCopyToClipboard.Text = "toolStripButton2";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 33);
             // 
-            // btnClear
-            // 
-            this.btnClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
-            this.btnClear.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(34, 28);
-            this.btnClear.Text = "toolStripButton3";
-            // 
             // txtLog
             // 
             this.txtLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtLog.Location = new System.Drawing.Point(0, 38);
+            this.txtLog.Location = new System.Drawing.Point(0, 33);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtLog.Size = new System.Drawing.Size(511, 304);
+            this.txtLog.Size = new System.Drawing.Size(511, 309);
             this.txtLog.TabIndex = 1;
+            // 
+            // btnSaveToFile
+            // 
+            this.btnSaveToFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSaveToFile.Image = global::FBH_EDI_Controls.Properties.Resources.saveHS1;
+            this.btnSaveToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSaveToFile.Name = "btnSaveToFile";
+            this.btnSaveToFile.Size = new System.Drawing.Size(34, 28);
+            this.btnSaveToFile.Text = "toolStripButton1";
+            this.btnSaveToFile.ToolTipText = "save log to file";
+            // 
+            // btnCopyToClipboard
+            // 
+            this.btnCopyToClipboard.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCopyToClipboard.Image = global::FBH_EDI_Controls.Properties.Resources.clipboard;
+            this.btnCopyToClipboard.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCopyToClipboard.Name = "btnCopyToClipboard";
+            this.btnCopyToClipboard.Size = new System.Drawing.Size(34, 28);
+            this.btnCopyToClipboard.Text = "copy to clipboard";
+            // 
+            // btnClear
+            // 
+            this.btnClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnClear.Image = global::FBH_EDI_Controls.Properties.Resources.clear;
+            this.btnClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(34, 28);
+            this.btnClear.Text = "clear log";
             // 
             // LogTextBox
             // 

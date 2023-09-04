@@ -55,6 +55,11 @@
       <DependentUpon>LogTextBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
@@ -64,12 +69,21 @@
     <EmbeddedResource Include="LogTextBox.resx">
       <DependentUpon>LogTextBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FBH-EDI-Common-Lib\FBH-EDI-Common-Lib.csproj">
       <Project>{AB93DA60-7BBE-4747-8468-9F18467A054B}</Project>
       <Name>FBH-EDI-Common-Lib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\clear.png" />
+    <Content Include="Resources\clipboard.png" />
+    <Content Include="Resources\saveHS1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
