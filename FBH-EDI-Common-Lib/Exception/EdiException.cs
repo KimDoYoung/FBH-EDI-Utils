@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FBH.EDI.Common
 {
+    [Serializable]
     public class EdiException : Exception
     {
         public EdiException()

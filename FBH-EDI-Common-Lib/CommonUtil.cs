@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EdiUtils.Common
+namespace FBH.EDI.Common
 {
     public class CommonUtil
     {
@@ -33,12 +33,12 @@ namespace EdiUtils.Common
 
         }
 
-        internal static void Console(string message)
+        public static void Console(string message)
         {
             System.Diagnostics.Debug.WriteLine(message);
         }
 
-        internal static void DeleteFile(string filePath)
+        public static void DeleteFile(string filePath)
         {
             if (string.IsNullOrEmpty(filePath)) return;
             if (File.Exists(filePath))
@@ -51,18 +51,18 @@ namespace EdiUtils.Common
         /// </summary>
         /// <param name="postfix"></param>
         /// <returns></returns>
-        internal static string RandomFilename(string postfix)
+        public static string RandomFilename(string postfix)
         {
             var name = Path.GetRandomFileName();
             return name.Substring(0, 8) + "_" + postfix;
         }
 
-        internal static decimal ToDecimal(object o)
+        public static decimal ToDecimal(object o)
         {
 
             if (o == null || o.ToString().Length < 1)
             {
-                throw new EdiUtilsException("잘못된 문자를 숫자로 변환하려고 합니다.");
+                throw new EdiException("잘못된 문자를 숫자로 변환하려고 합니다.");
             }
             try
             {
@@ -71,15 +71,15 @@ namespace EdiUtils.Common
             catch (Exception e)
             {
 
-                throw new EdiUtilsException("잘못된 문자를 숫자로 변환하려고 합니다. " + e.Message);
+                throw new EdiException("잘못된 문자를 숫자로 변환하려고 합니다. " + e.Message);
             }
         }
 
-        internal static int ToInteger(object o)
+        public static int ToInteger(object o)
         {
             if (o == null || o.ToString().Length < 1)
             {
-                throw new EdiUtilsException("잘못된 문자를 숫자로 변환하려고 합니다.");
+                throw new EdiException("잘못된 문자를 숫자로 변환하려고 합니다.");
             }
             try
             {
@@ -88,7 +88,7 @@ namespace EdiUtils.Common
             catch (Exception e)
             {
 
-                throw new EdiUtilsException("잘못된 문자를 숫자로 변환하려고 합니다. " + e.Message);
+                throw new EdiException("잘못된 문자를 숫자로 변환하려고 합니다. " + e.Message);
             }
         }
         /// <summary>
@@ -98,7 +98,7 @@ namespace EdiUtils.Common
         /// <param name="cultureInfo"></param>
         /// <param name="dayOfWeek"></param>
         /// <returns></returns>
-        internal static int GetWeekOfYear(DateTime sourceDate, CultureInfo cultureInfo, DayOfWeek dayOfWeek)
+        public static int GetWeekOfYear(DateTime sourceDate, CultureInfo cultureInfo, DayOfWeek dayOfWeek)
         {
             if (cultureInfo == null)
             {
@@ -119,7 +119,7 @@ namespace EdiUtils.Common
 
             return WeekOfYear;
         }
-        internal static IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
+        public static IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
         {
             for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
                 yield return day;
