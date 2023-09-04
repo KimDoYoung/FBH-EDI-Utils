@@ -7,6 +7,8 @@ namespace FBH.EDI.Common
 {
     public static class ExcelExtension
     {
+        //TODO : 날짜 포맷, item no 넣기
+        
         private static int GetCol(string colName)
         {
             int iCol = -1;
@@ -23,7 +25,6 @@ namespace FBH.EDI.Common
                 throw new Exception("{col} 은 row로 환산될 수 없습니다.");
             }
             return iCol;
-
         }
 
         private static RowCol<int, int> GetRowCol(string cellName)
