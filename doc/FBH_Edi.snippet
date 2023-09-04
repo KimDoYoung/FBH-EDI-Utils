@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Message Event Expire</Title>    
+            <Author>KimDoYoung</Author>
+            <Description>메세지 이벤트를 발생시킨다.등록자는 MessageEventArg로 받는다</Description>
+            <Shortcut>msgexpire</Shortcut> 
+        </Header>
+        <Snippet>
+            <Code Language="CSharp">
+                <![CDATA[MessageEventHandler?.Invoke(this, new MessageEventArgs("$msg$"));]]>
+            </Code>
+            <Declarations>      
+                <Literal>      
+                    <ID>msg</ID>      
+                    <ToolTip>message to expire</ToolTip>         
+                    <Default>등록자가 받을 메세지</Default>        
+                </Literal>
+             </Declarations> 	
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>
