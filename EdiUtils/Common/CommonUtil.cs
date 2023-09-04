@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EdiUtils.Common
 {
-    public class CommonUtil
+    internal class CommonUtil
     {
         public static void PrintDataTable(DataTable table)
         {

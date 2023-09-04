@@ -497,7 +497,7 @@ namespace EdiUtils.Common
             {
                 //1.리스트 쉬트
                 CreateList850_2_Sheet1(poList, config, worksheet);
-
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"리스트 만들기 끝"));
                 //WeekOfList를 구한다.
                 List<string> woyList = GetWeekOfYearList(poList);
 
@@ -704,12 +704,16 @@ namespace EdiUtils.Common
                 if (p.WeekOfYear == iWoy)
                 {
                     if (companyName != p.CompanyName) continue;
-                    
+
+                    bool first = true;
                     foreach (var detail in p.Details)
                     {
                         decimal unitPrice = detail.UnitPrice;
                         int qty = detail.Qty;
-                        sum += Convert.ToDecimal(p.GetSaleMoney(unitPrice, qty));
+                        var s = p.GetSCellValue();
+                        var t = p.GetTCellValue();
+                        sum += Convert.ToDecimal(p.GetSaleMoney(unitPrice, qty,s,t));
+                        first = false;
                     }
                 }
             }
@@ -783,14 +787,20 @@ namespace EdiUtils.Common
             var prevCompanyName = "";
             foreach (var po in poList)
             {
-                MessageEventHandler?.Invoke(null, new MessageEventArgs($"{po.ExcelFileName} -> excel row"));
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"{po.ExcelFileName} -> excel row start"));
 
                 if (po.CompanyName != prevCompanyName)
                 {
                     seq = 1;
                 }
+                var first = true;
                 foreach (var detail in po.Details)
                 {
+                    if (po.CompanyName == CONST.Walmart || po.CompanyName == CONST.WMCOM)
+                    {
+                        var companyName = BizRule.CheckCompanyNameWithPrice(detail.UnitPrice);
+                        po.CompanyName = companyName;
+                    }
                     worksheet.SetCell(row, "A", po.CompanyName);
                     worksheet.SetCell(row, "B", seq);
                     worksheet.SetCell(row, "C", po.PoNo, "@");
@@ -809,10 +819,14 @@ namespace EdiUtils.Common
                     worksheet.SetCell(row, "O", price, "0.00");
 
                     //P, Q, R 없슴
-                    worksheet.SetCell(row, "S", po.GetSCellValue());
-                    worksheet.SetCell(row, "T", po.GetTCellValue());
+                    var s = first ? po.GetSCellValue() : "";
+                    var t = first ? po.GetTCellValue() : "";
+                    worksheet.SetCell(row, "S", s);
+                    worksheet.SetCell(row, "T", t);
 
-                    worksheet.SetCell(row, "U", po.GetSaleMoney(detail.UnitPrice, detail.Qty), "0.00"); //매출액
+                    var sValue = first ? po.GetSCellValue() : 0;
+                    var tValue = first ? po.GetTCellValue() : 0;
+                    worksheet.SetCell(row, "U", po.GetSaleMoney(detail.UnitPrice, detail.Qty, sValue, tValue), "0.00"); //매출액
 
                     //worksheet.Range["U" + row].Formula = $"= O{row} - (S{row} + T{row})";
                     //worksheet.Range["U" + row].NumberFormat = "0.00";
@@ -854,7 +868,8 @@ namespace EdiUtils.Common
                     worksheet.Range["AE" + row].Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
 
 
-                    row++;
+                    row++; first = false;
+                    MessageEventHandler?.Invoke(null, new MessageEventArgs($"{po.ExcelFileName} -> excel row end"));
                 }
                 //라인그리기
                 worksheet.Range["A" + (row - 1), "AE" + (row - 1)].Borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;

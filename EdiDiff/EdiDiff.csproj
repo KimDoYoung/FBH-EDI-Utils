@@ -33,7 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Strawberry %286%29.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -69,7 +70,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="diff_template.xlsx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -84,6 +84,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="README.md" />
     <None Include="Resources\diff_template.xlsx" />
   </ItemGroup>
   <ItemGroup>
@@ -92,8 +93,6 @@
   <ItemGroup>
     <Content Include="Resources\Strawberry %286%29.ico" />
     <Content Include="Resources\strawberry_121459.ico" />
-    <Content Include="Strawberry %286%29.ico" />
-    <Content Include="strawberry_121459.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FBH-EDI-Common-Lib\FBH-EDI-Common-Lib.csproj">

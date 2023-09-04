@@ -124,15 +124,15 @@ namespace EdiUtils.Common
             return s;
         }
 
-        public object GetSaleMoney(decimal unitPrice, int qty)
+        public object GetSaleMoney(decimal unitPrice, int qty, object s, object t)
         {
-            var s = GetSCellValue();
-            var t = GetTCellValue();
-            if(string.IsNullOrEmpty(s.ToString()))
+            //var s = GetSCellValue();
+            //var t = GetTCellValue();
+            if (string.IsNullOrEmpty(s.ToString()))
             {
                 s = 0;
             }
-            if(string.IsNullOrEmpty(t.ToString()))
+            if (string.IsNullOrEmpty(t.ToString()))
             {
                 t = 0;
             }

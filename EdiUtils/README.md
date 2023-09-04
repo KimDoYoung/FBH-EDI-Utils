@@ -18,19 +18,14 @@
 
 3. po 850 파일들 각각을 invoice 810 각각으로 만듬.
    - invoiceno를 만들데 년중 주차수를 구하는데. 이것을 테이블로 처리함.
+4. 210 각 파일들을 읽어서 리스트 파일을 만듬
+5. 945 각 파일들을 읽어서 리스트 파일을 만듬
 
 ## 개발
 
 - NuGet Package Manager에서  **Microsoft.Office.Interop.Excel** 찾아서 설치해야한다.
 - [엑셀에 필요한 라이브러리](https://www.freecodespot.com/blog/csharp-import-excel/)
 
-## 같이 배포되어야 할 파일들
-
-이 파일들은 실행파일과 같은 디렉토리에 존재해야한다
-
-- WeekOfYear-Kroger.csv
-- template_850_List2.xlsx
-- EdiUtils.config
 
 ## history
 
@@ -39,5 +34,6 @@
   * PO List에 항목추가
   * Wallmart뿐만 아니라 Krogger, WM.COM도 해석
 - 2023-08-24 : 버젼 1.3.0.0  invoice 210 각 excel을 목록 만드는 기능
-- 
+- 2023-09-04 : 버젼 1.4.0.0 skip, 945리스트, 매출표 수정
+
  
