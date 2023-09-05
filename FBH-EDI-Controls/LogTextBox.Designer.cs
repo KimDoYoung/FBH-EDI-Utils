@@ -1,4 +1,4 @@
-﻿namespace FBH_EDI_Controls
+﻿namespace FBH.EDI.Controls
 {
     partial class LogTextBox
     {
@@ -70,7 +70,7 @@
             // btnSaveToFile
             // 
             this.btnSaveToFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSaveToFile.Image = global::FBH_EDI_Controls.Properties.Resources.saveHS1;
+            this.btnSaveToFile.Image = global::FBH.EDI.Controls.Properties.Resources.saveHS1;
             this.btnSaveToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSaveToFile.Name = "btnSaveToFile";
             this.btnSaveToFile.Size = new System.Drawing.Size(34, 28);
@@ -80,7 +80,7 @@
             // btnCopyToClipboard
             // 
             this.btnCopyToClipboard.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnCopyToClipboard.Image = global::FBH_EDI_Controls.Properties.Resources.clipboard;
+            this.btnCopyToClipboard.Image = global::FBH.EDI.Controls.Properties.Resources.clipboard;
             this.btnCopyToClipboard.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnCopyToClipboard.Name = "btnCopyToClipboard";
             this.btnCopyToClipboard.Size = new System.Drawing.Size(34, 28);
@@ -89,7 +89,7 @@
             // btnClear
             // 
             this.btnClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnClear.Image = global::FBH_EDI_Controls.Properties.Resources.clear;
+            this.btnClear.Image = global::FBH.EDI.Controls.Properties.Resources.clear;
             this.btnClear.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(34, 28);

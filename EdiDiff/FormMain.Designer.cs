@@ -47,7 +47,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dgvResult = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.logTextBox1 = new FBH_EDI_Controls.LogTextBox();
+            this.logTextBox1 = new FBH.EDI.Controls.LogTextBox();
             this.panelTop.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panelBatang.SuspendLayout();
@@ -320,7 +320,7 @@
         private System.Windows.Forms.TextBox txtTargetFolder;
         private System.Windows.Forms.Button btnTargetFolder;
         private System.Windows.Forms.TabPage tabPage2;
-        private FBH_EDI_Controls.LogTextBox logTextBox1;
+        private FBH.EDI.Controls.LogTextBox logTextBox1;
     }
 }
 
