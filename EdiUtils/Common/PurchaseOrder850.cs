@@ -138,16 +138,16 @@ namespace EdiUtils.Common
             }
             decimal price = 0;
 
-            if (BizRule.IsNoQty(CompanyName))
-            {
-                price = unitPrice * qty;
+            //if (BizRule.IsNoQty(CompanyName))
+            //{
+            //    price = unitPrice * qty;
 
-            }
-            else
-            {
-                price = unitPrice * ( qty / 6);
-            }
-
+            //}
+            //else
+            //{
+            //    price = unitPrice * ( qty / 6);
+            //}
+            price = unitPrice * qty ;
 
             return price - ( Convert.ToDecimal(s) + Convert.ToDecimal(t));
         }

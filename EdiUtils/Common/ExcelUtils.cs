@@ -602,7 +602,7 @@ namespace EdiUtils.Common
             List<DcCarton> list1 = StaticsDcCartonList(poList, config, iWoy, CONST.Walmart);
             List<DcCarton> list2 = StaticsDcCartonList(poList, config, iWoy, CONST.Kroger);
             List<DcCarton> list3 = StaticsDcCartonList(poList, config, iWoy, CONST.WMCOM);
-
+            
             int row = 4;
             worksheet.SetCell(2, "R", $"Listing PO W{iWoy}");
             foreach (DcCarton dcCarton in list1)
@@ -660,38 +660,70 @@ namespace EdiUtils.Common
             }
         }
 
-        //주차별 회사별  DC과일갯수
+        //주차별 회사별  DC 별과일갯수
         private static List<DcCarton> StaticsDcCartonList(List<PurchaseOrder850> poList, IConfig config, int iWoy, string companyName)
         {
             List<DcCarton> dcList = new List<DcCarton>();
+            List<DetailItem850> detailList = new List<DetailItem850>();
+            //detail 을 확장해서 만든다.
             foreach (var p in poList)
             {
-                if (p.WeekOfYear == iWoy)
+                foreach (var detail in p.Details)
                 {
-                    if (companyName != p.CompanyName) continue;
-
-                    var dc = ExtractDcNo(p);
-                    DcCarton dcCarton = new DcCarton(dc); //만약 1주에 2,3개의 PO가 있다면 생성말고 찾기로
-                    foreach (var detail in p.Details)
+                    DetailItem850 detailItem = new  DetailItem850();
+                    detailItem.Gtin13 = detail.Gtin13;
+                    if (p.CompanyName == CONST.Walmart || p.CompanyName == CONST.WMCOM)
                     {
-                        
-                        var amount = BizRule.IsNoQty(p.CompanyName) ? detail.Qty : detail.Qty / 6;
-                        
-                        var item = config.Get($"{detail.Gtin13}");
-                        if (item.ToLower().Contains("mandarin"))
-                        {
-                            dcCarton.OrangeCount += amount;
-                        }else if (item.ToLower().Contains("mango"))
-                        {
-                            dcCarton.MangoCount += amount;
-                        }else if (item.ToLower().Contains("pineapple"))
-                        {
-                            dcCarton.PineappleCount += amount;
-                        }
-                        
+                        detailItem.CompanyName = BizRule.CheckCompanyNameWithPrice(detail.UnitPrice);
                     }
+                    if (companyName != detailItem.CompanyName) continue;
+                    detailItem.Dc = ExtractDcNo(p);
+                    detailItem.Woy = p.WeekOfYear;
+                    if (detailItem.Woy != iWoy) continue;
+                    detailItem.Qty =  BizRule.IsNoQty(detailItem.CompanyName) ? detail.Qty : detail.Qty / 6;
+                    //detailItem.Qty =  p.CompanyName == CONST.Walmart ? detail.Qty / 6 :  detail.Qty;
+                    detailList.Add(detailItem);
+                }
+            }
+            MessageEventHandler?.Invoke(null, new MessageEventArgs($"-----------------------------{companyName} {iWoy}"));
+            foreach (var d in detailList)
+            {
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"{d.CompanyName} woy:{d.Woy} dc:{d.Dc} qty:{d.Qty}"));
+            }
+            MessageEventHandler?.Invoke(null, new MessageEventArgs($"-----------------------------  "));
+
+            string prevDc = null;
+            foreach (var p in detailList)
+            {
+                if (prevDc != p.Dc)
+                {
+                    DcCarton dcCarton = new DcCarton(p.Dc); //만약 1주에 2,3개의 PO가 있다면 생성말고 찾기로
+                    prevDc = p.Dc;
                     dcList.Add(dcCarton);
                 }
+            }
+            foreach (var dcCarton in dcList)
+            {
+                foreach (var detail in detailList)
+                {
+
+                    var item = config.Get($"{detail.Gtin13}");
+                    var dc = detail.Dc;
+                    if (item.ToLower().Contains("mandarin") && dcCarton.DC == dc)
+                    {
+                        dcCarton.OrangeCount += detail.Qty;
+                    }
+                    else if (item.ToLower().Contains("mango") && dcCarton.DC == dc)
+                    {
+                        dcCarton.MangoCount += detail.Qty;
+                    }
+                    else if (item.ToLower().Contains("pineapple") && dcCarton.DC == dc)
+                    {
+                        dcCarton.PineappleCount += detail.Qty;
+                    }
+
+                }
+
             }
             return dcList;
         }
@@ -1005,15 +1037,15 @@ namespace EdiUtils.Common
         private static string ExtractDcNo(PurchaseOrder850 po)
         {
             //excel파일명에서 구한다.
-            if(string.IsNullOrEmpty(po.ExcelFileName) == false)
-            {
-                string[] tmp = po.ExcelFileName.Split('_');
-                if(tmp.Length == 2)
-                {
-                    var match = Regex.Match(tmp[0], @"\d{3,5}", RegexOptions.IgnoreCase);
-                    if (match.Success) return tmp[0];
-                }
-            }
+            //if(string.IsNullOrEmpty(po.ExcelFileName) == false)
+            //{
+            //    string[] tmp = po.ExcelFileName.Split('_');
+            //    if(tmp.Length == 2)
+            //    {
+            //        var match = Regex.Match(tmp[0], @"\d{3,5}", RegexOptions.IgnoreCase);
+            //        if (match.Success) return tmp[0];
+            //    }
+            //}
             //내용에서 구한다.
             var company = po.CompanyName;
             var resultString ="";

@@ -35,7 +35,6 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.btnReset = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panelBatang = new System.Windows.Forms.Panel();
             this.tabContainer = new System.Windows.Forms.TabControl();
@@ -113,6 +112,7 @@
             this.btn210ListCreate = new System.Windows.Forms.Button();
             this.btn945ListCreate = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnReset = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panelBatang.SuspendLayout();
@@ -183,20 +183,20 @@
             // mnuFileAbout
             // 
             this.mnuFileAbout.Name = "mnuFileAbout";
-            this.mnuFileAbout.Size = new System.Drawing.Size(180, 22);
+            this.mnuFileAbout.Size = new System.Drawing.Size(162, 22);
             this.mnuFileAbout.Text = "정보(&A)";
             this.mnuFileAbout.Click += new System.EventHandler(this.MenuClickProcess);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(89, 6);
             // 
             // mnuFileQuit
             // 
             this.mnuFileQuit.Name = "mnuFileQuit";
             this.mnuFileQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
-            this.mnuFileQuit.Size = new System.Drawing.Size(180, 22);
+            this.mnuFileQuit.Size = new System.Drawing.Size(162, 22);
             this.mnuFileQuit.Text = "종료(&Q)";
             this.mnuFileQuit.Click += new System.EventHandler(this.MenuClickProcess);
             // 
@@ -211,16 +211,6 @@
             this.toolStrip1.Size = new System.Drawing.Size(915, 35);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // btnReset
-            // 
-            this.btnReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnReset.Image = global::EdiUtils.Properties.Resources.CameraOrbit_16x_24;
-            this.btnReset.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(32, 32);
-            this.btnReset.Text = "초기화";
-            this.btnReset.Click += new System.EventHandler(this.InitializeProcess);
             // 
             // statusStrip1
             // 
@@ -503,9 +493,9 @@
             this.label850List.AutoSize = true;
             this.label850List.Location = new System.Drawing.Point(7, 7);
             this.label850List.Name = "label850List";
-            this.label850List.Size = new System.Drawing.Size(38, 12);
+            this.label850List.Size = new System.Drawing.Size(66, 7);
             this.label850List.TabIndex = 0;
-            this.label850List.Text = "label3";
+            this.label850List.Text = "Purchase Order 850";
             // 
             // textBoxLog850
             // 
@@ -1108,6 +1098,16 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(100, 23);
             this.label2.TabIndex = 1;
+            // 
+            // btnReset
+            // 
+            this.btnReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnReset.Image = global::EdiUtils.Properties.Resources.CameraOrbit_16x_24;
+            this.btnReset.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(32, 32);
+            this.btnReset.Text = "초기화";
+            this.btnReset.Click += new System.EventHandler(this.InitializeProcess);
             // 
             // FormMain
             // 

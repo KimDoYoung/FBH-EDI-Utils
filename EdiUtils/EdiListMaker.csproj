@@ -60,6 +60,7 @@
     <Compile Include="Common\Const.cs" />
     <Compile Include="Common\DataRowExtension.cs" />
     <Compile Include="Common\DcCarton.cs" />
+    <Compile Include="Common\DetailItem850.cs" />
     <Compile Include="Common\FreightInvoice210Detail.cs" />
     <Compile Include="Common\IConfig.cs" />
     <Compile Include="Common\ExcelExtension.cs" />
