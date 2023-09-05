@@ -104,7 +104,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -116,10 +115,8 @@
     </Compile>
     <None Include="README.md" />
     <None Include="Resources\template_210_list.xlsx" />
-    <None Include="Resources\Template_810.xlsx" />
     <None Include="Resources\template_810_invoice.xlsx" />
     <None Include="Resources\Template_810_list.xlsx" />
-    <None Include="Resources\template_850.xlsx" />
     <None Include="Resources\template_850_List.xlsx" />
     <None Include="Resources\template_850_List2.xlsx" />
     <None Include="Resources\template_945_List.xlsx" />
@@ -175,8 +172,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>copy /Y $(ProjectDir)Resources\template_850_List2.xlsx $(TargetDir)template_850_List2.xlsx
+copy /Y $(ProjectDir)Resources\WeekOfYear-Kroger.csv $(TargetDir)WeekOfYear-Kroger.csv
+copy /Y $(ProjectDir)Resources\EdiUtils.config $(TargetDir)EdiUtils.config</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>

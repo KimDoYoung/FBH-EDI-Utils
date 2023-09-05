@@ -815,7 +815,10 @@ namespace EdiUtils.Common
                     worksheet.SetCell(row, "K", BizRule.IsNoQty(po.CompanyName) ? detail.Qty : detail.Qty / 6, "0"); //carton
                     //L, M, N 없슴
                     //단가가 3.0이하면 수량에 아니라면 carton으로 곱한다
-                    decimal price = (BizRule.IsNoQty(po.CompanyName) ? detail.Qty : detail.Qty / 6) * detail.UnitPrice;
+                    worksheet.SetCell(row, "N", detail.UnitPrice, "0.00");
+                    //decimal price = (BizRule.IsNoQty(po.CompanyName) ? detail.Qty : detail.Qty / 6) * detail.UnitPrice;
+                    //decimal price = (po.CompanyName == CONST.Walmart ? detail.Qty : detail.Qty / 6) * detail.UnitPrice;
+                    decimal price = detail.Qty * detail.UnitPrice;
                     worksheet.SetCell(row, "O", price, "0.00");
 
                     //P, Q, R 없슴

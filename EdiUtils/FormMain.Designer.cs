@@ -183,20 +183,20 @@
             // mnuFileAbout
             // 
             this.mnuFileAbout.Name = "mnuFileAbout";
-            this.mnuFileAbout.Size = new System.Drawing.Size(162, 22);
+            this.mnuFileAbout.Size = new System.Drawing.Size(180, 22);
             this.mnuFileAbout.Text = "정보(&A)";
             this.mnuFileAbout.Click += new System.EventHandler(this.MenuClickProcess);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(159, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // mnuFileQuit
             // 
             this.mnuFileQuit.Name = "mnuFileQuit";
             this.mnuFileQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
-            this.mnuFileQuit.Size = new System.Drawing.Size(162, 22);
+            this.mnuFileQuit.Size = new System.Drawing.Size(180, 22);
             this.mnuFileQuit.Text = "종료(&Q)";
             this.mnuFileQuit.Click += new System.EventHandler(this.MenuClickProcess);
             // 
@@ -262,7 +262,7 @@
             this.tab810.Controls.Add(this.panel810Top);
             this.tab810.Location = new System.Drawing.Point(4, 22);
             this.tab810.Name = "tab810";
-            this.tab810.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tab810.Padding = new System.Windows.Forms.Padding(3);
             this.tab810.Size = new System.Drawing.Size(907, 387);
             this.tab810.TabIndex = 0;
             this.tab810.Text = "Invoice-810";
@@ -349,7 +349,7 @@
             // maskedTextBox1
             // 
             this.maskedTextBox1.Location = new System.Drawing.Point(71, 5);
-            this.maskedTextBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.maskedTextBox1.Margin = new System.Windows.Forms.Padding(2);
             this.maskedTextBox1.Mask = "0000-00-00";
             this.maskedTextBox1.Name = "maskedTextBox1";
             this.maskedTextBox1.Size = new System.Drawing.Size(94, 21);
@@ -454,8 +454,8 @@
             this.tab850.Controls.Add(this.panel1);
             this.tab850.Location = new System.Drawing.Point(4, 22);
             this.tab850.Name = "tab850";
-            this.tab850.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tab850.Size = new System.Drawing.Size(907, 407);
+            this.tab850.Padding = new System.Windows.Forms.Padding(3);
+            this.tab850.Size = new System.Drawing.Size(907, 387);
             this.tab850.TabIndex = 1;
             this.tab850.Text = "PO-850";
             this.tab850.UseVisualStyleBackColor = true;
@@ -475,7 +475,7 @@
             // 
             this.splitContainer850.Panel2.Controls.Add(this.textBoxLog850);
             this.splitContainer850.Panel2.Controls.Add(this.panel3);
-            this.splitContainer850.Size = new System.Drawing.Size(901, 373);
+            this.splitContainer850.Size = new System.Drawing.Size(901, 353);
             this.splitContainer850.SplitterDistance = 186;
             this.splitContainer850.TabIndex = 2;
             // 
@@ -485,7 +485,7 @@
             this.listView850.HideSelection = false;
             this.listView850.Location = new System.Drawing.Point(0, 25);
             this.listView850.Name = "listView850";
-            this.listView850.Size = new System.Drawing.Size(186, 348);
+            this.listView850.Size = new System.Drawing.Size(186, 328);
             this.listView850.TabIndex = 3;
             this.listView850.UseCompatibleStateImageBehavior = false;
             // 
@@ -515,7 +515,7 @@
             this.textBoxLog850.Name = "textBoxLog850";
             this.textBoxLog850.ReadOnly = true;
             this.textBoxLog850.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxLog850.Size = new System.Drawing.Size(711, 348);
+            this.textBoxLog850.Size = new System.Drawing.Size(711, 328);
             this.textBoxLog850.TabIndex = 3;
             this.textBoxLog850.WordWrap = false;
             // 
@@ -614,10 +614,10 @@
             this.tab210.Controls.Add(this.panel5);
             this.tab210.Controls.Add(this.panel4);
             this.tab210.Location = new System.Drawing.Point(4, 22);
-            this.tab210.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tab210.Margin = new System.Windows.Forms.Padding(2);
             this.tab210.Name = "tab210";
-            this.tab210.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tab210.Size = new System.Drawing.Size(907, 407);
+            this.tab210.Padding = new System.Windows.Forms.Padding(2);
+            this.tab210.Size = new System.Drawing.Size(907, 387);
             this.tab210.TabIndex = 3;
             this.tab210.Text = "Invoice-210";
             this.tab210.UseVisualStyleBackColor = true;
@@ -628,7 +628,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(2, 40);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(903, 365);
+            this.panel5.Size = new System.Drawing.Size(903, 345);
             this.panel5.TabIndex = 2;
             // 
             // splitContainer1
@@ -646,7 +646,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.txtBoxLog210);
             this.splitContainer1.Panel2.Controls.Add(this.panel7);
-            this.splitContainer1.Size = new System.Drawing.Size(903, 365);
+            this.splitContainer1.Size = new System.Drawing.Size(903, 345);
             this.splitContainer1.SplitterDistance = 201;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -656,7 +656,7 @@
             this.listView210.HideSelection = false;
             this.listView210.Location = new System.Drawing.Point(0, 28);
             this.listView210.Name = "listView210";
-            this.listView210.Size = new System.Drawing.Size(201, 337);
+            this.listView210.Size = new System.Drawing.Size(201, 317);
             this.listView210.TabIndex = 1;
             this.listView210.UseCompatibleStateImageBehavior = false;
             // 
@@ -686,7 +686,7 @@
             this.txtBoxLog210.Name = "txtBoxLog210";
             this.txtBoxLog210.ReadOnly = true;
             this.txtBoxLog210.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtBoxLog210.Size = new System.Drawing.Size(698, 337);
+            this.txtBoxLog210.Size = new System.Drawing.Size(698, 317);
             this.txtBoxLog210.TabIndex = 1;
             this.txtBoxLog210.WordWrap = false;
             // 
@@ -786,10 +786,10 @@
             this.tab945.Controls.Add(this.panel9);
             this.tab945.Controls.Add(this.panel8);
             this.tab945.Location = new System.Drawing.Point(4, 22);
-            this.tab945.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tab945.Margin = new System.Windows.Forms.Padding(2);
             this.tab945.Name = "tab945";
-            this.tab945.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tab945.Size = new System.Drawing.Size(907, 407);
+            this.tab945.Padding = new System.Windows.Forms.Padding(2);
+            this.tab945.Size = new System.Drawing.Size(907, 387);
             this.tab945.TabIndex = 4;
             this.tab945.Text = "wh shp ord-945";
             this.tab945.UseVisualStyleBackColor = true;
@@ -800,7 +800,7 @@
             this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel9.Location = new System.Drawing.Point(2, 40);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(903, 365);
+            this.panel9.Size = new System.Drawing.Size(903, 345);
             this.panel9.TabIndex = 3;
             // 
             // splitContainer2
@@ -818,7 +818,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.txtBoxLog945);
             this.splitContainer2.Panel2.Controls.Add(this.panel11);
-            this.splitContainer2.Size = new System.Drawing.Size(903, 365);
+            this.splitContainer2.Size = new System.Drawing.Size(903, 345);
             this.splitContainer2.SplitterDistance = 201;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -828,7 +828,7 @@
             this.listView945.HideSelection = false;
             this.listView945.Location = new System.Drawing.Point(0, 28);
             this.listView945.Name = "listView945";
-            this.listView945.Size = new System.Drawing.Size(201, 337);
+            this.listView945.Size = new System.Drawing.Size(201, 317);
             this.listView945.TabIndex = 1;
             this.listView945.UseCompatibleStateImageBehavior = false;
             // 
@@ -858,7 +858,7 @@
             this.txtBoxLog945.Name = "txtBoxLog945";
             this.txtBoxLog945.ReadOnly = true;
             this.txtBoxLog945.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtBoxLog945.Size = new System.Drawing.Size(698, 337);
+            this.txtBoxLog945.Size = new System.Drawing.Size(698, 317);
             this.txtBoxLog945.TabIndex = 1;
             this.txtBoxLog945.WordWrap = false;
             // 
@@ -959,7 +959,7 @@
             this.tabResult.Controls.Add(this.panelResultTop);
             this.tabResult.Location = new System.Drawing.Point(4, 22);
             this.tabResult.Name = "tabResult";
-            this.tabResult.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabResult.Padding = new System.Windows.Forms.Padding(3);
             this.tabResult.Size = new System.Drawing.Size(907, 387);
             this.tabResult.TabIndex = 2;
             this.tabResult.Text = "결과Excel만들기";
@@ -1058,7 +1058,7 @@
             // 
             this.btnPo850OnlyCreate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnPo850OnlyCreate.Location = new System.Drawing.Point(531, 6);
-            this.btnPo850OnlyCreate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnPo850OnlyCreate.Margin = new System.Windows.Forms.Padding(2);
             this.btnPo850OnlyCreate.Name = "btnPo850OnlyCreate";
             this.btnPo850OnlyCreate.Size = new System.Drawing.Size(58, 21);
             this.btnPo850OnlyCreate.TabIndex = 4;
@@ -1070,7 +1070,7 @@
             // 
             this.btnEach810Create.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnEach810Create.Location = new System.Drawing.Point(593, 6);
-            this.btnEach810Create.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEach810Create.Margin = new System.Windows.Forms.Padding(2);
             this.btnEach810Create.Name = "btnEach810Create";
             this.btnEach810Create.Size = new System.Drawing.Size(75, 21);
             this.btnEach810Create.TabIndex = 5;
@@ -1082,7 +1082,7 @@
             // 
             this.btn210ListCreate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btn210ListCreate.Location = new System.Drawing.Point(673, 6);
-            this.btn210ListCreate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn210ListCreate.Margin = new System.Windows.Forms.Padding(2);
             this.btn210ListCreate.Name = "btn210ListCreate";
             this.btn210ListCreate.Size = new System.Drawing.Size(69, 21);
             this.btn210ListCreate.TabIndex = 6;
@@ -1094,7 +1094,7 @@
             // 
             this.btn945ListCreate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btn945ListCreate.Location = new System.Drawing.Point(748, 6);
-            this.btn945ListCreate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn945ListCreate.Margin = new System.Windows.Forms.Padding(2);
             this.btn945ListCreate.Name = "btn945ListCreate";
             this.btn945ListCreate.Size = new System.Drawing.Size(89, 21);
             this.btn945ListCreate.TabIndex = 7;

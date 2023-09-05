@@ -21,6 +21,13 @@
 4. 210 각 파일들을 읽어서 리스트 파일을 만듬
 5. 945 각 파일들을 읽어서 리스트 파일을 만듬
 
+## 빌드 전 event
+```
+copy /Y $(ProjectDir)Resources\template_850_List2.xlsx $(TargetDir)template_850_List2.xlsx
+copy /Y $(ProjectDir)Resources\WeekOfYear-Kroger.csv $(TargetDir)WeekOfYear-Kroger.csv
+copy /Y $(ProjectDir)Resources\EdiUtils.config $(TargetDir)EdiUtils.config
+
+```
 ## 개발
 
 - NuGet Package Manager에서  **Microsoft.Office.Interop.Excel** 찾아서 설치해야한다.
@@ -35,5 +42,5 @@
   * Wallmart뿐만 아니라 Krogger, WM.COM도 해석
 - 2023-08-24 : 버젼 1.3.0.0  invoice 210 각 excel을 목록 만드는 기능
 - 2023-09-04 : 버젼 1.4.0.0 skip, 945리스트, 매출표 수정
-
+- 2023-09-05 : 버젼 1.6.0.0 매출표 계산 오류 수정
  
