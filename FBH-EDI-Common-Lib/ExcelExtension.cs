@@ -1,5 +1,5 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Text.RegularExpressions;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -8,7 +8,7 @@ namespace FBH.EDI.Common
     public static class ExcelExtension
     {
         //TODO : 날짜 포맷, item no 넣기
-        
+
         private static int GetCol(string colName)
         {
             int iCol = -1;
@@ -55,7 +55,7 @@ namespace FBH.EDI.Common
 
         }
 
-        public static void SetCell(this Excel.Worksheet workSheet, int row, int col, object o, string format=null)
+        public static void SetCell(this Excel.Worksheet workSheet, int row, int col, object o, string format = null)
         {
 
             if (string.IsNullOrEmpty(format) == false)
@@ -65,7 +65,7 @@ namespace FBH.EDI.Common
             workSheet.Cells[row, col] = o;
         }
 
-        public static void SetCell(this Excel.Worksheet workSheet, int row, string col, object o, string numberFormat=null)
+        public static void SetCell(this Excel.Worksheet workSheet, int row, string col, object o, string numberFormat = null)
         {
             int iCol = GetCol(col);
             workSheet.SetCell(row, iCol, o, numberFormat);
@@ -84,8 +84,8 @@ namespace FBH.EDI.Common
         public static string GetString(this Excel.Worksheet workSheet, int row, string col)
         {
             int iCol = GetCol(col);
-            object v  = workSheet.GetCell(row, iCol);
-            if(v == null)
+            object v = workSheet.GetCell(row, iCol);
+            if (v == null)
             {
                 return "";
             }
@@ -103,6 +103,22 @@ namespace FBH.EDI.Common
             return (workSheet.Cells[row, col] as Excel.Range).Value;
         }
 
-        
+        public static void SetAlign(this Excel.Worksheet workSheet, string startCellName, string endCellName, Excel.XlHAlign horizontal, Excel.XlVAlign vertical = Excel.XlVAlign.xlVAlignCenter)
+        {
+            Range range = workSheet.Range[startCellName, endCellName];
+            range.HorizontalAlignment = horizontal;
+            range.VerticalAlignment = vertical;
+        }
+        public static void SetColor(this Excel.Worksheet workSheet, string startCellName, string endCellName, System.Drawing.Color charColor, System.Drawing.Color backColor)
+        {
+            Range range = workSheet.Range[startCellName, endCellName];
+            range.Font.Color = System.Drawing.ColorTranslator.ToOle(charColor);
+            range.Interior.Color = System.Drawing.ColorTranslator.ToOle(backColor);
+        }
+        public static void SetColor(this Excel.Worksheet workSheet, string cellName, System.Drawing.Color charColor, System.Drawing.Color backColor)
+        {
+            workSheet.SetColor(cellName,cellName, charColor, backColor);
+        }
+
     }
 }

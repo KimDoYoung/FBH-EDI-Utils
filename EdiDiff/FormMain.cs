@@ -70,26 +70,38 @@ namespace EdiDiff
                 return;
 
             }
+
+            string templateDiffPath = "";
+            logTextBox1.Write("850 945 compare start...");
             try
             {
                 //리스트만들기
+                logTextBox1.Write($"loading {txt850} ");
                 List<Item850> list850 = DiffUtil.ReadExcel850(txt850);
+                logTextBox1.Write($"loading {txt945} ");
                 List<Item945> list945 = DiffUtil.ReadExcel945(txt945);
                 //비교
                 List<DiffItem> listResult = DiffUtil.Diff(list850, list945);
 
 
-                var templateDiffPath = Path.Combine(targetFolder, CommonUtil.RandomFilename("diff.xlsx"));
+                templateDiffPath = Path.Combine(targetFolder, CommonUtil.RandomFilename("diff.xlsx"));
                 File.WriteAllBytes(templateDiffPath, Properties.Resources.diff_template);
                 //엑셀만들기
+                logTextBox1.Write($"diff checking...");
                 string output = DiffUtil.CreateResultExcel(templateDiffPath, listResult);
                 logTextBox1.Write(output);
                 tabControl1.SelectedTab = tabPage2;
-
+                logTextBox1.Write("");
+                logTextBox1.Write("비교 작업이 끝났습니다.");
+                logTextBox1.Write("");
             }
             catch (Exception ex)
             {
                 MsgBox.Error(ex.Message);
+            }
+            finally
+            {
+                CommonUtil.DeleteFile(templateDiffPath);
             }
 
         }

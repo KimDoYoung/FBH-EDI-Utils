@@ -2,6 +2,7 @@
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -25,28 +26,54 @@ namespace EdiDiff
             Excel.Application app = new Excel.Application();
             Excel.Workbook workbook = app.Workbooks.Open(path);
             Excel.Worksheet worksheet = workbook.Worksheets[1];
+            worksheet.Name = "Qty-Diff";
             try
             {
                 int row = 3;
                 foreach (DiffItem item in listResult)
                 {
                     worksheet.SetCell(row, "A", item.result, "@");
+                    if(item.result == "불일치")
+                    {
+                        worksheet.SetColor($"A{row}", Color.Red, Color.Yellow);
+                    }
                     worksheet.SetCell(row, "B", item.item850.Company, "@");
                     worksheet.SetCell(row, "C", item.item850.Seq, "@");
                     worksheet.SetCell(row, "D", item.item850.PoNumber, "@");
                     worksheet.SetCell(row, "E", CommonUtil.YmdFormat(item.item850.PoOrderDate), "@");
-                    worksheet.SetCell(row, "F", item.item850.QuantityCarton, "@");
+                    worksheet.SetCell(row, "F", item.item850.ItemNumber,"@");
+                    worksheet.SetCell(row, "G", item.item850.QuantityCarton);
+                    if (item.result == "불일치")
+                    {
+                        worksheet.SetColor($"G{row}", Color.Red, Color.Yellow);
+                    }
                     if (item.item945 != null)
                     {
-                        worksheet.SetCell(row, "G", item.item945.PickupDate, "@");
-                        worksheet.SetCell(row, "H", item.item945.OrderNo, "@");
-                        worksheet.SetCell(row, "I", item.item945.PalletId, "@");
-                        worksheet.SetCell(row, "J", item.item945.SkuNo, "@");
-                        worksheet.SetCell(row, "K", item.item945.ActualQuantityShipped, "@");
+                        worksheet.SetCell(row, "H", CommonUtil.YmdFormat(item.item945.PickupDate), "@");
+                        worksheet.SetCell(row, "I", item.item945.OrderNo, "@");
+                        worksheet.SetCell(row, "J", item.item945.RetailersItemNo, "@");
+                        worksheet.SetCell(row, "K", item.item945.PalletId, "@");
+                        worksheet.SetCell(row, "L", item.item945.SkuNo, "@");
+                        worksheet.SetCell(row, "M", item.item945.ActualQuantityShipped);
+                        if (item.result == "불일치")
+                        {
+                            worksheet.SetColor($"M{row}", Color.Red, Color.Yellow);
+                        }
+
                     }
                     row++;
-
                 }
+                //align set
+                worksheet.SetAlign("D3", $"D{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("E3", $"E{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("F3", $"F{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("G3", $"G{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("I3", $"I{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("J3", $"G{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("K3", $"G{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("L3", $"G{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("M3", $"G{row}", XlHAlign.xlHAlignCenter);
+
                 var dir = Path.GetDirectoryName(path);
                 var time = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
                 var outputPath = $"{dir}\\diff_result_{time}.xlsx";

@@ -41,7 +41,10 @@ namespace FBH.EDI.Common
 
         public static void DeleteFile(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath)) return;
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -129,8 +132,9 @@ namespace FBH.EDI.Common
         public static object YmdFormat(string s)
         {
             string t = Regex.Replace(s, @"\D", "");
-            if (t.Length != 8) return s;
-            return t.Substring(0, 4) + "-" + t.Substring(4, 2) + "-" + t.Substring(6);
+            if (t.Length < 8) return s;
+
+            return t.Substring(0, 4) + "-" + t.Substring(4, 2) + "-" + t.Substring(6,2);
         }
     }
 }

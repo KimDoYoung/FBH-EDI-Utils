@@ -710,8 +710,8 @@ namespace EdiUtils.Common
                     {
                         decimal unitPrice = detail.UnitPrice;
                         int qty = detail.Qty;
-                        var s = p.GetSCellValue();
-                        var t = p.GetTCellValue();
+                        var s = first ? p.GetSCellValue() : "";
+                        var t = first ? p.GetTCellValue() : "";
                         sum += Convert.ToDecimal(p.GetSaleMoney(unitPrice, qty,s,t));
                         first = false;
                     }

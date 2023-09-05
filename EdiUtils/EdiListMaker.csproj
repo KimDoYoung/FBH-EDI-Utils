@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>images.ico</ApplicationIcon>
+    <ApplicationIcon>Orange %288%29.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -141,6 +141,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images.ico" />
+    <Content Include="Orange %286%29.ico" />
+    <Content Include="Orange %288%29.ico" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">

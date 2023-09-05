@@ -7,7 +7,7 @@
     <ProjectGuid>{AB93DA60-7BBE-4747-8468-9F18467A054B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FBH_EDI_Common_Lib</RootNamespace>
+    <RootNamespace>FBH.EDI.Common</RootNamespace>
     <AssemblyName>FBH-EDI-Common-Lib</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,7 +46,9 @@
     <Compile Include="BizRule.cs" />
     <Compile Include="CommonUtil.cs" />
     <Compile Include="Const.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="ExcelExtension.cs" />
+    <Compile Include="ExcelUtils.cs" />
     <Compile Include="Exception\EdiException.cs" />
     <Compile Include="MessageEventArgs.cs" />
     <Compile Include="Model\FreightInvoice210.cs" />
