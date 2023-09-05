@@ -33,8 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Strawberry %286%29.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -93,6 +92,7 @@
   <ItemGroup>
     <Content Include="Resources\Strawberry %286%29.ico" />
     <Content Include="Resources\strawberry_121459.ico" />
+    <Content Include="Strawberry %286%29.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FBH-EDI-Common-Lib\FBH-EDI-Common-Lib.csproj">
