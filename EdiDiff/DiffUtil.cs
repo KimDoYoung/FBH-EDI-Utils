@@ -16,7 +16,7 @@ namespace EdiDiff
     {
         public static event EventHandler<MessageEventArgs> MessageEventHandler;
 
-        internal static string CreateResultExcel(string templateDiffPath, List<DiffItem> listResult)
+        internal static string CreateResultExcel850945(string templateDiffPath, List<DiffItem> listResult)
         {
 
             MessageEventHandler?.Invoke(null, new MessageEventArgs($"{templateDiffPath} 생성 시작"));
@@ -95,7 +95,7 @@ namespace EdiDiff
             }
         }
 
-        internal static List<DiffItem> Diff(List<Item850> list850, List<Item945> list945)
+        internal static List<DiffItem> Diff850945(List<Item850> list850, List<Item945> list945)
         {
             List< DiffItem > resultList = new List< DiffItem >();
             foreach (var item850 in list850)
@@ -292,5 +292,222 @@ namespace EdiDiff
             }
         }
 
+        internal static List<ItemInvoice> ReadInvoice(string invoicePath)
+        {
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook workbook = app.Workbooks.Open(invoicePath);
+            Excel.Worksheet worksheet = workbook.Worksheets[1];
+
+            try
+            {
+                List<ItemInvoice> list = new List<ItemInvoice>();
+
+                int row = 4;
+                while (true)
+                {
+                    ItemInvoice item = new ItemInvoice();
+                    item.WmPoBalJuDay = worksheet.GetString(row, "A");
+                    if (string.IsNullOrEmpty(item.WmPoBalJuDay) ) break;
+
+                    item.InvoiceFbhSangsinDay= worksheet.GetString(row, "B");
+                    item.InvoiceBalHangDayWalmart= worksheet.GetString(row, "C");
+                    item.YeSangDay= worksheet.GetString(row, "D");
+                    item.IpGeongTongJiDay= worksheet.GetString(row, "E");
+                    item.PoNo= worksheet.GetString(row, "F");
+                    item.OrderPack= worksheet.GetString(row, "G");
+
+                    item.TotalUsd= worksheet.GetString(row, "H");
+                    item.DcNo= worksheet.GetString(row, "I");
+                    item.DcAddr = worksheet.GetString(row, "J");
+
+
+                    list.Add(item);
+                    row++;
+                    if (row > 5000)
+                    {
+                        MsgBox.Error("적절하지 않은 invoice 파일입니다. 5000라인이상임");
+                        break;
+                    }
+                }
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new EdiException(ex.Message);
+            }
+            finally
+            {
+                workbook.Close(false);
+                app.Quit();
+
+                ReleaseExcelObject(worksheet);
+                ReleaseExcelObject(workbook);
+                ReleaseExcelObject(app);
+            }
+        }
+
+        internal static List<ItemRLinvoice> ReadRlInvoice(string RLpath)
+        {
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook workbook = app.Workbooks.Open(RLpath);
+            Excel.Worksheet worksheet = workbook.Worksheets[1];
+
+            try
+            {
+                List<ItemRLinvoice> list = new List<ItemRLinvoice>();
+
+                int row = 4;
+                while (true)
+                {
+                    ItemRLinvoice item = new ItemRLinvoice();
+                    item.InvoiceClaimNumber = worksheet.GetString(row, "A");
+                    if (string.IsNullOrEmpty(item.InvoiceClaimNumber)) break;
+
+                    item.DivisionNumber = worksheet.GetString(row, "B");
+                    item.StoreNumber= worksheet.GetString(row, "C");
+                    item.DateClaimCode= worksheet.GetString(row, "D");
+                    item.Amount= worksheet.GetString(row, "E");
+                    item.MicroNumber= worksheet.GetString(row, "F");
+                    item.CheckNumber= worksheet.GetString(row, "G");
+
+                    item.CheckDate= worksheet.GetString(row, "H");
+                    item.DeductionCode= worksheet.GetString(row, "I");
+                    item.Status = worksheet.GetString(row, "J");
+
+
+                    list.Add(item);
+                    row++;
+                    if (row > 5000)
+                    {
+                        MsgBox.Error("적절하지 않은 RL Invoice 파일입니다. 5000라인이상임");
+                        break;
+                    }
+                }
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new EdiException(ex.Message);
+            }
+            finally
+            {
+                workbook.Close(false);
+                app.Quit();
+
+                ReleaseExcelObject(worksheet);
+                ReleaseExcelObject(workbook);
+                ReleaseExcelObject(app);
+            }
+        }
+
+        internal static List<DiffInvoiceItem> DiffInvoice(List<ItemInvoice> listInvoice, List<ItemRLinvoice> listRLinvoice)
+        {
+            List<DiffInvoiceItem> resultList = new List<DiffInvoiceItem>();
+            foreach (var invoice in listInvoice)
+            {
+                ItemRLinvoice rlItem = FindPoInRL(listRLinvoice, invoice.PoNo);
+                DiffInvoiceItem diff = new DiffInvoiceItem();
+                diff.invoice = invoice;
+                if (rlItem == null)
+                {
+                    diff.RLinvoice = null;
+                    diff.result = "N/A";
+                }
+                else
+                {
+                    diff.RLinvoice= rlItem;
+
+                    if (invoice.TotalUsd.Trim() != rlItem.Amount.Trim())
+                    {
+                        diff.result = "불일치";
+                    }
+                    else
+                    {
+                        diff.result = "일치";
+                    }
+                    if(rlItem.CheckDate == null || rlItem.CheckDate.Trim().Length < 1)
+                    {
+                        diff.result += " N/D";
+                    }
+                }
+                resultList.Add(diff);
+            }
+            return resultList;
+        }
+
+        private static ItemRLinvoice FindPoInRL(List<ItemRLinvoice> listRLinvoice, string poNo)
+        {
+            foreach (ItemRLinvoice item in listRLinvoice)
+            {
+                var po = item.InvoiceClaimNumber.Substring(0, item.InvoiceClaimNumber.Length - 3);
+                if (po == poNo) return item;
+            }
+            return null;
+        }
+
+        internal static string CreateResultExcelInvoice(string template, List<DiffInvoiceItem> listResult)
+        {
+            MessageEventHandler?.Invoke(null, new MessageEventArgs($"{template} 생성 시작"));
+
+            string path = template;
+
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook workbook = app.Workbooks.Open(path);
+            Excel.Worksheet worksheet = workbook.Worksheets[1];
+            try
+            {
+                int row = 3;
+                foreach (DiffInvoiceItem item in listResult)
+                {
+                    worksheet.SetCell(row, "A", item.result, "@");
+                    if (item.result != "일치")
+                    {
+                        worksheet.SetColor($"A{row}", Color.Red, Color.Yellow);
+                    }
+                    worksheet.SetCell(row, "B", CommonUtil.YmdFormat(item.invoice.WmPoBalJuDay), "@");
+                    worksheet.SetCell(row, "C", CommonUtil.YmdFormat(item.invoice.InvoiceFbhSangsinDay), "@");
+                    worksheet.SetCell(row, "D", item.invoice.TotalUsd, "@");
+                    worksheet.SetCell(row, "E", item.invoice.PoNo, "@");
+                    if (item.RLinvoice != null)
+                    {
+                        worksheet.SetCell(row, "F", CommonUtil.YmdFormat(item.RLinvoice.CheckDate), "@");
+                        worksheet.SetCell(row, "G", item.RLinvoice.Amount, "@");
+                        worksheet.SetCell(row, "H", item.RLinvoice.Status, "@");
+                        if (item.result.Contains("불일치"))
+                        {
+                            worksheet.SetColor($"D{row}", Color.Red, Color.Yellow);
+                            worksheet.SetColor($"G{row}", Color.Red, Color.Yellow);
+                        }
+
+                    }
+                    row++;
+                }
+                //align set
+                worksheet.SetAlign("D3", $"D{row}", XlHAlign.xlHAlignRight);
+                worksheet.SetAlign("E3", $"E{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("F3", $"F{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("G3", $"G{row}", XlHAlign.xlHAlignRight);
+                worksheet.SetAlign("H3", $"H{row}", XlHAlign.xlHAlignCenter);
+
+                var dir = Path.GetDirectoryName(path);
+                var time = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+                var outputPath = $"{dir}\\diff_result_{time}.xlsx";
+                worksheet.SaveAs(outputPath, XlFileFormat.xlWorkbookDefault);
+                return outputPath;
+            }
+            catch (Exception ex)
+            {
+                throw new EdiException(ex.Message);
+            }
+            finally
+            {
+                workbook.Close(false);
+                app.Quit();
+
+                ReleaseExcelObject(worksheet);
+                ReleaseExcelObject(workbook);
+                ReleaseExcelObject(app);
+            }
+        }
     }
 }

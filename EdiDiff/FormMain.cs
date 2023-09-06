@@ -3,11 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace EdiDiff
 {
+    
     public partial class FormMain : Form
     {
+        private const string Mode850945 = "Mode850945";
+        private const string ModeInvoice= "Invoice";
+        private string CurrentMode = Mode850945;
+        
         public FormMain()
         {
             InitializeComponent();
@@ -17,7 +23,7 @@ namespace EdiDiff
             this.Text = this.Text + " - " + version;
 
             ComponentInitializer();
-            DiffUtil.MessageEventHandler += DiffUtil_MessageEventHandler;
+            EdiDiff.DiffUtil.MessageEventHandler += DiffUtil_MessageEventHandler;
         }
 
         private void DiffUtil_MessageEventHandler(object sender, MessageEventArgs e)
@@ -46,14 +52,108 @@ namespace EdiDiff
             txtFile945.Text = "C:\\FBH-Work\\수량비교850-945\\945_List_2023_09_04_14_17_27.xlsx\r\n";
             txtTargetFolder.Text = "C:\\FBH-Work\\수량비교850-945";
 #endif
+            rdo850945.CheckedChanged += RdoButtonChanged;
+            rdoInvoice.CheckedChanged += RdoButtonChanged;
         }
+
+        private void RdoButtonChanged(object sender, EventArgs e)
+        {
+            if (rdo850945.Checked)
+            {
+                lblSrc1.Text = "850 List";
+                lblSrc2.Text = "945 List";
+                CurrentMode = Mode850945;
+            }
+            else if (rdoInvoice.Checked)
+            {
+                lblSrc1.Text = "Invoice";
+                lblSrc2.Text = "RL Invoice";
+                CurrentMode = ModeInvoice;
+            }
+        }
+
 
         private void FindDiffProcess(object sender, EventArgs e)
         {
 
+            if(CurrentMode == Mode850945)
+            {
+                Diff850945();
+            }else if(CurrentMode == ModeInvoice)
+            {
+                DiffInvoice();
+            }
+            else
+            {
+                ;
+            }
+
+
+        }
+
+        private void DiffInvoice()
+        {
+            var invoice = txtFile850.Text;
+            var rlInvoice = txtFile945.Text;
+            var targetFolder = txtTargetFolder.Text;
+            if (File.Exists(invoice) == false)
+            {
+                MsgBox.Error($"Invoice : {invoice} is not exists");
+                return;
+            }
+            if (File.Exists(rlInvoice) == false)
+            {
+                MsgBox.Error($"RL Invoice : {rlInvoice} is not exists");
+                return;
+            }
+            if (Directory.Exists(targetFolder) == false)
+            {
+                MsgBox.Error($"target folder {txtTargetFolder} is not exists");
+                return;
+
+            }
+
+            string templateDiffPath = "";
+            logTextBox1.Write("Invoice vs RL Invoice compare start...");
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                //리스트만들기
+                logTextBox1.Write($"loading {invoice} ");
+                List<ItemInvoice> list850 = DiffUtil.ReadInvoice(invoice);
+                logTextBox1.Write($"loading {rlInvoice} ");
+                List<ItemRLinvoice> list945 = DiffUtil.ReadRlInvoice(rlInvoice);
+                //비교
+                List<DiffInvoiceItem> listResult = DiffUtil.DiffInvoice(list850, list945);
+
+
+                templateDiffPath = Path.Combine(targetFolder, CommonUtil.RandomFilename("diffInvoice.xlsx"));
+                File.WriteAllBytes(templateDiffPath, Properties.Resources.invoice_RL_invoice);
+                //엑셀만들기
+                logTextBox1.Write($"diff checking...");
+                string output = DiffUtil.CreateResultExcelInvoice(templateDiffPath, listResult);
+                logTextBox1.Write(output);
+                tabControl1.SelectedTab = tabPage2;
+                logTextBox1.Write("");
+                logTextBox1.Write("비교 작업이 끝났습니다.");
+                logTextBox1.Write("");
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Error(ex.Message);
+            }
+            finally
+            {
+                CommonUtil.DeleteFile(templateDiffPath);
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
+        private void Diff850945()
+        {
             var txt850 = txtFile850.Text;
             var txt945 = txtFile945.Text;
-            var targetFolder = txtTargetFolder.Text; 
+            var targetFolder = txtTargetFolder.Text;
             if (File.Exists(txt850) == false)
             {
                 MsgBox.Error($"850 : {txt850} is not exists");
@@ -64,7 +164,7 @@ namespace EdiDiff
                 MsgBox.Error($"945 : {txt945} is not exists");
                 return;
             }
-            if(Directory.Exists(targetFolder) == false)
+            if (Directory.Exists(targetFolder) == false)
             {
                 MsgBox.Error($"target folder {txtTargetFolder} is not exists");
                 return;
@@ -77,18 +177,18 @@ namespace EdiDiff
             {
                 //리스트만들기
                 logTextBox1.Write($"loading {txt850} ");
-                List<Item850> list850 = DiffUtil.ReadExcel850(txt850);
+                List<Item850> list850 = EdiDiff.DiffUtil.ReadExcel850(txt850);
                 logTextBox1.Write($"loading {txt945} ");
-                List<Item945> list945 = DiffUtil.ReadExcel945(txt945);
+                List<Item945> list945 = EdiDiff.DiffUtil.ReadExcel945(txt945);
                 //비교
-                List<DiffItem> listResult = DiffUtil.Diff(list850, list945);
+                List<DiffItem> listResult = EdiDiff.DiffUtil.Diff850945(list850, list945);
 
 
                 templateDiffPath = Path.Combine(targetFolder, CommonUtil.RandomFilename("diff.xlsx"));
                 File.WriteAllBytes(templateDiffPath, Properties.Resources.diff_template);
                 //엑셀만들기
                 logTextBox1.Write($"diff checking...");
-                string output = DiffUtil.CreateResultExcel(templateDiffPath, listResult);
+                string output = EdiDiff.DiffUtil.CreateResultExcel850945(templateDiffPath, listResult);
                 logTextBox1.Write(output);
                 tabControl1.SelectedTab = tabPage2;
                 logTextBox1.Write("");

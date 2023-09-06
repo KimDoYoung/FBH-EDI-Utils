@@ -31,13 +31,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.panelTop = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblSrc2 = new System.Windows.Forms.Label();
             this.txtFile850 = new System.Windows.Forms.TextBox();
             this.txtFile945 = new System.Windows.Forms.TextBox();
             this.btnFileDialog850 = new System.Windows.Forms.Button();
             this.btnFileDialog945 = new System.Windows.Forms.Button();
             this.btnFindDiff = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblSrc1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtTargetFolder = new System.Windows.Forms.TextBox();
             this.btnTargetFolder = new System.Windows.Forms.Button();
@@ -45,10 +45,12 @@
             this.panelBatang = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.logTextBox1 = new FBH.EDI.Controls.LogTextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dgvResult = new System.Windows.Forms.DataGridView();
             this.panelMostTop = new System.Windows.Forms.Panel();
-            this.logTextBox1 = new FBH.EDI.Controls.LogTextBox();
+            this.rdoInvoice = new System.Windows.Forms.RadioButton();
+            this.rdo850945 = new System.Windows.Forms.RadioButton();
             this.panelTop.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panelBatang.SuspendLayout();
@@ -56,6 +58,7 @@
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResult)).BeginInit();
+            this.panelMostTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
@@ -74,14 +77,14 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.03763F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.96237F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 138F));
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel1.Controls.Add(this.lblSrc2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtFile850, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtFile945, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnFileDialog850, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnFileDialog945, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnFindDiff, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lblSrc1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.txtTargetFolder, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.btnTargetFolder, 2, 2);
@@ -95,22 +98,22 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(940, 97);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // label2
+            // lblSrc2
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(45, 42);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 12);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "945 List";
+            this.lblSrc2.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblSrc2.AutoSize = true;
+            this.lblSrc2.Location = new System.Drawing.Point(45, 42);
+            this.lblSrc2.Name = "lblSrc2";
+            this.lblSrc2.Size = new System.Drawing.Size(47, 12);
+            this.lblSrc2.TabIndex = 1;
+            this.lblSrc2.Text = "945 List";
             // 
             // txtFile850
             // 
             this.txtFile850.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFile850.Location = new System.Drawing.Point(98, 6);
             this.txtFile850.Name = "txtFile850";
-            this.txtFile850.Size = new System.Drawing.Size(331, 12);
+            this.txtFile850.Size = new System.Drawing.Size(577, 21);
             this.txtFile850.TabIndex = 2;
             // 
             // txtFile945
@@ -118,13 +121,13 @@
             this.txtFile945.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFile945.Location = new System.Drawing.Point(98, 38);
             this.txtFile945.Name = "txtFile945";
-            this.txtFile945.Size = new System.Drawing.Size(331, 12);
+            this.txtFile945.Size = new System.Drawing.Size(577, 21);
             this.txtFile945.TabIndex = 3;
             // 
             // btnFileDialog850
             // 
             this.btnFileDialog850.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnFileDialog850.Location = new System.Drawing.Point(390, 3);
+            this.btnFileDialog850.Location = new System.Drawing.Point(681, 6);
             this.btnFileDialog850.Name = "btnFileDialog850";
             this.btnFileDialog850.Size = new System.Drawing.Size(115, 22);
             this.btnFileDialog850.TabIndex = 4;
@@ -134,7 +137,7 @@
             // btnFileDialog945
             // 
             this.btnFileDialog945.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnFileDialog945.Location = new System.Drawing.Point(390, 21);
+            this.btnFileDialog945.Location = new System.Drawing.Point(681, 37);
             this.btnFileDialog945.Name = "btnFileDialog945";
             this.btnFileDialog945.Size = new System.Drawing.Size(115, 23);
             this.btnFileDialog945.TabIndex = 5;
@@ -143,7 +146,7 @@
             // 
             // btnFindDiff
             // 
-            this.btnFindDiff.Location = new System.Drawing.Point(459, 2);
+            this.btnFindDiff.Location = new System.Drawing.Point(802, 3);
             this.btnFindDiff.Name = "btnFindDiff";
             this.tableLayoutPanel1.SetRowSpan(this.btnFindDiff, 3);
             this.btnFindDiff.Size = new System.Drawing.Size(123, 87);
@@ -151,15 +154,15 @@
             this.btnFindDiff.Text = "Find Diff";
             this.btnFindDiff.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // lblSrc1
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(45, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "850 List";
+            this.lblSrc1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblSrc1.AutoSize = true;
+            this.lblSrc1.Location = new System.Drawing.Point(45, 11);
+            this.lblSrc1.Name = "lblSrc1";
+            this.lblSrc1.Size = new System.Drawing.Size(47, 12);
+            this.lblSrc1.TabIndex = 0;
+            this.lblSrc1.Text = "850 List";
             // 
             // label3
             // 
@@ -176,12 +179,12 @@
             this.txtTargetFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTargetFolder.Location = new System.Drawing.Point(98, 69);
             this.txtTargetFolder.Name = "txtTargetFolder";
-            this.txtTargetFolder.Size = new System.Drawing.Size(331, 12);
+            this.txtTargetFolder.Size = new System.Drawing.Size(577, 21);
             this.txtTargetFolder.TabIndex = 8;
             // 
             // btnTargetFolder
             // 
-            this.btnTargetFolder.Location = new System.Drawing.Point(390, 38);
+            this.btnTargetFolder.Location = new System.Drawing.Point(681, 66);
             this.btnTargetFolder.Name = "btnTargetFolder";
             this.btnTargetFolder.Size = new System.Drawing.Size(115, 22);
             this.btnTargetFolder.TabIndex = 9;
@@ -202,9 +205,9 @@
             // 
             this.panelBatang.Controls.Add(this.tabControl1);
             this.panelBatang.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelBatang.Location = new System.Drawing.Point(0, 85);
+            this.panelBatang.Location = new System.Drawing.Point(0, 148);
             this.panelBatang.Name = "panelBatang";
-            this.panelBatang.Size = new System.Drawing.Size(537, 212);
+            this.panelBatang.Size = new System.Drawing.Size(940, 371);
             this.panelBatang.TabIndex = 2;
             // 
             // tabControl1
@@ -215,7 +218,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(307, 121);
+            this.tabControl1.Size = new System.Drawing.Size(940, 371);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage2
@@ -224,10 +227,18 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(299, 95);
+            this.tabPage2.Size = new System.Drawing.Size(932, 345);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Log";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // logTextBox1
+            // 
+            this.logTextBox1.Location = new System.Drawing.Point(63, 54);
+            this.logTextBox1.Margin = new System.Windows.Forms.Padding(1);
+            this.logTextBox1.Name = "logTextBox1";
+            this.logTextBox1.Size = new System.Drawing.Size(605, 224);
+            this.logTextBox1.TabIndex = 0;
             // 
             // tabPage1
             // 
@@ -235,7 +246,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(299, 151);
+            this.tabPage1.Size = new System.Drawing.Size(932, 345);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Result";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -254,19 +265,35 @@
             // panelMostTop
             // 
             this.panelMostTop.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panelMostTop.Controls.Add(this.rdoInvoice);
+            this.panelMostTop.Controls.Add(this.rdo850945);
             this.panelMostTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelMostTop.Location = new System.Drawing.Point(0, 0);
             this.panelMostTop.Name = "panelMostTop";
             this.panelMostTop.Size = new System.Drawing.Size(940, 51);
             this.panelMostTop.TabIndex = 3;
             // 
-            // logTextBox1
+            // rdoInvoice
             // 
-            this.logTextBox1.Location = new System.Drawing.Point(63, 54);
-            this.logTextBox1.Margin = new System.Windows.Forms.Padding(1);
-            this.logTextBox1.Name = "logTextBox1";
-            this.logTextBox1.Size = new System.Drawing.Size(605, 224);
-            this.logTextBox1.TabIndex = 0;
+            this.rdoInvoice.AutoSize = true;
+            this.rdoInvoice.Location = new System.Drawing.Point(128, 12);
+            this.rdoInvoice.Name = "rdoInvoice";
+            this.rdoInvoice.Size = new System.Drawing.Size(79, 9);
+            this.rdoInvoice.TabIndex = 1;
+            this.rdoInvoice.Text = "Invoice && RL invoice";
+            this.rdoInvoice.UseVisualStyleBackColor = true;
+            // 
+            // rdo850945
+            // 
+            this.rdo850945.AutoSize = true;
+            this.rdo850945.Checked = true;
+            this.rdo850945.Location = new System.Drawing.Point(18, 12);
+            this.rdo850945.Name = "rdo850945";
+            this.rdo850945.Size = new System.Drawing.Size(80, 16);
+            this.rdo850945.TabIndex = 0;
+            this.rdo850945.TabStop = true;
+            this.rdo850945.Text = "850 vs 945";
+            this.rdo850945.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
@@ -289,6 +316,8 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvResult)).EndInit();
+            this.panelMostTop.ResumeLayout(false);
+            this.panelMostTop.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -300,8 +329,8 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Panel panelBatang;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblSrc1;
+        private System.Windows.Forms.Label lblSrc2;
         private System.Windows.Forms.TextBox txtFile850;
         private System.Windows.Forms.TextBox txtFile945;
         private System.Windows.Forms.Button btnFileDialog850;
@@ -316,6 +345,8 @@
         private System.Windows.Forms.TabPage tabPage2;
         private FBH.EDI.Controls.LogTextBox logTextBox1;
         private System.Windows.Forms.Panel panelMostTop;
+        private System.Windows.Forms.RadioButton rdoInvoice;
+        private System.Windows.Forms.RadioButton rdo850945;
     }
 }
 

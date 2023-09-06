@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiffInvoiceItem.cs" />
     <Compile Include="DiffItem.cs" />
     <Compile Include="DiffUtil.cs" />
     <Compile Include="FormMain.cs">
@@ -59,6 +60,8 @@
     </Compile>
     <Compile Include="Item850.cs" />
     <Compile Include="Item945.cs" />
+    <Compile Include="ItemInvoice.cs" />
+    <Compile Include="ItemRLinvoice.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormMain.resx">
@@ -85,6 +88,7 @@
     </Compile>
     <None Include="README.md" />
     <None Include="Resources\diff_template.xlsx" />
+    <None Include="Resources\invoice_RL_invoice.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
