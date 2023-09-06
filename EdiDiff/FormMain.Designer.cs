@@ -77,7 +77,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.03763F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.96237F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 141F));
             this.tableLayoutPanel1.Controls.Add(this.lblSrc2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtFile850, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtFile945, 1, 1);
@@ -113,7 +113,7 @@
             this.txtFile850.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFile850.Location = new System.Drawing.Point(98, 6);
             this.txtFile850.Name = "txtFile850";
-            this.txtFile850.Size = new System.Drawing.Size(577, 21);
+            this.txtFile850.Size = new System.Drawing.Size(576, 21);
             this.txtFile850.TabIndex = 2;
             // 
             // txtFile945
@@ -121,13 +121,13 @@
             this.txtFile945.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFile945.Location = new System.Drawing.Point(98, 38);
             this.txtFile945.Name = "txtFile945";
-            this.txtFile945.Size = new System.Drawing.Size(577, 21);
+            this.txtFile945.Size = new System.Drawing.Size(576, 21);
             this.txtFile945.TabIndex = 3;
             // 
             // btnFileDialog850
             // 
             this.btnFileDialog850.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnFileDialog850.Location = new System.Drawing.Point(681, 6);
+            this.btnFileDialog850.Location = new System.Drawing.Point(680, 6);
             this.btnFileDialog850.Name = "btnFileDialog850";
             this.btnFileDialog850.Size = new System.Drawing.Size(115, 22);
             this.btnFileDialog850.TabIndex = 4;
@@ -137,7 +137,7 @@
             // btnFileDialog945
             // 
             this.btnFileDialog945.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnFileDialog945.Location = new System.Drawing.Point(681, 37);
+            this.btnFileDialog945.Location = new System.Drawing.Point(680, 37);
             this.btnFileDialog945.Name = "btnFileDialog945";
             this.btnFileDialog945.Size = new System.Drawing.Size(115, 23);
             this.btnFileDialog945.TabIndex = 5;
@@ -146,7 +146,7 @@
             // 
             // btnFindDiff
             // 
-            this.btnFindDiff.Location = new System.Drawing.Point(802, 3);
+            this.btnFindDiff.Location = new System.Drawing.Point(801, 3);
             this.btnFindDiff.Name = "btnFindDiff";
             this.tableLayoutPanel1.SetRowSpan(this.btnFindDiff, 3);
             this.btnFindDiff.Size = new System.Drawing.Size(123, 87);
@@ -179,12 +179,12 @@
             this.txtTargetFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTargetFolder.Location = new System.Drawing.Point(98, 69);
             this.txtTargetFolder.Name = "txtTargetFolder";
-            this.txtTargetFolder.Size = new System.Drawing.Size(577, 21);
+            this.txtTargetFolder.Size = new System.Drawing.Size(576, 21);
             this.txtTargetFolder.TabIndex = 8;
             // 
             // btnTargetFolder
             // 
-            this.btnTargetFolder.Location = new System.Drawing.Point(681, 66);
+            this.btnTargetFolder.Location = new System.Drawing.Point(680, 66);
             this.btnTargetFolder.Name = "btnTargetFolder";
             this.btnTargetFolder.Size = new System.Drawing.Size(115, 22);
             this.btnTargetFolder.TabIndex = 9;
@@ -250,7 +250,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Result";
             this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // dgvResult
             // 
@@ -278,7 +277,7 @@
             this.rdoInvoice.AutoSize = true;
             this.rdoInvoice.Location = new System.Drawing.Point(128, 12);
             this.rdoInvoice.Name = "rdoInvoice";
-            this.rdoInvoice.Size = new System.Drawing.Size(79, 9);
+            this.rdoInvoice.Size = new System.Drawing.Size(138, 16);
             this.rdoInvoice.TabIndex = 1;
             this.rdoInvoice.Text = "Invoice && RL invoice";
             this.rdoInvoice.UseVisualStyleBackColor = true;
