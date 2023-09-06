@@ -1102,7 +1102,7 @@
             // btnReset
             // 
             this.btnReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnReset.Image = global::EdiUtils.Properties.Resources.CameraOrbit_16x_24;
+            this.btnReset.Image = global::EdiListMaker.Properties.Resources.CameraOrbit_16x_24;
             this.btnReset.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(32, 32);

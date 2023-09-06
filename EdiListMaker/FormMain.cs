@@ -337,10 +337,10 @@ namespace EdiUtils
 
                 //1. 템플릿이 되는 파일을 리소스에서 가져와서 생성한다.
                 template810Path = Path.Combine(targetFolder, CommonUtil.RandomFilename("t810.xlsx"));
-                File.WriteAllBytes(template810Path, Properties.Resources.Template_810_list);
+                File.WriteAllBytes(template810Path, EdiListMaker.Properties.Resources.Template_810_list);
 
                 template850Path = Path.Combine(targetFolder, CommonUtil.RandomFilename("t850.xlsx"));
-                File.WriteAllBytes(template850Path, Properties.Resources.template_850_list);
+                File.WriteAllBytes(template850Path, EdiListMaker.Properties.Resources.template_850_list);
 
                 //2. 810 결과를 만든다.
                 var ssDate = maskedTextBox1.Text;
@@ -440,7 +440,7 @@ namespace EdiUtils
             {
                 WriteLog("purchace order 850으로부터 invoice 810을 생성하는 작업이 시작되었습니다.");
                 template810Invoice = Path.Combine(targetFolder, CommonUtil.RandomFilename("t810.xlsx"));
-                File.WriteAllBytes(template810Invoice, Properties.Resources.template_810_invoice);
+                File.WriteAllBytes(template810Invoice, EdiListMaker.Properties.Resources.template_810_invoice);
                 int totalCount = purchaseOrder850s.Count;
                 int cnt = 1;
                 foreach (var po850 in purchaseOrder850s)
@@ -477,7 +477,7 @@ namespace EdiUtils
             try
             {
                 template210Path = Path.Combine(targetFolder, CommonUtil.RandomFilename("t210.xlsx"));
-                File.WriteAllBytes(template210Path, Properties.Resources.template_210_list);
+                File.WriteAllBytes(template210Path, EdiListMaker.Properties.Resources.template_210_list);
 
                 // 210 List 엑셀를 만든다.
                 string output210Path = ExcelUtils.CreateList210(template210Path, freightInvoice210s, config);
@@ -513,7 +513,7 @@ namespace EdiUtils
             try
             {
                 template945Path = Path.Combine(targetFolder, CommonUtil.RandomFilename("t945.xlsx"));
-                File.WriteAllBytes(template945Path, Properties.Resources.template_945_List);
+                File.WriteAllBytes(template945Path, EdiListMaker.Properties.Resources.template_945_List);
 
                 // 945 List 엑셀를 만든다.
                 string output945Path = ExcelUtils.CreateList945(template945Path, warehouseShippingOrders, config);
