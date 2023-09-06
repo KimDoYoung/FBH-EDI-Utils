@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using FBH.EDI.Common;
 using System.IO;
 
-namespace FBH_EDI_Controls
+namespace FBH.EDI.Controls
 {
     public partial class EdiListView : UserControl
     {

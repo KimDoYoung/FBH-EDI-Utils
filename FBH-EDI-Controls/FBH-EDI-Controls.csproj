@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{17C90D62-6A25-42F3-A146-1AD77CE998E6}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>FBH_EDI_Controls</RootNamespace>
+    <RootNamespace>FBH.EDI.Controls</RootNamespace>
     <AssemblyName>FBH-EDI-Controls</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -59,6 +59,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TabControlRemoveButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TabControlRemoveButton.Designer.cs">
+      <DependentUpon>TabControlRemoveButton.cs</DependentUpon>
     </Compile>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>

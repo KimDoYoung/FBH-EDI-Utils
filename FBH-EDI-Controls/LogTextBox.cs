@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using FBH.EDI.Common;
 
-namespace FBH_EDI_Controls
+namespace FBH.EDI.Controls
 {
     public partial class LogTextBox: UserControl
     {

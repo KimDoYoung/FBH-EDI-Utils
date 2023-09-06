@@ -1,4 +1,4 @@
-﻿namespace FBH_EDI_Controls
+﻿namespace FBH.EDI.Controls
 {
     partial class EdiListView
     {
