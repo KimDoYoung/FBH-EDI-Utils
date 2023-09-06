@@ -99,6 +99,8 @@
     <Compile Include="ExcelExtension.cs" />
     <Compile Include="ExcelUtils.cs" />
     <Compile Include="Exception\EdiException.cs" />
+    <Compile Include="FileConfig.cs" />
+    <Compile Include="IConfig.cs" />
     <Compile Include="MessageEventArgs.cs" />
     <Compile Include="Model\FreightInvoice210.cs" />
     <Compile Include="Model\FreightInvoice210Detail.cs" />
@@ -150,7 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />

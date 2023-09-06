@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("EdiDbUploader")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Read EDI excel and upload to Database")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("FBH Holdings")]
 [assembly: AssemblyProduct("EdiDbUploader")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
