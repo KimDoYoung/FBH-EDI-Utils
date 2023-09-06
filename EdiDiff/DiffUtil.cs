@@ -69,14 +69,14 @@ namespace EdiDiff
                 worksheet.SetAlign("F3", $"F{row}", XlHAlign.xlHAlignCenter);
                 worksheet.SetAlign("G3", $"G{row}", XlHAlign.xlHAlignCenter);
                 worksheet.SetAlign("I3", $"I{row}", XlHAlign.xlHAlignCenter);
-                worksheet.SetAlign("J3", $"G{row}", XlHAlign.xlHAlignCenter);
-                worksheet.SetAlign("K3", $"G{row}", XlHAlign.xlHAlignCenter);
-                worksheet.SetAlign("L3", $"G{row}", XlHAlign.xlHAlignCenter);
-                worksheet.SetAlign("M3", $"G{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("J3", $"J{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("K3", $"K{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("L3", $"L{row}", XlHAlign.xlHAlignCenter);
+                worksheet.SetAlign("M3", $"M{row}", XlHAlign.xlHAlignCenter);
 
                 var dir = Path.GetDirectoryName(path);
                 var time = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-                var outputPath = $"{dir}\\diff_result_{time}.xlsx";
+                var outputPath = $"{dir}\\850945_diff_result_{time}.xlsx";
                 worksheet.SaveAs(outputPath, XlFileFormat.xlWorkbookDefault);
                 return outputPath;
             }
@@ -491,7 +491,7 @@ namespace EdiDiff
 
                 var dir = Path.GetDirectoryName(path);
                 var time = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-                var outputPath = $"{dir}\\diff_result_{time}.xlsx";
+                var outputPath = $"{dir}\\invoice_diff_result_{time}.xlsx";
                 worksheet.SaveAs(outputPath, XlFileFormat.xlWorkbookDefault);
                 return outputPath;
             }
