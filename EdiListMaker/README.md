@@ -43,4 +43,4 @@ copy /Y $(ProjectDir)Resources\EdiUtils.config $(TargetDir)EdiUtils.config
 - 2023-08-24 : 버젼 1.3.0.0  invoice 210 각 excel을 목록 만드는 기능
 - 2023-09-04 : 버젼 1.4.0.0 skip, 945리스트, 매출표 수정
 - 2023-09-05 : 버젼 1.6.0.0 매출표 계산 오류 수정
- 
+- 2023-09-07 : 버젼 1.7.2.0 810,850리스트에서 850리스트를 850only와 동일하게 바꿈. 

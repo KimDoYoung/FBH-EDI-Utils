@@ -339,8 +339,8 @@ namespace EdiUtils
                 template810Path = Path.Combine(targetFolder, CommonUtil.RandomFilename("t810.xlsx"));
                 File.WriteAllBytes(template810Path, EdiListMaker.Properties.Resources.Template_810_list);
 
-                template850Path = Path.Combine(targetFolder, CommonUtil.RandomFilename("t850.xlsx"));
-                File.WriteAllBytes(template850Path, EdiListMaker.Properties.Resources.template_850_list);
+                //template850Path = Path.Combine(targetFolder, CommonUtil.RandomFilename("t850.xlsx"));
+                //File.WriteAllBytes(template850Path, EdiListMaker.Properties.Resources.template_850_list);
 
                 //2. 810 결과를 만든다.
                 var ssDate = maskedTextBox1.Text;
@@ -349,7 +349,11 @@ namespace EdiUtils
                 CommonUtil.DeleteFile(template810Path);
 
                 //3. 850 결과를 만든다.
-                string output850Path = ExcelUtils.CreateList850(template850Path, purchaseOrder850s);
+                var templateOrg = $"{programPath}/template_850_List2.xlsx";
+                template850Path = Path.Combine(targetFolder, CommonUtil.RandomFilename("t850.xlsx"));
+                File.Copy(templateOrg, template850Path);
+
+                string output850Path = ExcelUtils.CreateList850_2(template850Path, purchaseOrder850s, config);
                 WriteLog($"{output850Path} 가 만들어졌습니다");
                 CommonUtil.DeleteFile(template850Path);
 
@@ -382,13 +386,6 @@ namespace EdiUtils
             var template850Path = "";
             try
             {
-                //btnRunResult.Enabled = false;
-                //txtResultFolder.ReadOnly = true;
-                //btnResultFolderDialog.Enabled = false;
-
-
-                //template850Path = Path.Combine(targetFolder, CommonUtil.RandomFilename("t850.xlsx"));
-                //File.WriteAllBytes(template850Path, Properties.Resources.template_850_List2);
                 var templateOrg = $"{programPath}/template_850_List2.xlsx";
                 template850Path = Path.Combine(targetFolder, CommonUtil.RandomFilename("t850.xlsx"));
                 File.Copy(templateOrg, template850Path);
@@ -400,10 +397,7 @@ namespace EdiUtils
             }
             catch (Exception ex)
             {
-                //WriteLog(string.Format("\nMessage ---\n{0}", ex.Message));
-                //WriteLog(string.Format("\nSource ---\n{0}", ex.Source));
-                //WriteLog(string.Format("\nStackTrace ---\n{0}", ex.StackTrace));
-                //WriteLog(string.Format("\nTargetSite ---\n{0}", ex.TargetSite));
+
                 WriteLog(ex.ToString());
                 MsgBox.Error(ex.Message);
 
