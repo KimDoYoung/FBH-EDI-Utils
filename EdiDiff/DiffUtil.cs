@@ -86,7 +86,7 @@ namespace EdiDiff
 
         private static void CreateMergeSheet(Worksheet worksheet, List<Hub210Item> merged, IEnumerable<String> intersct)
         {
-            worksheet.SetCell(1, "A", "PO#");
+            worksheet.SetCell(1, "A", "PO#","@");
             worksheet.SetCell(1, "B", "PICK-UP DATE");
             worksheet.SetCell(1, "C", "PRODUCT");
             worksheet.SetCell(1, "D", "QTY");
