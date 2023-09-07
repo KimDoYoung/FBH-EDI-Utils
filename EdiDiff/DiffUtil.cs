@@ -1,5 +1,4 @@
 ﻿using FBH.EDI.Common;
-using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
@@ -44,7 +43,7 @@ namespace EdiDiff
                 list2 = GetListFromHub210Route2(workbook.Worksheets[2]);
                 MessageEventHandler?.Invoke(null, new MessageEventArgs($"Route2 reading complete, count :{list2.Count}"));
 
-                var intersectList = list1.Select(a => a.PoNo).Intersect(list2.Select(b => b.PoNo));
+                var intersectList = list1.Select(a => a.InvoiceNo+a.PoNo).Intersect(list2.Select(b =>b.InvoiceNo+b.PoNo));
                 MessageEventHandler?.Invoke(null, new MessageEventArgs("---- intersectList---"));
                 foreach (var item in intersectList)
                 {
@@ -56,12 +55,13 @@ namespace EdiDiff
                 merge.UnionWith(list2);
                 var merged = merge.ToList();
                 //새로운 sheet추가
-                worksheet = workbook.Sheets.Add(Type.Missing, Type.Missing, 3, Type.Missing);
-                worksheet.Name = "Merge";
-                //새로운 sheet에 merged list를 가지고 sheet를 만든다.
-                CreateMergeSheet(worksheet, merged);
+                worksheet = workbook.Sheets.Add(After: workbook.Sheets[workbook.Sheets.Count]);
+                worksheet.Name = "중복배제합침";
 
-                MessageEventHandler?.Invoke(null, new MessageEventArgs($"Route2 reading complete, count :{list2.Count}"));
+                //새로운 sheet에 merged list를 가지고 sheet를 만든다.
+                CreateMergeSheet(worksheet, merged, intersectList);
+
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"merged......"));
 
                 var dir = Path.GetDirectoryName(path);
                 var time = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
@@ -84,24 +84,49 @@ namespace EdiDiff
             }
         }
 
-        private static void CreateMergeSheet(Worksheet worksheet, List<Hub210Item> merged)
+        private static void CreateMergeSheet(Worksheet worksheet, List<Hub210Item> merged, IEnumerable<String> intersct)
         {
-            worksheet.SetCell(1, "A", "PAYMENT DATE");
-            worksheet.SetCell(1, "B", "PAYMENT DATE");
-            worksheet.SetCell(1, "A", "PAYMENT DATE");
-            worksheet.SetCell(1, "A", "PAYMENT DATE");
-            worksheet.SetCell(1, "A", "PAYMENT DATE");
-            worksheet.SetCell(1, "A", "PAYMENT DATE");
-            worksheet.SetCell(1, "A", "PAYMENT DATE");
-            worksheet.SetCell(1, "A", "PAYMENT DATE");
-
+            worksheet.SetCell(1, "A", "PO#");
+            worksheet.SetCell(1, "B", "PICK-UP DATE");
+            worksheet.SetCell(1, "C", "PRODUCT");
+            worksheet.SetCell(1, "D", "QTY");
+            worksheet.SetCell(1, "E", "AMOUNT(USD)");
+            worksheet.SetCell(1, "F", "DC#");
+            worksheet.SetCell(1, "G", "INVOICE DATE");
+            worksheet.SetCell(1, "H", "INVOICE #");
+            worksheet.SetCell(1, "I", "PAYMENT DATE");
+            worksheet.SetCell(1, "J", "HUB BOL #");
+            worksheet.SetCell(1, "K", "ADDRESS");
+            worksheet.SetCell(1, "L", "route");
+            worksheet.SetCell(1, "M", "Status");
+            int row = 2;
+            foreach (Hub210Item item in merged)
+            {
+                worksheet.SetCell(row, "A", item.PoNo);
+                worksheet.SetCell(row, "B", item.PickUpDate);
+                worksheet.SetCell(row, "C", item.Product);
+                worksheet.SetCell(row, "D", item.Qty);
+                worksheet.SetCell(row, "E", item.Amount);
+                worksheet.SetCell(row, "F", item.DcNo);
+                worksheet.SetCell(row, "G", item.InvoiceDate);
+                worksheet.SetCell(row, "H", item.InvoiceNo);
+                worksheet.SetCell(row, "I", item.PaymentDate);
+                worksheet.SetCell(row, "J", item.HubBolNo);
+                worksheet.SetCell(row, "K", item.Address);
+                worksheet.SetCell(row, "L", $"Route{item.SrcRouteNo}");
+                if (intersct.Contains(item.InvoiceNo + item.PoNo))
+                {
+                    worksheet.SetCell(row, "M", "중복");
+                }
+                row++;
+            }
         }
 
         private static List<Hub210Item> GetListFromHub210Route2(Excel.Worksheet workSheet)
         {
             List<Hub210Item> list = new List<Hub210Item>();
             int row = 3;
-            Hub210Item prev = new Hub210Item();
+            Hub210Item prev = null;
             while (true)
             {
                 var po = workSheet.GetString(row, "B");
@@ -111,16 +136,19 @@ namespace EdiDiff
                 item.SrcRouteNo = 2;
 
                 item.PaymentDate = workSheet.GetString(row, "A");
-                item.PoNo = workSheet.GetString(row, "B");
+                item.PoNo = ExtractPoNo( workSheet.GetString(row, "B") );
                 item.PickUpDate= workSheet.GetString(row, "C");
                 item.Product = workSheet.GetString(row, "D");
                 item.Qty = ConvertToInteger(workSheet.GetString(row, "E"));
-                item.Amount = ConvertToDecimal(workSheet.GetString(row, "G"));
-                item.TotalUsd = workSheet.GetString(row, "H");
-                item.DcNo = workSheet.GetString(row, "I");
-                item.Address = workSheet.GetString(row, "J");
+                item.Amount = ConvertToDecimal(workSheet.GetString(row, "F"));
+                item.DcNo = workSheet.GetString(row, "G");
+                item.InvoiceDate = workSheet.GetString(row, "H");
+                item.InvoiceNo = workSheet.GetString(row, "I");
+                item.PaymentDate = workSheet.GetString(row, "J");
+                item.HubBolNo = workSheet.GetString(row, "K");
+                item.Address = workSheet.GetString(row, "L");
 
-                if(prev != null && (prev.PoNo == item.PoNo))
+                if(prev != null && ( (prev.InvoiceNo + prev.PoNo) == (item.InvoiceNo+item.PoNo)) )
                 {
                     prev.Qty += item.Qty;
                     prev.Product += "," + item.Product;
@@ -137,7 +165,13 @@ namespace EdiDiff
 
         }
 
- 
+        private static string ExtractPoNo(string text)
+        {
+            return Regex.Match(text, @"\d{10}").Value;
+            //Regex pattern = new Regex(@"pono=(\d{10})");
+            //Match match = pattern.Match(text);
+            //return (match.Groups["pono"].Value)+"";
+        }
 
         private static List<Hub210Item> GetListFromHub210Route1(Excel.Worksheet workSheet)
         {
@@ -161,6 +195,7 @@ namespace EdiDiff
                 item.TotalUsd = workSheet.GetString(row, "H");
                 item.DcNo= workSheet.GetString(row, "I");
                 item.Address= workSheet.GetString(row, "J");
+
                 list.Add(item);
                 MessageEventHandler?.Invoke(null, new MessageEventArgs(item.ToString()));
                 row++;

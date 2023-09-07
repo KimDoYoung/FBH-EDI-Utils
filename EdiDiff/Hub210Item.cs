@@ -25,7 +25,7 @@ namespace EdiDiff
 
         public bool Equals(Hub210Item other)
         {
-            return this.PoNo == other.PoNo;
+            return this.InvoiceNo + this.PoNo == other.InvoiceNo + other.PoNo;
         }
 
         public override string ToString()

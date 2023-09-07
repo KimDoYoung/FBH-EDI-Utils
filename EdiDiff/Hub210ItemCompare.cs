@@ -7,12 +7,12 @@ namespace EdiDiff
     {
         public bool Equals(Hub210Item x, Hub210Item y)
         {
-            return x.PoNo.Trim() == y.PoNo.Trim();
+            return (x.InvoiceNo.Trim()+ x.PoNo.Trim()) == (x.InvoiceNo.Trim() + y.PoNo.Trim());
         }
 
         public int GetHashCode(Hub210Item obj)
         {
-            return obj.PoNo.GetHashCode();
+            return (obj.InvoiceNo + obj.PoNo).GetHashCode();
         }
     }
 }
