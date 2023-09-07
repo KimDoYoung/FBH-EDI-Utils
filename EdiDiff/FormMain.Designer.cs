@@ -49,6 +49,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dgvResult = new System.Windows.Forms.DataGridView();
             this.panelMostTop = new System.Windows.Forms.Panel();
+            this.rdoHubMerge = new System.Windows.Forms.RadioButton();
             this.rdoInvoice = new System.Windows.Forms.RadioButton();
             this.rdo850945 = new System.Windows.Forms.RadioButton();
             this.panelTop.SuspendLayout();
@@ -77,7 +78,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.03763F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.96237F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 141F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 143F));
             this.tableLayoutPanel1.Controls.Add(this.lblSrc2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtFile850, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtFile945, 1, 1);
@@ -102,7 +103,7 @@
             // 
             this.lblSrc2.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblSrc2.AutoSize = true;
-            this.lblSrc2.Location = new System.Drawing.Point(45, 42);
+            this.lblSrc2.Location = new System.Drawing.Point(44, 42);
             this.lblSrc2.Name = "lblSrc2";
             this.lblSrc2.Size = new System.Drawing.Size(47, 12);
             this.lblSrc2.TabIndex = 1;
@@ -111,23 +112,23 @@
             // txtFile850
             // 
             this.txtFile850.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFile850.Location = new System.Drawing.Point(98, 6);
+            this.txtFile850.Location = new System.Drawing.Point(97, 6);
             this.txtFile850.Name = "txtFile850";
-            this.txtFile850.Size = new System.Drawing.Size(576, 21);
+            this.txtFile850.Size = new System.Drawing.Size(575, 21);
             this.txtFile850.TabIndex = 2;
             // 
             // txtFile945
             // 
             this.txtFile945.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFile945.Location = new System.Drawing.Point(98, 38);
+            this.txtFile945.Location = new System.Drawing.Point(97, 38);
             this.txtFile945.Name = "txtFile945";
-            this.txtFile945.Size = new System.Drawing.Size(576, 21);
+            this.txtFile945.Size = new System.Drawing.Size(575, 21);
             this.txtFile945.TabIndex = 3;
             // 
             // btnFileDialog850
             // 
             this.btnFileDialog850.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnFileDialog850.Location = new System.Drawing.Point(680, 6);
+            this.btnFileDialog850.Location = new System.Drawing.Point(678, 6);
             this.btnFileDialog850.Name = "btnFileDialog850";
             this.btnFileDialog850.Size = new System.Drawing.Size(115, 22);
             this.btnFileDialog850.TabIndex = 4;
@@ -137,7 +138,7 @@
             // btnFileDialog945
             // 
             this.btnFileDialog945.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnFileDialog945.Location = new System.Drawing.Point(680, 37);
+            this.btnFileDialog945.Location = new System.Drawing.Point(678, 37);
             this.btnFileDialog945.Name = "btnFileDialog945";
             this.btnFileDialog945.Size = new System.Drawing.Size(115, 23);
             this.btnFileDialog945.TabIndex = 5;
@@ -146,7 +147,7 @@
             // 
             // btnFindDiff
             // 
-            this.btnFindDiff.Location = new System.Drawing.Point(801, 3);
+            this.btnFindDiff.Location = new System.Drawing.Point(799, 3);
             this.btnFindDiff.Name = "btnFindDiff";
             this.tableLayoutPanel1.SetRowSpan(this.btnFindDiff, 3);
             this.btnFindDiff.Size = new System.Drawing.Size(123, 87);
@@ -158,7 +159,7 @@
             // 
             this.lblSrc1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblSrc1.AutoSize = true;
-            this.lblSrc1.Location = new System.Drawing.Point(45, 11);
+            this.lblSrc1.Location = new System.Drawing.Point(44, 11);
             this.lblSrc1.Name = "lblSrc1";
             this.lblSrc1.Size = new System.Drawing.Size(47, 12);
             this.lblSrc1.TabIndex = 0;
@@ -168,7 +169,7 @@
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 74);
+            this.label3.Location = new System.Drawing.Point(15, 74);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 12);
             this.label3.TabIndex = 7;
@@ -177,14 +178,14 @@
             // txtTargetFolder
             // 
             this.txtTargetFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTargetFolder.Location = new System.Drawing.Point(98, 69);
+            this.txtTargetFolder.Location = new System.Drawing.Point(97, 69);
             this.txtTargetFolder.Name = "txtTargetFolder";
-            this.txtTargetFolder.Size = new System.Drawing.Size(576, 21);
+            this.txtTargetFolder.Size = new System.Drawing.Size(575, 21);
             this.txtTargetFolder.TabIndex = 8;
             // 
             // btnTargetFolder
             // 
-            this.btnTargetFolder.Location = new System.Drawing.Point(680, 66);
+            this.btnTargetFolder.Location = new System.Drawing.Point(678, 66);
             this.btnTargetFolder.Name = "btnTargetFolder";
             this.btnTargetFolder.Size = new System.Drawing.Size(115, 22);
             this.btnTargetFolder.TabIndex = 9;
@@ -264,6 +265,7 @@
             // panelMostTop
             // 
             this.panelMostTop.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panelMostTop.Controls.Add(this.rdoHubMerge);
             this.panelMostTop.Controls.Add(this.rdoInvoice);
             this.panelMostTop.Controls.Add(this.rdo850945);
             this.panelMostTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -271,6 +273,18 @@
             this.panelMostTop.Name = "panelMostTop";
             this.panelMostTop.Size = new System.Drawing.Size(940, 51);
             this.panelMostTop.TabIndex = 3;
+            // 
+            // rdoHubMerge
+            // 
+            this.rdoHubMerge.AutoSize = true;
+            this.rdoHubMerge.Location = new System.Drawing.Point(286, 13);
+            this.rdoHubMerge.Name = "rdoHubMerge";
+            this.rdoHubMerge.Size = new System.Drawing.Size(133, 16);
+            this.rdoHubMerge.TabIndex = 2;
+            this.rdoHubMerge.TabStop = true;
+            this.rdoHubMerge.Text = "Hub route1,2 merge";
+            this.rdoHubMerge.UseVisualStyleBackColor = true;
+            this.rdoHubMerge.CheckedChanged += new System.EventHandler(this.RdoButtonChanged);
             // 
             // rdoInvoice
             // 
@@ -346,6 +360,7 @@
         private System.Windows.Forms.Panel panelMostTop;
         private System.Windows.Forms.RadioButton rdoInvoice;
         private System.Windows.Forms.RadioButton rdo850945;
+        private System.Windows.Forms.RadioButton rdoHubMerge;
     }
 }
 

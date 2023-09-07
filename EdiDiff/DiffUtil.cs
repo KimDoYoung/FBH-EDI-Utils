@@ -1,13 +1,16 @@
 ﻿using FBH.EDI.Common;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EdiDiff
@@ -16,6 +19,165 @@ namespace EdiDiff
     {
         public static event EventHandler<MessageEventArgs> MessageEventHandler;
 
+        internal static object Hub210Merge(string hub210Path)
+        {
+            //hub210Path파일을 읽어서  route1로 리스트를 만든다.
+            string path = hub210Path;
+
+            List<Hub210Item> list1 = new List<Hub210Item>();
+            List<Hub210Item> list2 = new List<Hub210Item>();
+
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook workbook = app.Workbooks.Open(path);
+            Excel.Worksheet worksheet = workbook.Worksheets[1];
+
+            if (workbook.Worksheets.Count < 2)
+            {
+                throw new EdiException("적절하지 않은 Hub 210 Route1, Rout2 엑셀입니다.");
+            }
+
+            try
+            {
+                list1 = GetListFromHub210Route1(workbook.Worksheets[1]);
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"Route1 reading complete, count :{list1.Count}"));
+                
+                list2 = GetListFromHub210Route2(workbook.Worksheets[2]);
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"Route2 reading complete, count :{list2.Count}"));
+
+                var intersectList = list1.Select(a => a.PoNo).Intersect(list2.Select(b => b.PoNo));
+                MessageEventHandler?.Invoke(null, new MessageEventArgs("---- intersectList---"));
+                foreach (var item in intersectList)
+                {
+                    MessageEventHandler?.Invoke(null, new MessageEventArgs(item.ToString()));
+                }
+                MessageEventHandler?.Invoke(null, new MessageEventArgs("----------------------"));
+
+                var merge = new HashSet<Hub210Item>(list1, new Hub210ItemCompare());
+                merge.UnionWith(list2);
+                var merged = merge.ToList();
+                //새로운 sheet추가
+                worksheet = workbook.Sheets.Add(Type.Missing, Type.Missing, 3, Type.Missing);
+                worksheet.Name = "Merge";
+                //새로운 sheet에 merged list를 가지고 sheet를 만든다.
+                CreateMergeSheet(worksheet, merged);
+
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"Route2 reading complete, count :{list2.Count}"));
+
+                var dir = Path.GetDirectoryName(path);
+                var time = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+                var outputPath = $"{dir}\\hub210_merge_{time}.xlsx";
+                worksheet.SaveAs(outputPath, XlFileFormat.xlWorkbookDefault);
+                return outputPath;
+            }
+            catch (Exception ex)
+            {
+                throw new EdiException(ex.Message);
+            }
+            finally
+            {
+                workbook.Close(false);
+                app.Quit();
+
+                ReleaseExcelObject(worksheet);
+                ReleaseExcelObject(workbook);
+                ReleaseExcelObject(app);
+            }
+        }
+
+        private static void CreateMergeSheet(Worksheet worksheet, List<Hub210Item> merged)
+        {
+            worksheet.SetCell(1, "A", "PAYMENT DATE");
+            worksheet.SetCell(1, "B", "PAYMENT DATE");
+            worksheet.SetCell(1, "A", "PAYMENT DATE");
+            worksheet.SetCell(1, "A", "PAYMENT DATE");
+            worksheet.SetCell(1, "A", "PAYMENT DATE");
+            worksheet.SetCell(1, "A", "PAYMENT DATE");
+            worksheet.SetCell(1, "A", "PAYMENT DATE");
+            worksheet.SetCell(1, "A", "PAYMENT DATE");
+
+        }
+
+        private static List<Hub210Item> GetListFromHub210Route2(Excel.Worksheet workSheet)
+        {
+            List<Hub210Item> list = new List<Hub210Item>();
+            int row = 3;
+            Hub210Item prev = new Hub210Item();
+            while (true)
+            {
+                var po = workSheet.GetString(row, "B");
+                if (string.IsNullOrEmpty(po)) break;
+
+                Hub210Item item = new Hub210Item();
+                item.SrcRouteNo = 2;
+
+                item.PaymentDate = workSheet.GetString(row, "A");
+                item.PoNo = workSheet.GetString(row, "B");
+                item.PickUpDate= workSheet.GetString(row, "C");
+                item.Product = workSheet.GetString(row, "D");
+                item.Qty = ConvertToInteger(workSheet.GetString(row, "E"));
+                item.Amount = ConvertToDecimal(workSheet.GetString(row, "G"));
+                item.TotalUsd = workSheet.GetString(row, "H");
+                item.DcNo = workSheet.GetString(row, "I");
+                item.Address = workSheet.GetString(row, "J");
+
+                if(prev != null && (prev.PoNo == item.PoNo))
+                {
+                    prev.Qty += item.Qty;
+                    prev.Product += "," + item.Product;
+                }
+                else
+                {
+                    list.Add(item);
+                    prev = item;
+                    MessageEventHandler?.Invoke(null, new MessageEventArgs(item.ToString()));
+                }
+                row++;
+            }
+            return list;
+
+        }
+
+ 
+
+        private static List<Hub210Item> GetListFromHub210Route1(Excel.Worksheet workSheet)
+        {
+            List<Hub210Item> list = new List<Hub210Item>();
+            int row = 4;
+            while (true)
+            {
+                var po = workSheet.GetString(row, "F");
+                if (string.IsNullOrEmpty(po)) break;
+
+                Hub210Item item = new Hub210Item();
+                item.SrcRouteNo = 1;
+
+                item.PaymentDate = workSheet.GetString(row, "A");
+                item.Amount  = ConvertToDecimal(workSheet.GetString(row, "B"));
+                item.InvoiceDate= workSheet.GetString(row, "C");
+                item.PaymentDue= workSheet.GetString(row, "D");
+                item.InvoiceNo= workSheet.GetString(row, "E");
+                item.PoNo= workSheet.GetString(row, "F");
+                item.Qty = ConvertToInteger(workSheet.GetString(row, "G"));
+                item.TotalUsd = workSheet.GetString(row, "H");
+                item.DcNo= workSheet.GetString(row, "I");
+                item.Address= workSheet.GetString(row, "J");
+                list.Add(item);
+                MessageEventHandler?.Invoke(null, new MessageEventArgs(item.ToString()));
+                row++;
+            }
+            return list;
+        }
+        private static decimal? ConvertToDecimal(string v)
+        {
+            if (string.IsNullOrEmpty(v)) { return null; }
+            return Convert.ToDecimal(v);
+        }
+
+        private static int? ConvertToInteger(string v)
+        {
+            if (string.IsNullOrEmpty(v)) { return null; }
+            return Convert.ToInt32(v);
+        }
         internal static string CreateResultExcel850945(string templateDiffPath, List<DiffItem> listResult)
         {
 
@@ -509,5 +671,7 @@ namespace EdiDiff
                 ReleaseExcelObject(app);
             }
         }
+
+
     }
 }

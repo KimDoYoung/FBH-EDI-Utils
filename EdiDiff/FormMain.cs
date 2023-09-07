@@ -12,6 +12,7 @@ namespace EdiDiff
     {
         private const string Mode850945 = "Mode850945";
         private const string ModeInvoice= "Invoice";
+        private const string ModeHubMerge = "HubMerge";
         private string CurrentMode = Mode850945;
         
         public FormMain()
@@ -58,6 +59,17 @@ namespace EdiDiff
 
         private void RdoButtonChanged(object sender, EventArgs e)
         {
+            txtFile850.Enabled = true;
+            btnFileDialog850.Enabled = true;
+            
+            txtFile945.Enabled = true;  
+            btnFileDialog945.Enabled = true;
+            
+            txtTargetFolder.Enabled = true;
+            btnTargetFolder.Enabled = true;
+            
+            btnFindDiff.Text = "Find Diff";
+
             if (rdo850945.Checked)
             {
                 lblSrc1.Text = "850 List";
@@ -69,6 +81,16 @@ namespace EdiDiff
                 lblSrc1.Text = "Invoice";
                 lblSrc2.Text = "RL Invoice";
                 CurrentMode = ModeInvoice;
+            }else if (rdoHubMerge.Checked)
+            {
+                txtFile945.Enabled = false;
+                btnFileDialog945.Enabled = false;
+                txtTargetFolder.Enabled = false;
+                btnTargetFolder.Enabled = false;
+                btnFindDiff.Text = "Merge route1,2";
+
+                lblSrc1.Text = "Hub Route1,2 Excel";
+                CurrentMode = ModeHubMerge;
             }
         }
 
@@ -83,12 +105,39 @@ namespace EdiDiff
             {
                 DiffInvoice();
             }
-            else
+            else if(CurrentMode == ModeHubMerge)
             {
-                ;
+                MergeRoute1Route2();
             }
 
 
+        }
+
+        private void MergeRoute1Route2()
+        {
+            var hub210Path = txtFile850.Text;
+            if (File.Exists(hub210Path) == false)
+            {
+                MsgBox.Error($"210 Hub file : {hub210Path} is not exists");
+                return;
+            }
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                logTextBox1.Write("210 route1 route2 merge after duplication removing");
+                var output = DiffUtil.Hub210Merge(hub210Path);
+                logTextBox1.Write("");
+                logTextBox1.Write("210 route1 route2 Merge 작업이 끝났습니다.");
+                logTextBox1.Write("");
+            }
+            catch(Exception ex)
+            {
+                MsgBox.Error(ex.Message);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
         }
 
         private void DiffInvoice()
@@ -255,7 +304,5 @@ namespace EdiDiff
                 }
             }
         }
-
-
     }
 }

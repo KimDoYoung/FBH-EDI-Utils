@@ -17,3 +17,9 @@ Package Manager는 콘솔창과 비슷한 방식으로 명령을 실행할 수 있는데, .NET을 위한 
 
 - https://www.nuget.org/packages/Npgsql/ 최신버젼확인
 - Install-Package Npgsql -Version 7.0.4 
+
+
+## history
+
+
+

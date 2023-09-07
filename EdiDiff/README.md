@@ -38,5 +38,5 @@ N/D: Check Date가 없다
 
 ## History
 
-- 2023-09-6 : invoice vs RL invoice 체크 
+- 2023-09-6 : invoice vs RL invoice 체크 기능 추가 
 

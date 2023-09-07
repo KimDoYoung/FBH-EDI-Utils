@@ -58,6 +58,8 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Hub210Item.cs" />
+    <Compile Include="Hub210ItemCompare.cs" />
     <Compile Include="Item850.cs" />
     <Compile Include="Item945.cs" />
     <Compile Include="ItemInvoice.cs" />
