@@ -126,6 +126,7 @@ namespace EdiDiff
                 Cursor.Current = Cursors.WaitCursor;
                 logTextBox1.Write("210 route1 route2 merge after duplication removing");
                 var output = DiffUtil.Hub210Merge(hub210Path);
+                logTextBox1.Write($"합친 파일 : {output}");
                 logTextBox1.Write("");
                 logTextBox1.Write("210 route1 route2 Merge 작업이 끝났습니다.");
                 logTextBox1.Write("");

@@ -39,4 +39,5 @@ N/D: Check Date가 없다
 ## History
 
 - 2023-09-6 : invoice vs RL invoice 체크 기능 추가 
+- 2023-09-8 : ver 2.0.0.0  hub 210 합치는 기능 추가
 

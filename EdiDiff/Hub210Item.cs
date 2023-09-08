@@ -11,7 +11,6 @@ namespace EdiDiff
         public string InvoiceNo { get; set; }
         public string PoNo { get;set; }
         public int? Qty { get; set; }
-        public string TotalUsd { get; set; }
         public string DcNo { get; set; }
         public string Address { get;set; }
 
@@ -37,7 +36,6 @@ namespace EdiDiff
                + $"InvoiceNo: {InvoiceNo}, "
                + $"PoNo: {PoNo}, "
                + $"Qty: {Qty}, "
-               + $"TotalUsd: {TotalUsd}, "
                + $"DcNo: {DcNo}, "
                + $"Address: {Address}, "
                + $"PickUpDate: {PickUpDate}, "

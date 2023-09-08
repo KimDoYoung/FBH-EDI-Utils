@@ -131,10 +131,32 @@ namespace FBH.EDI.Common
 
         public static object YmdFormat(string s)
         {
+            if (string.IsNullOrEmpty(s))
+            {
+                return "";
+            }
             string t = Regex.Replace(s, @"\D", "");
             if (t.Length < 8) return s;
 
             return t.Substring(0, 4) + "-" + t.Substring(4, 2) + "-" + t.Substring(6,2);
+        }
+        /// <summary>
+        /// M/DD/YYYY형태의 날짜 스트링을 YMD(2023-08-02) 형태로 변경한다.
+        /// </summary>
+        /// <param name="mdy">8/2/2023 형태의 문자</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static string MdyToYmd(string mdy)
+        {
+            string[] mdyArray = mdy.Split('/');
+            if(mdyArray.Length == 3) {
+                int m = Convert.ToInt16(mdyArray[0]);
+                int d = Convert.ToInt16(mdyArray[1]);
+                int y = Convert.ToInt16(mdyArray[2]);
+                var dt  = new DateTime(y, m, d, 0, 0,0);
+                return dt.ToString("yyyy-MM-dd");
+            }
+            return "";
         }
     }
 }

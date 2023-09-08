@@ -51,17 +51,22 @@ namespace EdiDiff
                 }
                 MessageEventHandler?.Invoke(null, new MessageEventArgs("----------------------"));
 
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"merged and sorting by invoice date......"));
+
                 var merge = new HashSet<Hub210Item>(list1, new Hub210ItemCompare());
                 merge.UnionWith(list2);
                 var merged = merge.ToList();
+                var sorted = merged.OrderBy(item => item.InvoiceDate).ToList();
                 //새로운 sheet추가
                 worksheet = workbook.Sheets.Add(After: workbook.Sheets[workbook.Sheets.Count]);
                 worksheet.Name = "중복배제합침";
+                
 
                 //새로운 sheet에 merged list를 가지고 sheet를 만든다.
-                CreateMergeSheet(worksheet, merged, intersectList);
+                CreateMergeSheet(worksheet, sorted, intersectList);
+                worksheet.Columns.AutoFit();
 
-                MessageEventHandler?.Invoke(null, new MessageEventArgs($"merged......"));
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"save output file......"));
 
                 var dir = Path.GetDirectoryName(path);
                 var time = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
@@ -86,9 +91,9 @@ namespace EdiDiff
 
         private static void CreateMergeSheet(Worksheet worksheet, List<Hub210Item> merged, IEnumerable<String> intersct)
         {
-            worksheet.SetCell(1, "A", "PO#","@");
+            worksheet.SetCell(1, "A", "PO#");
             worksheet.SetCell(1, "B", "PICK-UP DATE");
-            worksheet.SetCell(1, "C", "PRODUCT");
+            worksheet.SetCell(1, "C", "PAYMENT DUE");
             worksheet.SetCell(1, "D", "QTY");
             worksheet.SetCell(1, "E", "AMOUNT(USD)");
             worksheet.SetCell(1, "F", "DC#");
@@ -99,27 +104,36 @@ namespace EdiDiff
             worksheet.SetCell(1, "K", "ADDRESS");
             worksheet.SetCell(1, "L", "route");
             worksheet.SetCell(1, "M", "Status");
-            int row = 2;
+            int row = 3;
+            MessageEventHandler?.Invoke(null, new MessageEventArgs($"합친 excel파일을 만드는 중......"));
             foreach (Hub210Item item in merged)
             {
-                worksheet.SetCell(row, "A", item.PoNo);
-                worksheet.SetCell(row, "B", item.PickUpDate);
-                worksheet.SetCell(row, "C", item.Product);
-                worksheet.SetCell(row, "D", item.Qty);
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"{item.PoNo} {item.Status} {item.SrcRouteNo}"));
+                worksheet.SetCell(row, "A", item.PoNo,"@");
+                worksheet.SetCell(row, "B", CommonUtil.YmdFormat(item.PickUpDate), "@");
+                //worksheet.SetCell(row, "C", item.Product);
+                worksheet.SetCell(row, "C", CommonUtil.YmdFormat(item.PaymentDue), "@");
+                worksheet.SetCell(row, "D", item.Qty,"#,##0");
                 worksheet.SetCell(row, "E", item.Amount);
-                worksheet.SetCell(row, "F", item.DcNo);
-                worksheet.SetCell(row, "G", item.InvoiceDate);
-                worksheet.SetCell(row, "H", item.InvoiceNo);
-                worksheet.SetCell(row, "I", item.PaymentDate);
-                worksheet.SetCell(row, "J", item.HubBolNo);
+                worksheet.SetCell(row, "F", item.DcNo,"@");
+                worksheet.SetCell(row, "G", CommonUtil.YmdFormat(item.InvoiceDate), "@");
+                worksheet.SetCell(row, "H", item.InvoiceNo, "@");
+                worksheet.SetCell(row, "I", CommonUtil.YmdFormat(item.PaymentDate), "@");
+                worksheet.SetCell(row, "J", item.HubBolNo, "@");
                 worksheet.SetCell(row, "K", item.Address);
-                worksheet.SetCell(row, "L", $"Route{item.SrcRouteNo}");
+                worksheet.SetCell(row, "L", $"Route{item.SrcRouteNo}", "@");
                 if (intersct.Contains(item.InvoiceNo + item.PoNo))
                 {
-                    worksheet.SetCell(row, "M", "중복");
+                    worksheet.SetCell(row, "M", "중복", "@");
                 }
                 row++;
             }
+            worksheet.Range["D2"].Formula = $"=SUM(D3:D{row})"; //qty sum
+            worksheet.Range["E2"].Formula = $"=SUM(E3:E{row})"; //amount sum
+            worksheet.Range["D2"].NumberFormat = "#,###,##0";
+            worksheet.Range["E2"].NumberFormat = "#,###,##0.00";
+            worksheet.SetColor("D2", Color.Black, Color.Yellow);
+            worksheet.SetColor("E2", Color.Black, Color.Yellow);
         }
 
         private static List<Hub210Item> GetListFromHub210Route2(Excel.Worksheet workSheet)
@@ -137,14 +151,14 @@ namespace EdiDiff
 
                 item.PaymentDate = workSheet.GetString(row, "A");
                 item.PoNo = ExtractPoNo( workSheet.GetString(row, "B") );
-                item.PickUpDate= workSheet.GetString(row, "C");
+                item.PickUpDate= CommonUtil.MdyToYmd(workSheet.GetString(row, "C").Trim());
                 item.Product = workSheet.GetString(row, "D");
                 item.Qty = ConvertToInteger(workSheet.GetString(row, "E"));
                 item.Amount = ConvertToDecimal(workSheet.GetString(row, "F"));
                 item.DcNo = workSheet.GetString(row, "G");
-                item.InvoiceDate = workSheet.GetString(row, "H");
+                item.InvoiceDate = CommonUtil.MdyToYmd(workSheet.GetString(row, "H").Trim());
                 item.InvoiceNo = workSheet.GetString(row, "I");
-                item.PaymentDate = workSheet.GetString(row, "J");
+                item.PaymentDue= CommonUtil.MdyToYmd(workSheet.GetString(row, "J").Trim());
                 item.HubBolNo = workSheet.GetString(row, "K");
                 item.Address = workSheet.GetString(row, "L");
 
@@ -192,7 +206,7 @@ namespace EdiDiff
                 item.InvoiceNo= workSheet.GetString(row, "E");
                 item.PoNo= workSheet.GetString(row, "F");
                 item.Qty = ConvertToInteger(workSheet.GetString(row, "G"));
-                item.TotalUsd = workSheet.GetString(row, "H");
+                item.Amount = ConvertToDecimal(workSheet.GetString(row, "H"));
                 item.DcNo= workSheet.GetString(row, "I");
                 item.Address= workSheet.GetString(row, "J");
 
