@@ -134,6 +134,11 @@ namespace EdiDiff
             worksheet.Range["E2"].NumberFormat = "#,###,##0.00";
             worksheet.SetColor("D2", Color.Black, Color.Yellow);
             worksheet.SetColor("E2", Color.Black, Color.Yellow);
+
+            foreach (var value in "ABCDEFGHIJKLM".ToList())
+            {
+                worksheet.SetColor($"{value}1", Color.Black, Color.Salmon);
+            }
         }
 
         private static List<Hub210Item> GetListFromHub210Route2(Excel.Worksheet workSheet)
