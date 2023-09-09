@@ -1,15 +1,10 @@
 ﻿using EdiUtils.Common;
-using kr.co.kalpa.common.CommonUtil;
+using FBH.EDI.Common;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices.ComTypes;
-using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace EdiUtils
 {
@@ -399,7 +394,7 @@ namespace EdiUtils
             }
             catch (Exception ex)
             {
-
+                WriteLog(ex.ToString());
                 MsgBox.Error(ex.Message);
 
             }
@@ -485,6 +480,7 @@ namespace EdiUtils
             }
             catch (Exception ex)
             {
+                WriteLog(ex.ToString());
                 MsgBox.Error(ex.Message);
             }
             finally

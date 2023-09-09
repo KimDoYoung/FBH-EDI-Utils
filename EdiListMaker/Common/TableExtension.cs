@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FBH.EDI.Common;
+using System;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace EdiUtils.Common
 {

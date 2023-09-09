@@ -7,7 +7,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace FBH.EDI.Common
 {
-    public static class ExcelUtils
+    public static class ExcelUtil
     {
         //public enum Align { Left, Right, Center };
         //public static SetAlign(string startCellName,string endCellName  Align horizontal, Align Vertical = Align.Center)
