@@ -55,8 +55,6 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\BizRule.cs" />
-    <Compile Include="Common\Const.cs" />
     <Compile Include="Common\DataRowExtension.cs" />
     <Compile Include="Common\DcCarton.cs" />
     <Compile Include="Common\DetailItem850.cs" />

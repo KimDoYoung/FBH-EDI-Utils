@@ -6,11 +6,35 @@ using System.Threading.Tasks;
 
 namespace FBH.EDI.Common
 {
-    internal static class BizRule
+    public static class BizRule
     {
-        internal static bool IsNoQty(string companyName)
+        public static bool IsNoQty(string companyName)
         {
            if(companyName == CONST.Kroger || companyName == CONST.WMCOM) return true;
+            return false;
+        }
+        public static string CheckCompanyNameWithPrice(decimal unitPrice)
+        {
+            if (unitPrice > 3)
+            {
+                return CONST.WMCOM;
+            }
+            return CONST.Walmart;
+        }
+
+        public static bool IsNoQty(string companyName, decimal unitPrice)
+        {
+            if (companyName == CONST.Kroger || companyName == CONST.WMCOM)
+            {
+                return true;
+            }
+            else
+            {
+                if (unitPrice < 3)
+                {
+                    return true;
+                }
+            }
             return false;
         }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FBH.EDI.Common
 {
-    internal static class CONST
+    public static class CONST
     {
         public static string Kroger = "Kroger";
         public static string WMCOM = "WM.COM";
