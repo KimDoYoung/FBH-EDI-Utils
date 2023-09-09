@@ -187,9 +187,6 @@ namespace EdiDiff
         private static string ExtractPoNo(string text)
         {
             return Regex.Match(text, @"\d{10}").Value;
-            //Regex pattern = new Regex(@"pono=(\d{10})");
-            //Match match = pattern.Match(text);
-            //return (match.Groups["pono"].Value)+"";
         }
 
         private static List<Hub210Item> GetListFromHub210Route1(Excel.Worksheet workSheet)

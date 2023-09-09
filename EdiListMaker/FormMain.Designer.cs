@@ -35,6 +35,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.btnReset = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panelBatang = new System.Windows.Forms.Panel();
             this.tabContainer = new System.Windows.Forms.TabControl();
@@ -112,7 +113,6 @@
             this.btn210ListCreate = new System.Windows.Forms.Button();
             this.btn945ListCreate = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnReset = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panelBatang.SuspendLayout();
@@ -160,13 +160,13 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuFile});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(915, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1307, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -177,26 +177,26 @@
             this.toolStripMenuItem1,
             this.mnuFileQuit});
             this.mnuFile.Name = "mnuFile";
-            this.mnuFile.Size = new System.Drawing.Size(57, 22);
+            this.mnuFile.Size = new System.Drawing.Size(83, 29);
             this.mnuFile.Text = "파일(&F)";
             // 
             // mnuFileAbout
             // 
             this.mnuFileAbout.Name = "mnuFileAbout";
-            this.mnuFileAbout.Size = new System.Drawing.Size(162, 22);
+            this.mnuFileAbout.Size = new System.Drawing.Size(245, 34);
             this.mnuFileAbout.Text = "정보(&A)";
             this.mnuFileAbout.Click += new System.EventHandler(this.MenuClickProcess);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(89, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(242, 6);
             // 
             // mnuFileQuit
             // 
             this.mnuFileQuit.Name = "mnuFileQuit";
             this.mnuFileQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
-            this.mnuFileQuit.Size = new System.Drawing.Size(162, 22);
+            this.mnuFileQuit.Size = new System.Drawing.Size(245, 34);
             this.mnuFileQuit.Text = "종료(&Q)";
             this.mnuFileQuit.Click += new System.EventHandler(this.MenuClickProcess);
             // 
@@ -205,19 +205,30 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnReset});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 33);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(915, 35);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.toolStrip1.Size = new System.Drawing.Size(1307, 37);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // btnReset
+            // 
+            this.btnReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnReset.Image = global::EdiListMaker.Properties.Resources.CameraOrbit_16x_24;
+            this.btnReset.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(34, 32);
+            this.btnReset.Text = "초기화";
+            this.btnReset.Click += new System.EventHandler(this.InitializeProcess);
             // 
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 472);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 719);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(915, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 20, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(1307, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -226,9 +237,10 @@
             this.panelBatang.Controls.Add(this.tabContainer);
             this.panelBatang.Controls.Add(this.label2);
             this.panelBatang.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelBatang.Location = new System.Drawing.Point(0, 59);
+            this.panelBatang.Location = new System.Drawing.Point(0, 70);
+            this.panelBatang.Margin = new System.Windows.Forms.Padding(4);
             this.panelBatang.Name = "panelBatang";
-            this.panelBatang.Size = new System.Drawing.Size(915, 413);
+            this.panelBatang.Size = new System.Drawing.Size(1307, 649);
             this.panelBatang.TabIndex = 3;
             // 
             // tabContainer
@@ -240,9 +252,10 @@
             this.tabContainer.Controls.Add(this.tabResult);
             this.tabContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabContainer.Location = new System.Drawing.Point(0, 0);
+            this.tabContainer.Margin = new System.Windows.Forms.Padding(4);
             this.tabContainer.Name = "tabContainer";
             this.tabContainer.SelectedIndex = 0;
-            this.tabContainer.Size = new System.Drawing.Size(915, 413);
+            this.tabContainer.Size = new System.Drawing.Size(1307, 649);
             this.tabContainer.TabIndex = 0;
             this.tabContainer.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -250,10 +263,11 @@
             // 
             this.tab810.Controls.Add(this.panel810Batang);
             this.tab810.Controls.Add(this.panel810Top);
-            this.tab810.Location = new System.Drawing.Point(4, 22);
+            this.tab810.Location = new System.Drawing.Point(4, 28);
+            this.tab810.Margin = new System.Windows.Forms.Padding(4);
             this.tab810.Name = "tab810";
-            this.tab810.Padding = new System.Windows.Forms.Padding(3);
-            this.tab810.Size = new System.Drawing.Size(907, 387);
+            this.tab810.Padding = new System.Windows.Forms.Padding(4);
+            this.tab810.Size = new System.Drawing.Size(1299, 617);
             this.tab810.TabIndex = 0;
             this.tab810.Text = "Invoice-810";
             this.tab810.UseVisualStyleBackColor = true;
@@ -262,15 +276,17 @@
             // 
             this.panel810Batang.Controls.Add(this.splitContainer810);
             this.panel810Batang.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel810Batang.Location = new System.Drawing.Point(3, 41);
+            this.panel810Batang.Location = new System.Drawing.Point(4, 61);
+            this.panel810Batang.Margin = new System.Windows.Forms.Padding(4);
             this.panel810Batang.Name = "panel810Batang";
-            this.panel810Batang.Size = new System.Drawing.Size(901, 343);
+            this.panel810Batang.Size = new System.Drawing.Size(1291, 552);
             this.panel810Batang.TabIndex = 1;
             // 
             // splitContainer810
             // 
             this.splitContainer810.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer810.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer810.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer810.Name = "splitContainer810";
             // 
             // splitContainer810.Panel1
@@ -282,17 +298,19 @@
             // 
             this.splitContainer810.Panel2.Controls.Add(this.textBoxLog810);
             this.splitContainer810.Panel2.Controls.Add(this.panel810RightTop);
-            this.splitContainer810.Size = new System.Drawing.Size(901, 343);
-            this.splitContainer810.SplitterDistance = 200;
+            this.splitContainer810.Size = new System.Drawing.Size(1291, 552);
+            this.splitContainer810.SplitterDistance = 286;
+            this.splitContainer810.SplitterWidth = 6;
             this.splitContainer810.TabIndex = 0;
             // 
             // listView810
             // 
             this.listView810.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView810.HideSelection = false;
-            this.listView810.Location = new System.Drawing.Point(0, 28);
+            this.listView810.Location = new System.Drawing.Point(0, 42);
+            this.listView810.Margin = new System.Windows.Forms.Padding(4);
             this.listView810.Name = "listView810";
-            this.listView810.Size = new System.Drawing.Size(200, 315);
+            this.listView810.Size = new System.Drawing.Size(286, 510);
             this.listView810.TabIndex = 1;
             this.listView810.UseCompatibleStateImageBehavior = false;
             // 
@@ -301,28 +319,31 @@
             this.panel810LeftTop.Controls.Add(this.label810List);
             this.panel810LeftTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel810LeftTop.Location = new System.Drawing.Point(0, 0);
+            this.panel810LeftTop.Margin = new System.Windows.Forms.Padding(4);
             this.panel810LeftTop.Name = "panel810LeftTop";
-            this.panel810LeftTop.Size = new System.Drawing.Size(200, 28);
+            this.panel810LeftTop.Size = new System.Drawing.Size(286, 42);
             this.panel810LeftTop.TabIndex = 0;
             // 
             // label810List
             // 
             this.label810List.AutoSize = true;
-            this.label810List.Location = new System.Drawing.Point(21, 6);
+            this.label810List.Location = new System.Drawing.Point(5, 9);
+            this.label810List.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label810List.Name = "label810List";
-            this.label810List.Size = new System.Drawing.Size(91, 12);
+            this.label810List.Size = new System.Drawing.Size(134, 18);
             this.label810List.TabIndex = 0;
             this.label810List.Text = "Invoice 810 List";
             // 
             // textBoxLog810
             // 
             this.textBoxLog810.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxLog810.Location = new System.Drawing.Point(0, 28);
+            this.textBoxLog810.Location = new System.Drawing.Point(0, 42);
+            this.textBoxLog810.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLog810.Multiline = true;
             this.textBoxLog810.Name = "textBoxLog810";
             this.textBoxLog810.ReadOnly = true;
             this.textBoxLog810.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxLog810.Size = new System.Drawing.Size(697, 315);
+            this.textBoxLog810.Size = new System.Drawing.Size(999, 510);
             this.textBoxLog810.TabIndex = 1;
             this.textBoxLog810.WordWrap = false;
             // 
@@ -332,26 +353,25 @@
             this.panel810RightTop.Controls.Add(this.label5);
             this.panel810RightTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel810RightTop.Location = new System.Drawing.Point(0, 0);
+            this.panel810RightTop.Margin = new System.Windows.Forms.Padding(4);
             this.panel810RightTop.Name = "panel810RightTop";
-            this.panel810RightTop.Size = new System.Drawing.Size(697, 28);
+            this.panel810RightTop.Size = new System.Drawing.Size(999, 42);
             this.panel810RightTop.TabIndex = 0;
             // 
             // maskedTextBox1
             // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(71, 5);
-            this.maskedTextBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.maskedTextBox1.Location = new System.Drawing.Point(101, 8);
             this.maskedTextBox1.Mask = "0000-00-00";
             this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(94, 21);
+            this.maskedTextBox1.Size = new System.Drawing.Size(133, 28);
             this.maskedTextBox1.TabIndex = 1;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 9);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(21, 14);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.Size = new System.Drawing.Size(62, 18);
             this.label5.TabIndex = 0;
             this.label5.Text = "상신일";
             // 
@@ -360,20 +380,21 @@
             this.panel810Top.BackColor = System.Drawing.Color.Gainsboro;
             this.panel810Top.Controls.Add(this.tableLayoutPanel810);
             this.panel810Top.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel810Top.Location = new System.Drawing.Point(3, 3);
+            this.panel810Top.Location = new System.Drawing.Point(4, 4);
+            this.panel810Top.Margin = new System.Windows.Forms.Padding(4);
             this.panel810Top.Name = "panel810Top";
-            this.panel810Top.Size = new System.Drawing.Size(901, 38);
+            this.panel810Top.Size = new System.Drawing.Size(1291, 57);
             this.panel810Top.TabIndex = 0;
             // 
             // tableLayoutPanel810
             // 
             this.tableLayoutPanel810.ColumnCount = 5;
-            this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
             this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
-            this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 116F));
-            this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 143F));
+            this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
+            this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 166F));
+            this.tableLayoutPanel810.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel810.Controls.Add(this.btnList810, 3, 0);
             this.tableLayoutPanel810.Controls.Add(this.btnOpenDir810, 2, 0);
             this.tableLayoutPanel810.Controls.Add(this.targetDir810, 1, 0);
@@ -381,18 +402,20 @@
             this.tableLayoutPanel810.Controls.Add(this.btnRun810, 4, 0);
             this.tableLayoutPanel810.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel810.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel810.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel810.Name = "tableLayoutPanel810";
             this.tableLayoutPanel810.RowCount = 1;
             this.tableLayoutPanel810.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel810.Size = new System.Drawing.Size(901, 38);
+            this.tableLayoutPanel810.Size = new System.Drawing.Size(1291, 57);
             this.tableLayoutPanel810.TabIndex = 4;
             // 
             // btnList810
             // 
             this.btnList810.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnList810.Location = new System.Drawing.Point(703, 7);
+            this.btnList810.Location = new System.Drawing.Point(1008, 10);
+            this.btnList810.Margin = new System.Windows.Forms.Padding(4);
             this.btnList810.Name = "btnList810";
-            this.btnList810.Size = new System.Drawing.Size(73, 24);
+            this.btnList810.Size = new System.Drawing.Size(104, 36);
             this.btnList810.TabIndex = 10;
             this.btnList810.Text = "List만들기";
             this.btnList810.UseVisualStyleBackColor = true;
@@ -401,9 +424,10 @@
             // btnOpenDir810
             // 
             this.btnOpenDir810.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnOpenDir810.Location = new System.Drawing.Point(603, 7);
+            this.btnOpenDir810.Location = new System.Drawing.Point(865, 10);
+            this.btnOpenDir810.Margin = new System.Windows.Forms.Padding(4);
             this.btnOpenDir810.Name = "btnOpenDir810";
-            this.btnOpenDir810.Size = new System.Drawing.Size(94, 24);
+            this.btnOpenDir810.Size = new System.Drawing.Size(134, 36);
             this.btnOpenDir810.TabIndex = 9;
             this.btnOpenDir810.Text = "폴더열기...";
             this.btnOpenDir810.UseVisualStyleBackColor = true;
@@ -412,27 +436,30 @@
             // targetDir810
             // 
             this.targetDir810.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetDir810.Location = new System.Drawing.Point(83, 8);
+            this.targetDir810.Location = new System.Drawing.Point(118, 14);
+            this.targetDir810.Margin = new System.Windows.Forms.Padding(4);
             this.targetDir810.Name = "targetDir810";
-            this.targetDir810.Size = new System.Drawing.Size(514, 21);
+            this.targetDir810.Size = new System.Drawing.Size(739, 28);
             this.targetDir810.TabIndex = 8;
             // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(24, 13);
+            this.label1.Location = new System.Drawing.Point(30, 19);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.Size = new System.Drawing.Size(80, 18);
             this.label1.TabIndex = 7;
             this.label1.Text = "대상폴더";
             // 
             // btnRun810
             // 
             this.btnRun810.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnRun810.Location = new System.Drawing.Point(788, 7);
+            this.btnRun810.Location = new System.Drawing.Point(1129, 10);
+            this.btnRun810.Margin = new System.Windows.Forms.Padding(4);
             this.btnRun810.Name = "btnRun810";
-            this.btnRun810.Size = new System.Drawing.Size(110, 24);
+            this.btnRun810.Size = new System.Drawing.Size(157, 36);
             this.btnRun810.TabIndex = 11;
             this.btnRun810.Text = "엑셀데이터로딩";
             this.btnRun810.UseVisualStyleBackColor = true;
@@ -442,10 +469,11 @@
             // 
             this.tab850.Controls.Add(this.splitContainer850);
             this.tab850.Controls.Add(this.panel1);
-            this.tab850.Location = new System.Drawing.Point(4, 22);
+            this.tab850.Location = new System.Drawing.Point(4, 28);
+            this.tab850.Margin = new System.Windows.Forms.Padding(4);
             this.tab850.Name = "tab850";
-            this.tab850.Padding = new System.Windows.Forms.Padding(3);
-            this.tab850.Size = new System.Drawing.Size(907, 387);
+            this.tab850.Padding = new System.Windows.Forms.Padding(4);
+            this.tab850.Size = new System.Drawing.Size(1299, 617);
             this.tab850.TabIndex = 1;
             this.tab850.Text = "PO-850";
             this.tab850.UseVisualStyleBackColor = true;
@@ -453,7 +481,8 @@
             // splitContainer850
             // 
             this.splitContainer850.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer850.Location = new System.Drawing.Point(3, 31);
+            this.splitContainer850.Location = new System.Drawing.Point(4, 46);
+            this.splitContainer850.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer850.Name = "splitContainer850";
             // 
             // splitContainer850.Panel1
@@ -465,17 +494,19 @@
             // 
             this.splitContainer850.Panel2.Controls.Add(this.textBoxLog850);
             this.splitContainer850.Panel2.Controls.Add(this.panel3);
-            this.splitContainer850.Size = new System.Drawing.Size(901, 353);
-            this.splitContainer850.SplitterDistance = 186;
+            this.splitContainer850.Size = new System.Drawing.Size(1291, 567);
+            this.splitContainer850.SplitterDistance = 266;
+            this.splitContainer850.SplitterWidth = 6;
             this.splitContainer850.TabIndex = 2;
             // 
             // listView850
             // 
             this.listView850.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView850.HideSelection = false;
-            this.listView850.Location = new System.Drawing.Point(0, 25);
+            this.listView850.Location = new System.Drawing.Point(0, 38);
+            this.listView850.Margin = new System.Windows.Forms.Padding(4);
             this.listView850.Name = "listView850";
-            this.listView850.Size = new System.Drawing.Size(186, 328);
+            this.listView850.Size = new System.Drawing.Size(266, 529);
             this.listView850.TabIndex = 3;
             this.listView850.UseCompatibleStateImageBehavior = false;
             // 
@@ -484,28 +515,31 @@
             this.panel2.Controls.Add(this.label850List);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(186, 25);
+            this.panel2.Size = new System.Drawing.Size(266, 38);
             this.panel2.TabIndex = 2;
             // 
             // label850List
             // 
             this.label850List.AutoSize = true;
-            this.label850List.Location = new System.Drawing.Point(7, 7);
+            this.label850List.Location = new System.Drawing.Point(5, 10);
+            this.label850List.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label850List.Name = "label850List";
-            this.label850List.Size = new System.Drawing.Size(66, 7);
+            this.label850List.Size = new System.Drawing.Size(172, 18);
             this.label850List.TabIndex = 0;
             this.label850List.Text = "Purchase Order 850";
             // 
             // textBoxLog850
             // 
             this.textBoxLog850.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxLog850.Location = new System.Drawing.Point(0, 25);
+            this.textBoxLog850.Location = new System.Drawing.Point(0, 38);
+            this.textBoxLog850.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLog850.Multiline = true;
             this.textBoxLog850.Name = "textBoxLog850";
             this.textBoxLog850.ReadOnly = true;
             this.textBoxLog850.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxLog850.Size = new System.Drawing.Size(711, 328);
+            this.textBoxLog850.Size = new System.Drawing.Size(1019, 529);
             this.textBoxLog850.TabIndex = 3;
             this.textBoxLog850.WordWrap = false;
             // 
@@ -513,8 +547,9 @@
             // 
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(711, 25);
+            this.panel3.Size = new System.Drawing.Size(1019, 38);
             this.panel3.TabIndex = 2;
             // 
             // panel1
@@ -522,19 +557,20 @@
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
             this.panel1.Controls.Add(this.tableLayoutPanel1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Location = new System.Drawing.Point(4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(901, 28);
+            this.panel1.Size = new System.Drawing.Size(1291, 42);
             this.panel1.TabIndex = 1;
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 5;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 143F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 171F));
             this.tableLayoutPanel1.Controls.Add(this.btnRun850, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnList850, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.targetDir850, 1, 0);
@@ -542,18 +578,20 @@
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(901, 28);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1291, 42);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // btnRun850
             // 
             this.btnRun850.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnRun850.Location = new System.Drawing.Point(784, 3);
+            this.btnRun850.Location = new System.Drawing.Point(1124, 4);
+            this.btnRun850.Margin = new System.Windows.Forms.Padding(4);
             this.btnRun850.Name = "btnRun850";
-            this.btnRun850.Size = new System.Drawing.Size(113, 22);
+            this.btnRun850.Size = new System.Drawing.Size(161, 33);
             this.btnRun850.TabIndex = 6;
             this.btnRun850.Text = "엑셀데이터로딩";
             this.btnRun850.UseVisualStyleBackColor = true;
@@ -562,9 +600,10 @@
             // btnList850
             // 
             this.btnList850.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnList850.Location = new System.Drawing.Point(704, 3);
+            this.btnList850.Location = new System.Drawing.Point(1010, 4);
+            this.btnList850.Margin = new System.Windows.Forms.Padding(4);
             this.btnList850.Name = "btnList850";
-            this.btnList850.Size = new System.Drawing.Size(73, 22);
+            this.btnList850.Size = new System.Drawing.Size(104, 33);
             this.btnList850.TabIndex = 4;
             this.btnList850.Text = "List만들기";
             this.btnList850.UseVisualStyleBackColor = true;
@@ -573,17 +612,19 @@
             // targetDir850
             // 
             this.targetDir850.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetDir850.Location = new System.Drawing.Point(73, 3);
+            this.targetDir850.Location = new System.Drawing.Point(104, 7);
+            this.targetDir850.Margin = new System.Windows.Forms.Padding(4);
             this.targetDir850.Name = "targetDir850";
-            this.targetDir850.Size = new System.Drawing.Size(525, 21);
+            this.targetDir850.Size = new System.Drawing.Size(755, 28);
             this.targetDir850.TabIndex = 2;
             // 
             // btnOpenDir850
             // 
             this.btnOpenDir850.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnOpenDir850.Location = new System.Drawing.Point(604, 3);
+            this.btnOpenDir850.Location = new System.Drawing.Point(867, 4);
+            this.btnOpenDir850.Margin = new System.Windows.Forms.Padding(4);
             this.btnOpenDir850.Name = "btnOpenDir850";
-            this.btnOpenDir850.Size = new System.Drawing.Size(91, 22);
+            this.btnOpenDir850.Size = new System.Drawing.Size(130, 33);
             this.btnOpenDir850.TabIndex = 3;
             this.btnOpenDir850.Text = "폴더열기...";
             this.btnOpenDir850.UseVisualStyleBackColor = true;
@@ -593,9 +634,10 @@
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 8);
+            this.label3.Location = new System.Drawing.Point(16, 12);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.Size = new System.Drawing.Size(80, 18);
             this.label3.TabIndex = 7;
             this.label3.Text = "대상폴더";
             // 
@@ -603,11 +645,10 @@
             // 
             this.tab210.Controls.Add(this.panel5);
             this.tab210.Controls.Add(this.panel4);
-            this.tab210.Location = new System.Drawing.Point(4, 22);
-            this.tab210.Margin = new System.Windows.Forms.Padding(2);
+            this.tab210.Location = new System.Drawing.Point(4, 28);
             this.tab210.Name = "tab210";
-            this.tab210.Padding = new System.Windows.Forms.Padding(2);
-            this.tab210.Size = new System.Drawing.Size(907, 387);
+            this.tab210.Padding = new System.Windows.Forms.Padding(3);
+            this.tab210.Size = new System.Drawing.Size(1299, 617);
             this.tab210.TabIndex = 3;
             this.tab210.Text = "Invoice-210";
             this.tab210.UseVisualStyleBackColor = true;
@@ -616,15 +657,17 @@
             // 
             this.panel5.Controls.Add(this.splitContainer1);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(2, 40);
+            this.panel5.Location = new System.Drawing.Point(3, 60);
+            this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(903, 345);
+            this.panel5.Size = new System.Drawing.Size(1293, 554);
             this.panel5.TabIndex = 2;
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -636,17 +679,19 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.txtBoxLog210);
             this.splitContainer1.Panel2.Controls.Add(this.panel7);
-            this.splitContainer1.Size = new System.Drawing.Size(903, 345);
-            this.splitContainer1.SplitterDistance = 201;
+            this.splitContainer1.Size = new System.Drawing.Size(1293, 554);
+            this.splitContainer1.SplitterDistance = 287;
+            this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 0;
             // 
             // listView210
             // 
             this.listView210.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView210.HideSelection = false;
-            this.listView210.Location = new System.Drawing.Point(0, 28);
+            this.listView210.Location = new System.Drawing.Point(0, 42);
+            this.listView210.Margin = new System.Windows.Forms.Padding(4);
             this.listView210.Name = "listView210";
-            this.listView210.Size = new System.Drawing.Size(201, 317);
+            this.listView210.Size = new System.Drawing.Size(287, 512);
             this.listView210.TabIndex = 1;
             this.listView210.UseCompatibleStateImageBehavior = false;
             // 
@@ -655,28 +700,31 @@
             this.panel6.Controls.Add(this.label7);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel6.Location = new System.Drawing.Point(0, 0);
+            this.panel6.Margin = new System.Windows.Forms.Padding(4);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(201, 28);
+            this.panel6.Size = new System.Drawing.Size(287, 42);
             this.panel6.TabIndex = 0;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(21, 6);
+            this.label7.Location = new System.Drawing.Point(5, 9);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(133, 12);
+            this.label7.Size = new System.Drawing.Size(193, 18);
             this.label7.TabIndex = 0;
             this.label7.Text = "Freight Invoice 210 List";
             // 
             // txtBoxLog210
             // 
             this.txtBoxLog210.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtBoxLog210.Location = new System.Drawing.Point(0, 28);
+            this.txtBoxLog210.Location = new System.Drawing.Point(0, 42);
+            this.txtBoxLog210.Margin = new System.Windows.Forms.Padding(4);
             this.txtBoxLog210.Multiline = true;
             this.txtBoxLog210.Name = "txtBoxLog210";
             this.txtBoxLog210.ReadOnly = true;
             this.txtBoxLog210.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtBoxLog210.Size = new System.Drawing.Size(698, 317);
+            this.txtBoxLog210.Size = new System.Drawing.Size(1000, 512);
             this.txtBoxLog210.TabIndex = 1;
             this.txtBoxLog210.WordWrap = false;
             // 
@@ -684,8 +732,9 @@
             // 
             this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel7.Location = new System.Drawing.Point(0, 0);
+            this.panel7.Margin = new System.Windows.Forms.Padding(4);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(698, 28);
+            this.panel7.Size = new System.Drawing.Size(1000, 42);
             this.panel7.TabIndex = 0;
             // 
             // panel4
@@ -693,20 +742,21 @@
             this.panel4.BackColor = System.Drawing.Color.Gainsboro;
             this.panel4.Controls.Add(this.tableLayoutPanel2);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel4.Location = new System.Drawing.Point(2, 2);
+            this.panel4.Location = new System.Drawing.Point(3, 3);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(903, 38);
+            this.panel4.Size = new System.Drawing.Size(1293, 57);
             this.panel4.TabIndex = 1;
             // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 5;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 116F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 143F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 166F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel2.Controls.Add(this.btnList210, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnOpenDir210, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.targetDir210, 1, 0);
@@ -714,18 +764,20 @@
             this.tableLayoutPanel2.Controls.Add(this.btnRun210, 4, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(903, 38);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1293, 57);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
             // btnList210
             // 
             this.btnList210.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnList210.Location = new System.Drawing.Point(705, 7);
+            this.btnList210.Location = new System.Drawing.Point(1010, 10);
+            this.btnList210.Margin = new System.Windows.Forms.Padding(4);
             this.btnList210.Name = "btnList210";
-            this.btnList210.Size = new System.Drawing.Size(73, 24);
+            this.btnList210.Size = new System.Drawing.Size(104, 36);
             this.btnList210.TabIndex = 10;
             this.btnList210.Text = "List만들기";
             this.btnList210.UseVisualStyleBackColor = true;
@@ -734,9 +786,10 @@
             // btnOpenDir210
             // 
             this.btnOpenDir210.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnOpenDir210.Location = new System.Drawing.Point(605, 7);
+            this.btnOpenDir210.Location = new System.Drawing.Point(867, 10);
+            this.btnOpenDir210.Margin = new System.Windows.Forms.Padding(4);
             this.btnOpenDir210.Name = "btnOpenDir210";
-            this.btnOpenDir210.Size = new System.Drawing.Size(94, 24);
+            this.btnOpenDir210.Size = new System.Drawing.Size(134, 36);
             this.btnOpenDir210.TabIndex = 9;
             this.btnOpenDir210.Text = "폴더열기...";
             this.btnOpenDir210.UseVisualStyleBackColor = true;
@@ -745,27 +798,30 @@
             // targetDir210
             // 
             this.targetDir210.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetDir210.Location = new System.Drawing.Point(83, 8);
+            this.targetDir210.Location = new System.Drawing.Point(118, 14);
+            this.targetDir210.Margin = new System.Windows.Forms.Padding(4);
             this.targetDir210.Name = "targetDir210";
-            this.targetDir210.Size = new System.Drawing.Size(516, 21);
+            this.targetDir210.Size = new System.Drawing.Size(741, 28);
             this.targetDir210.TabIndex = 8;
             // 
             // label6
             // 
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(24, 13);
+            this.label6.Location = new System.Drawing.Point(30, 19);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 12);
+            this.label6.Size = new System.Drawing.Size(80, 18);
             this.label6.TabIndex = 7;
             this.label6.Text = "대상폴더";
             // 
             // btnRun210
             // 
             this.btnRun210.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnRun210.Location = new System.Drawing.Point(790, 7);
+            this.btnRun210.Location = new System.Drawing.Point(1131, 10);
+            this.btnRun210.Margin = new System.Windows.Forms.Padding(4);
             this.btnRun210.Name = "btnRun210";
-            this.btnRun210.Size = new System.Drawing.Size(110, 24);
+            this.btnRun210.Size = new System.Drawing.Size(157, 36);
             this.btnRun210.TabIndex = 11;
             this.btnRun210.Text = "엑셀데이터로딩";
             this.btnRun210.UseVisualStyleBackColor = true;
@@ -775,28 +831,29 @@
             // 
             this.tab945.Controls.Add(this.panel9);
             this.tab945.Controls.Add(this.panel8);
-            this.tab945.Location = new System.Drawing.Point(4, 22);
-            this.tab945.Margin = new System.Windows.Forms.Padding(2);
+            this.tab945.Location = new System.Drawing.Point(4, 28);
             this.tab945.Name = "tab945";
-            this.tab945.Padding = new System.Windows.Forms.Padding(2);
-            this.tab945.Size = new System.Drawing.Size(907, 387);
+            this.tab945.Padding = new System.Windows.Forms.Padding(3);
+            this.tab945.Size = new System.Drawing.Size(1299, 617);
             this.tab945.TabIndex = 4;
-            this.tab945.Text = "wh shp ord-945";
+            this.tab945.Text = "Shipping-945";
             this.tab945.UseVisualStyleBackColor = true;
             // 
             // panel9
             // 
             this.panel9.Controls.Add(this.splitContainer2);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel9.Location = new System.Drawing.Point(2, 40);
+            this.panel9.Location = new System.Drawing.Point(3, 60);
+            this.panel9.Margin = new System.Windows.Forms.Padding(4);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(903, 345);
+            this.panel9.Size = new System.Drawing.Size(1293, 554);
             this.panel9.TabIndex = 3;
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -808,17 +865,19 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.txtBoxLog945);
             this.splitContainer2.Panel2.Controls.Add(this.panel11);
-            this.splitContainer2.Size = new System.Drawing.Size(903, 345);
-            this.splitContainer2.SplitterDistance = 201;
+            this.splitContainer2.Size = new System.Drawing.Size(1293, 554);
+            this.splitContainer2.SplitterDistance = 339;
+            this.splitContainer2.SplitterWidth = 6;
             this.splitContainer2.TabIndex = 0;
             // 
             // listView945
             // 
             this.listView945.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView945.HideSelection = false;
-            this.listView945.Location = new System.Drawing.Point(0, 28);
+            this.listView945.Location = new System.Drawing.Point(0, 42);
+            this.listView945.Margin = new System.Windows.Forms.Padding(4);
             this.listView945.Name = "listView945";
-            this.listView945.Size = new System.Drawing.Size(201, 317);
+            this.listView945.Size = new System.Drawing.Size(339, 512);
             this.listView945.TabIndex = 1;
             this.listView945.UseCompatibleStateImageBehavior = false;
             // 
@@ -827,28 +886,31 @@
             this.panel10.Controls.Add(this.label9);
             this.panel10.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel10.Location = new System.Drawing.Point(0, 0);
+            this.panel10.Margin = new System.Windows.Forms.Padding(4);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(201, 28);
+            this.panel10.Size = new System.Drawing.Size(339, 42);
             this.panel10.TabIndex = 0;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(10, 6);
+            this.label9.Location = new System.Drawing.Point(5, 9);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(178, 12);
+            this.label9.Size = new System.Drawing.Size(260, 18);
             this.label9.TabIndex = 0;
             this.label9.Text = "Warehouse Shipping Order 945";
             // 
             // txtBoxLog945
             // 
             this.txtBoxLog945.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtBoxLog945.Location = new System.Drawing.Point(0, 28);
+            this.txtBoxLog945.Location = new System.Drawing.Point(0, 42);
+            this.txtBoxLog945.Margin = new System.Windows.Forms.Padding(4);
             this.txtBoxLog945.Multiline = true;
             this.txtBoxLog945.Name = "txtBoxLog945";
             this.txtBoxLog945.ReadOnly = true;
             this.txtBoxLog945.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtBoxLog945.Size = new System.Drawing.Size(698, 317);
+            this.txtBoxLog945.Size = new System.Drawing.Size(948, 512);
             this.txtBoxLog945.TabIndex = 1;
             this.txtBoxLog945.WordWrap = false;
             // 
@@ -856,8 +918,9 @@
             // 
             this.panel11.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel11.Location = new System.Drawing.Point(0, 0);
+            this.panel11.Margin = new System.Windows.Forms.Padding(4);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(698, 28);
+            this.panel11.Size = new System.Drawing.Size(948, 42);
             this.panel11.TabIndex = 0;
             // 
             // panel8
@@ -865,20 +928,21 @@
             this.panel8.BackColor = System.Drawing.Color.Gainsboro;
             this.panel8.Controls.Add(this.tableLayoutPanel3);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel8.Location = new System.Drawing.Point(2, 2);
+            this.panel8.Location = new System.Drawing.Point(3, 3);
+            this.panel8.Margin = new System.Windows.Forms.Padding(4);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(903, 38);
+            this.panel8.Size = new System.Drawing.Size(1293, 57);
             this.panel8.TabIndex = 2;
             // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 5;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 116F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 143F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 166F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel3.Controls.Add(this.btnList945, 3, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnOpenDir945, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.targetDir945, 1, 0);
@@ -886,18 +950,20 @@
             this.tableLayoutPanel3.Controls.Add(this.btnRun945, 4, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(903, 38);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1293, 57);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // btnList945
             // 
             this.btnList945.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnList945.Location = new System.Drawing.Point(705, 7);
+            this.btnList945.Location = new System.Drawing.Point(1010, 10);
+            this.btnList945.Margin = new System.Windows.Forms.Padding(4);
             this.btnList945.Name = "btnList945";
-            this.btnList945.Size = new System.Drawing.Size(73, 24);
+            this.btnList945.Size = new System.Drawing.Size(104, 36);
             this.btnList945.TabIndex = 10;
             this.btnList945.Text = "List만들기";
             this.btnList945.UseVisualStyleBackColor = true;
@@ -906,9 +972,10 @@
             // btnOpenDir945
             // 
             this.btnOpenDir945.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnOpenDir945.Location = new System.Drawing.Point(605, 7);
+            this.btnOpenDir945.Location = new System.Drawing.Point(867, 10);
+            this.btnOpenDir945.Margin = new System.Windows.Forms.Padding(4);
             this.btnOpenDir945.Name = "btnOpenDir945";
-            this.btnOpenDir945.Size = new System.Drawing.Size(94, 24);
+            this.btnOpenDir945.Size = new System.Drawing.Size(134, 36);
             this.btnOpenDir945.TabIndex = 9;
             this.btnOpenDir945.Text = "폴더열기...";
             this.btnOpenDir945.UseVisualStyleBackColor = true;
@@ -917,27 +984,30 @@
             // targetDir945
             // 
             this.targetDir945.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetDir945.Location = new System.Drawing.Point(83, 8);
+            this.targetDir945.Location = new System.Drawing.Point(118, 14);
+            this.targetDir945.Margin = new System.Windows.Forms.Padding(4);
             this.targetDir945.Name = "targetDir945";
-            this.targetDir945.Size = new System.Drawing.Size(516, 21);
+            this.targetDir945.Size = new System.Drawing.Size(741, 28);
             this.targetDir945.TabIndex = 8;
             // 
             // label8
             // 
             this.label8.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(24, 13);
+            this.label8.Location = new System.Drawing.Point(30, 19);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.Size = new System.Drawing.Size(80, 18);
             this.label8.TabIndex = 7;
             this.label8.Text = "대상폴더";
             // 
             // btnRun945
             // 
             this.btnRun945.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnRun945.Location = new System.Drawing.Point(790, 7);
+            this.btnRun945.Location = new System.Drawing.Point(1131, 10);
+            this.btnRun945.Margin = new System.Windows.Forms.Padding(4);
             this.btnRun945.Name = "btnRun945";
-            this.btnRun945.Size = new System.Drawing.Size(110, 24);
+            this.btnRun945.Size = new System.Drawing.Size(157, 36);
             this.btnRun945.TabIndex = 11;
             this.btnRun945.Text = "엑셀데이터로딩";
             this.btnRun945.UseVisualStyleBackColor = true;
@@ -947,10 +1017,11 @@
             // 
             this.tabResult.Controls.Add(this.txtResultLog);
             this.tabResult.Controls.Add(this.panelResultTop);
-            this.tabResult.Location = new System.Drawing.Point(4, 22);
+            this.tabResult.Location = new System.Drawing.Point(4, 28);
+            this.tabResult.Margin = new System.Windows.Forms.Padding(4);
             this.tabResult.Name = "tabResult";
-            this.tabResult.Padding = new System.Windows.Forms.Padding(3);
-            this.tabResult.Size = new System.Drawing.Size(907, 387);
+            this.tabResult.Padding = new System.Windows.Forms.Padding(4);
+            this.tabResult.Size = new System.Drawing.Size(1299, 617);
             this.tabResult.TabIndex = 2;
             this.tabResult.Text = "결과Excel만들기";
             this.tabResult.UseVisualStyleBackColor = true;
@@ -958,12 +1029,13 @@
             // txtResultLog
             // 
             this.txtResultLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtResultLog.Location = new System.Drawing.Point(3, 36);
+            this.txtResultLog.Location = new System.Drawing.Point(4, 54);
+            this.txtResultLog.Margin = new System.Windows.Forms.Padding(4);
             this.txtResultLog.Multiline = true;
             this.txtResultLog.Name = "txtResultLog";
             this.txtResultLog.ReadOnly = true;
             this.txtResultLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtResultLog.Size = new System.Drawing.Size(901, 348);
+            this.txtResultLog.Size = new System.Drawing.Size(1291, 559);
             this.txtResultLog.TabIndex = 1;
             this.txtResultLog.WordWrap = false;
             // 
@@ -972,22 +1044,23 @@
             this.panelResultTop.BackColor = System.Drawing.Color.MistyRose;
             this.panelResultTop.Controls.Add(this.tableLayoutPanelResult);
             this.panelResultTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelResultTop.Location = new System.Drawing.Point(3, 3);
+            this.panelResultTop.Location = new System.Drawing.Point(4, 4);
+            this.panelResultTop.Margin = new System.Windows.Forms.Padding(4);
             this.panelResultTop.Name = "panelResultTop";
-            this.panelResultTop.Size = new System.Drawing.Size(901, 33);
+            this.panelResultTop.Size = new System.Drawing.Size(1291, 50);
             this.panelResultTop.TabIndex = 0;
             // 
             // tableLayoutPanelResult
             // 
             this.tableLayoutPanelResult.ColumnCount = 8;
-            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 69F));
+            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 99F));
             this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 37F));
-            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 92F));
-            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 62F));
-            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
-            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 155F));
+            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 53F));
+            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 131F));
+            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 89F));
+            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
+            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 107F));
+            this.tableLayoutPanelResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 221F));
             this.tableLayoutPanelResult.Controls.Add(this.txtResultFolder, 1, 0);
             this.tableLayoutPanelResult.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanelResult.Controls.Add(this.btnResultFolderDialog, 2, 0);
@@ -998,36 +1071,40 @@
             this.tableLayoutPanelResult.Controls.Add(this.btn945ListCreate, 7, 0);
             this.tableLayoutPanelResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelResult.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelResult.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanelResult.Name = "tableLayoutPanelResult";
             this.tableLayoutPanelResult.RowCount = 1;
             this.tableLayoutPanelResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelResult.Size = new System.Drawing.Size(901, 33);
+            this.tableLayoutPanelResult.Size = new System.Drawing.Size(1291, 50);
             this.tableLayoutPanelResult.TabIndex = 0;
             // 
             // txtResultFolder
             // 
             this.txtResultFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtResultFolder.Location = new System.Drawing.Point(72, 6);
+            this.txtResultFolder.Location = new System.Drawing.Point(103, 11);
+            this.txtResultFolder.Margin = new System.Windows.Forms.Padding(4);
             this.txtResultFolder.Name = "txtResultFolder";
-            this.txtResultFolder.Size = new System.Drawing.Size(325, 21);
+            this.txtResultFolder.Size = new System.Drawing.Size(469, 28);
             this.txtResultFolder.TabIndex = 0;
             // 
             // label4
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 10);
+            this.label4.Location = new System.Drawing.Point(15, 16);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 12);
+            this.label4.Size = new System.Drawing.Size(80, 18);
             this.label4.TabIndex = 1;
             this.label4.Text = "결과폴더";
             // 
             // btnResultFolderDialog
             // 
             this.btnResultFolderDialog.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnResultFolderDialog.Location = new System.Drawing.Point(403, 5);
+            this.btnResultFolderDialog.Location = new System.Drawing.Point(580, 8);
+            this.btnResultFolderDialog.Margin = new System.Windows.Forms.Padding(4);
             this.btnResultFolderDialog.Name = "btnResultFolderDialog";
-            this.btnResultFolderDialog.Size = new System.Drawing.Size(29, 22);
+            this.btnResultFolderDialog.Size = new System.Drawing.Size(41, 33);
             this.btnResultFolderDialog.TabIndex = 2;
             this.btnResultFolderDialog.Text = "...";
             this.btnResultFolderDialog.UseVisualStyleBackColor = true;
@@ -1036,9 +1113,10 @@
             // btnRunResult
             // 
             this.btnRunResult.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnRunResult.Location = new System.Drawing.Point(440, 6);
+            this.btnRunResult.Location = new System.Drawing.Point(633, 9);
+            this.btnRunResult.Margin = new System.Windows.Forms.Padding(4);
             this.btnRunResult.Name = "btnRunResult";
-            this.btnRunResult.Size = new System.Drawing.Size(86, 21);
+            this.btnRunResult.Size = new System.Drawing.Size(123, 32);
             this.btnRunResult.TabIndex = 3;
             this.btnRunResult.Text = "810,850 List";
             this.btnRunResult.UseVisualStyleBackColor = true;
@@ -1047,10 +1125,9 @@
             // btnPo850OnlyCreate
             // 
             this.btnPo850OnlyCreate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnPo850OnlyCreate.Location = new System.Drawing.Point(531, 6);
-            this.btnPo850OnlyCreate.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPo850OnlyCreate.Location = new System.Drawing.Point(763, 9);
             this.btnPo850OnlyCreate.Name = "btnPo850OnlyCreate";
-            this.btnPo850OnlyCreate.Size = new System.Drawing.Size(58, 21);
+            this.btnPo850OnlyCreate.Size = new System.Drawing.Size(83, 32);
             this.btnPo850OnlyCreate.TabIndex = 4;
             this.btnPo850OnlyCreate.Text = "850 List";
             this.btnPo850OnlyCreate.UseVisualStyleBackColor = true;
@@ -1059,10 +1136,9 @@
             // btnEach810Create
             // 
             this.btnEach810Create.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnEach810Create.Location = new System.Drawing.Point(593, 6);
-            this.btnEach810Create.Margin = new System.Windows.Forms.Padding(2);
+            this.btnEach810Create.Location = new System.Drawing.Point(852, 9);
             this.btnEach810Create.Name = "btnEach810Create";
-            this.btnEach810Create.Size = new System.Drawing.Size(75, 21);
+            this.btnEach810Create.Size = new System.Drawing.Size(107, 32);
             this.btnEach810Create.TabIndex = 5;
             this.btnEach810Create.Text = "각각 810";
             this.btnEach810Create.UseVisualStyleBackColor = true;
@@ -1071,10 +1147,9 @@
             // btn210ListCreate
             // 
             this.btn210ListCreate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btn210ListCreate.Location = new System.Drawing.Point(673, 6);
-            this.btn210ListCreate.Margin = new System.Windows.Forms.Padding(2);
+            this.btn210ListCreate.Location = new System.Drawing.Point(966, 9);
             this.btn210ListCreate.Name = "btn210ListCreate";
-            this.btn210ListCreate.Size = new System.Drawing.Size(69, 21);
+            this.btn210ListCreate.Size = new System.Drawing.Size(99, 32);
             this.btn210ListCreate.TabIndex = 6;
             this.btn210ListCreate.Text = "210 List";
             this.btn210ListCreate.UseVisualStyleBackColor = true;
@@ -1083,10 +1158,9 @@
             // btn945ListCreate
             // 
             this.btn945ListCreate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btn945ListCreate.Location = new System.Drawing.Point(748, 6);
-            this.btn945ListCreate.Margin = new System.Windows.Forms.Padding(2);
+            this.btn945ListCreate.Location = new System.Drawing.Point(1073, 9);
             this.btn945ListCreate.Name = "btn945ListCreate";
-            this.btn945ListCreate.Size = new System.Drawing.Size(89, 21);
+            this.btn945ListCreate.Size = new System.Drawing.Size(127, 32);
             this.btn945ListCreate.TabIndex = 7;
             this.btn945ListCreate.Text = "945 List";
             this.btn945ListCreate.UseVisualStyleBackColor = true;
@@ -1095,31 +1169,23 @@
             // label2
             // 
             this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 23);
+            this.label2.Size = new System.Drawing.Size(143, 34);
             this.label2.TabIndex = 1;
-            // 
-            // btnReset
-            // 
-            this.btnReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnReset.Image = global::EdiListMaker.Properties.Resources.CameraOrbit_16x_24;
-            this.btnReset.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(32, 32);
-            this.btnReset.Text = "초기화";
-            this.btnReset.Click += new System.EventHandler(this.InitializeProcess);
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(915, 494);
+            this.ClientSize = new System.Drawing.Size(1307, 741);
             this.Controls.Add(this.panelBatang);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EdiUtils - ";
