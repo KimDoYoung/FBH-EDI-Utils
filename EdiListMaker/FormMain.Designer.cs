@@ -35,7 +35,6 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.btnReset = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panelBatang = new System.Windows.Forms.Panel();
             this.tabContainer = new System.Windows.Forms.TabControl();
@@ -113,6 +112,13 @@
             this.btn210ListCreate = new System.Windows.Forms.Button();
             this.btn945ListCreate = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnDeleteList810 = new System.Windows.Forms.Button();
+            this.btnDeleteList850 = new System.Windows.Forms.Button();
+            this.btnDeleteList210 = new System.Windows.Forms.Button();
+            this.btnDeleteList945 = new System.Windows.Forms.Button();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnReset = new System.Windows.Forms.ToolStripButton();
+            this.btnLogDelete = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panelBatang.SuspendLayout();
@@ -204,23 +210,15 @@
             // 
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnReset});
+            this.btnReset,
+            this.toolStripSeparator1,
+            this.btnLogDelete});
             this.toolStrip1.Location = new System.Drawing.Point(0, 33);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.toolStrip1.Size = new System.Drawing.Size(1307, 37);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // btnReset
-            // 
-            this.btnReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnReset.Image = global::EdiListMaker.Properties.Resources.CameraOrbit_16x_24;
-            this.btnReset.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(34, 32);
-            this.btnReset.Text = "초기화";
-            this.btnReset.Click += new System.EventHandler(this.InitializeProcess);
             // 
             // statusStrip1
             // 
@@ -316,6 +314,7 @@
             // 
             // panel810LeftTop
             // 
+            this.panel810LeftTop.Controls.Add(this.btnDeleteList810);
             this.panel810LeftTop.Controls.Add(this.label810List);
             this.panel810LeftTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel810LeftTop.Location = new System.Drawing.Point(0, 0);
@@ -473,7 +472,7 @@
             this.tab850.Margin = new System.Windows.Forms.Padding(4);
             this.tab850.Name = "tab850";
             this.tab850.Padding = new System.Windows.Forms.Padding(4);
-            this.tab850.Size = new System.Drawing.Size(1299, 617);
+            this.tab850.Size = new System.Drawing.Size(1299, 613);
             this.tab850.TabIndex = 1;
             this.tab850.Text = "PO-850";
             this.tab850.UseVisualStyleBackColor = true;
@@ -494,7 +493,7 @@
             // 
             this.splitContainer850.Panel2.Controls.Add(this.textBoxLog850);
             this.splitContainer850.Panel2.Controls.Add(this.panel3);
-            this.splitContainer850.Size = new System.Drawing.Size(1291, 567);
+            this.splitContainer850.Size = new System.Drawing.Size(1291, 563);
             this.splitContainer850.SplitterDistance = 266;
             this.splitContainer850.SplitterWidth = 6;
             this.splitContainer850.TabIndex = 2;
@@ -506,12 +505,13 @@
             this.listView850.Location = new System.Drawing.Point(0, 38);
             this.listView850.Margin = new System.Windows.Forms.Padding(4);
             this.listView850.Name = "listView850";
-            this.listView850.Size = new System.Drawing.Size(266, 529);
+            this.listView850.Size = new System.Drawing.Size(266, 525);
             this.listView850.TabIndex = 3;
             this.listView850.UseCompatibleStateImageBehavior = false;
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnDeleteList850);
             this.panel2.Controls.Add(this.label850List);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
@@ -539,7 +539,7 @@
             this.textBoxLog850.Name = "textBoxLog850";
             this.textBoxLog850.ReadOnly = true;
             this.textBoxLog850.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxLog850.Size = new System.Drawing.Size(1019, 529);
+            this.textBoxLog850.Size = new System.Drawing.Size(1019, 525);
             this.textBoxLog850.TabIndex = 3;
             this.textBoxLog850.WordWrap = false;
             // 
@@ -648,7 +648,7 @@
             this.tab210.Location = new System.Drawing.Point(4, 28);
             this.tab210.Name = "tab210";
             this.tab210.Padding = new System.Windows.Forms.Padding(3);
-            this.tab210.Size = new System.Drawing.Size(1299, 617);
+            this.tab210.Size = new System.Drawing.Size(1299, 613);
             this.tab210.TabIndex = 3;
             this.tab210.Text = "Invoice-210";
             this.tab210.UseVisualStyleBackColor = true;
@@ -660,7 +660,7 @@
             this.panel5.Location = new System.Drawing.Point(3, 60);
             this.panel5.Margin = new System.Windows.Forms.Padding(4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1293, 554);
+            this.panel5.Size = new System.Drawing.Size(1293, 550);
             this.panel5.TabIndex = 2;
             // 
             // splitContainer1
@@ -679,7 +679,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.txtBoxLog210);
             this.splitContainer1.Panel2.Controls.Add(this.panel7);
-            this.splitContainer1.Size = new System.Drawing.Size(1293, 554);
+            this.splitContainer1.Size = new System.Drawing.Size(1293, 550);
             this.splitContainer1.SplitterDistance = 287;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 0;
@@ -691,12 +691,13 @@
             this.listView210.Location = new System.Drawing.Point(0, 42);
             this.listView210.Margin = new System.Windows.Forms.Padding(4);
             this.listView210.Name = "listView210";
-            this.listView210.Size = new System.Drawing.Size(287, 512);
+            this.listView210.Size = new System.Drawing.Size(287, 508);
             this.listView210.TabIndex = 1;
             this.listView210.UseCompatibleStateImageBehavior = false;
             // 
             // panel6
             // 
+            this.panel6.Controls.Add(this.btnDeleteList210);
             this.panel6.Controls.Add(this.label7);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel6.Location = new System.Drawing.Point(0, 0);
@@ -708,7 +709,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 9);
+            this.label7.Location = new System.Drawing.Point(5, 11);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(193, 18);
@@ -724,7 +725,7 @@
             this.txtBoxLog210.Name = "txtBoxLog210";
             this.txtBoxLog210.ReadOnly = true;
             this.txtBoxLog210.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtBoxLog210.Size = new System.Drawing.Size(1000, 512);
+            this.txtBoxLog210.Size = new System.Drawing.Size(1000, 508);
             this.txtBoxLog210.TabIndex = 1;
             this.txtBoxLog210.WordWrap = false;
             // 
@@ -834,7 +835,7 @@
             this.tab945.Location = new System.Drawing.Point(4, 28);
             this.tab945.Name = "tab945";
             this.tab945.Padding = new System.Windows.Forms.Padding(3);
-            this.tab945.Size = new System.Drawing.Size(1299, 617);
+            this.tab945.Size = new System.Drawing.Size(1299, 613);
             this.tab945.TabIndex = 4;
             this.tab945.Text = "Shipping-945";
             this.tab945.UseVisualStyleBackColor = true;
@@ -846,7 +847,7 @@
             this.panel9.Location = new System.Drawing.Point(3, 60);
             this.panel9.Margin = new System.Windows.Forms.Padding(4);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(1293, 554);
+            this.panel9.Size = new System.Drawing.Size(1293, 550);
             this.panel9.TabIndex = 3;
             // 
             // splitContainer2
@@ -865,7 +866,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.txtBoxLog945);
             this.splitContainer2.Panel2.Controls.Add(this.panel11);
-            this.splitContainer2.Size = new System.Drawing.Size(1293, 554);
+            this.splitContainer2.Size = new System.Drawing.Size(1293, 550);
             this.splitContainer2.SplitterDistance = 339;
             this.splitContainer2.SplitterWidth = 6;
             this.splitContainer2.TabIndex = 0;
@@ -877,12 +878,13 @@
             this.listView945.Location = new System.Drawing.Point(0, 42);
             this.listView945.Margin = new System.Windows.Forms.Padding(4);
             this.listView945.Name = "listView945";
-            this.listView945.Size = new System.Drawing.Size(339, 512);
+            this.listView945.Size = new System.Drawing.Size(339, 508);
             this.listView945.TabIndex = 1;
             this.listView945.UseCompatibleStateImageBehavior = false;
             // 
             // panel10
             // 
+            this.panel10.Controls.Add(this.btnDeleteList945);
             this.panel10.Controls.Add(this.label9);
             this.panel10.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel10.Location = new System.Drawing.Point(0, 0);
@@ -910,12 +912,13 @@
             this.txtBoxLog945.Name = "txtBoxLog945";
             this.txtBoxLog945.ReadOnly = true;
             this.txtBoxLog945.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtBoxLog945.Size = new System.Drawing.Size(948, 512);
+            this.txtBoxLog945.Size = new System.Drawing.Size(948, 508);
             this.txtBoxLog945.TabIndex = 1;
             this.txtBoxLog945.WordWrap = false;
             // 
             // panel11
             // 
+            this.panel11.BackColor = System.Drawing.Color.Transparent;
             this.panel11.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel11.Location = new System.Drawing.Point(0, 0);
             this.panel11.Margin = new System.Windows.Forms.Padding(4);
@@ -1021,7 +1024,7 @@
             this.tabResult.Margin = new System.Windows.Forms.Padding(4);
             this.tabResult.Name = "tabResult";
             this.tabResult.Padding = new System.Windows.Forms.Padding(4);
-            this.tabResult.Size = new System.Drawing.Size(1299, 617);
+            this.tabResult.Size = new System.Drawing.Size(1299, 613);
             this.tabResult.TabIndex = 2;
             this.tabResult.Text = "결과Excel만들기";
             this.tabResult.UseVisualStyleBackColor = true;
@@ -1035,7 +1038,7 @@
             this.txtResultLog.Name = "txtResultLog";
             this.txtResultLog.ReadOnly = true;
             this.txtResultLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtResultLog.Size = new System.Drawing.Size(1291, 559);
+            this.txtResultLog.Size = new System.Drawing.Size(1291, 555);
             this.txtResultLog.TabIndex = 1;
             this.txtResultLog.WordWrap = false;
             // 
@@ -1173,6 +1176,72 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(143, 34);
             this.label2.TabIndex = 1;
+            // 
+            // btnDeleteList810
+            // 
+            this.btnDeleteList810.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDeleteList810.Location = new System.Drawing.Point(212, 7);
+            this.btnDeleteList810.Name = "btnDeleteList810";
+            this.btnDeleteList810.Size = new System.Drawing.Size(71, 28);
+            this.btnDeleteList810.TabIndex = 1;
+            this.btnDeleteList810.Text = "지우기";
+            this.btnDeleteList810.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteList850
+            // 
+            this.btnDeleteList850.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDeleteList850.Location = new System.Drawing.Point(192, 5);
+            this.btnDeleteList850.Name = "btnDeleteList850";
+            this.btnDeleteList850.Size = new System.Drawing.Size(71, 28);
+            this.btnDeleteList850.TabIndex = 2;
+            this.btnDeleteList850.Text = "지우기";
+            this.btnDeleteList850.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteList210
+            // 
+            this.btnDeleteList210.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDeleteList210.Location = new System.Drawing.Point(213, 7);
+            this.btnDeleteList210.Name = "btnDeleteList210";
+            this.btnDeleteList210.Size = new System.Drawing.Size(71, 28);
+            this.btnDeleteList210.TabIndex = 3;
+            this.btnDeleteList210.Text = "지우기";
+            this.btnDeleteList210.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteList945
+            // 
+            this.btnDeleteList945.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDeleteList945.Location = new System.Drawing.Point(265, 5);
+            this.btnDeleteList945.Name = "btnDeleteList945";
+            this.btnDeleteList945.Size = new System.Drawing.Size(71, 28);
+            this.btnDeleteList945.TabIndex = 4;
+            this.btnDeleteList945.Text = "지우기";
+            this.btnDeleteList945.UseVisualStyleBackColor = true;
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 37);
+            // 
+            // btnReset
+            // 
+            this.btnReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnReset.Image = global::EdiListMaker.Properties.Resources.CameraOrbit_16x_24;
+            this.btnReset.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(34, 32);
+            this.btnReset.Text = "초기화";
+            this.btnReset.Click += new System.EventHandler(this.InitializeProcess);
+            // 
+            // btnLogDelete
+            // 
+            this.btnLogDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnLogDelete.Image = global::EdiListMaker.Properties.Resources.clear1;
+            this.btnLogDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnLogDelete.Name = "btnLogDelete";
+            this.btnLogDelete.Size = new System.Drawing.Size(34, 32);
+            this.btnLogDelete.Text = "toolStripButton1";
+            this.btnLogDelete.ToolTipText = "로그 내용 지우기";
+            this.btnLogDelete.Click += new System.EventHandler(this.btnLogDelete_Click);
             // 
             // FormMain
             // 
@@ -1341,6 +1410,12 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnRun945;
         private System.Windows.Forms.Button btn945ListCreate;
+        private System.Windows.Forms.Button btnDeleteList810;
+        private System.Windows.Forms.Button btnDeleteList850;
+        private System.Windows.Forms.Button btnDeleteList210;
+        private System.Windows.Forms.Button btnDeleteList945;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton btnLogDelete;
     }
 }
 

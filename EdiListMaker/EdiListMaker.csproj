@@ -141,6 +141,7 @@
     <Content Include="images.ico" />
     <Content Include="Orange %286%29.ico" />
     <Content Include="Orange %288%29.ico" />
+    <Content Include="Resources\clear1.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">

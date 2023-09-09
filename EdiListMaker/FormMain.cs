@@ -68,7 +68,24 @@ namespace EdiUtils
 
             //event handler
             ExcelUtils.MessageEventHandler += ExcelUtils_MessageEventHandler;
+
+            //file list 지우기버튼
+            btnDeleteList810.Click += ButtonDeleteListClick;
+            btnDeleteList850.Click += ButtonDeleteListClick;
+            btnDeleteList210.Click += ButtonDeleteListClick;
+            btnDeleteList945.Click += ButtonDeleteListClick;
         }
+
+        private void ButtonDeleteLogClick(object sender, EventArgs e)
+        {
+            currentTextBoxLog.Text = "";
+        }
+
+        private void ButtonDeleteListClick(object sender, EventArgs e)
+        {
+            currentListView.Items.Clear();
+        }
+
         private void InitializeProcess(object sender, EventArgs e)
         {
             listView810.Items.Clear();
@@ -162,7 +179,7 @@ namespace EdiUtils
         {
             using (var fbd = new FolderBrowserDialog())
             {
-                currentListView?.Items.Clear();
+                //currentListView?.Items.Clear();
                 DialogResult result = fbd.ShowDialog();
 
                 fbd.ShowNewFolderButton = false;
@@ -186,14 +203,36 @@ namespace EdiUtils
                 MsgBox.Error("대상폴더가 존재하지 않습니다");
                 return;
             }
-            currentListView.Items.Clear();
+            int i = 0;
+            //hashset으로 같은 이름이 2번 들어가지 않게 한다.
+            var already = new HashSet<string>();
+            for ( i = 0; i < currentListView.Items.Count; i++)
+            {
+                string fullPath = currentListView.Items[i].SubItems[2].Text;
+                already.Add(fullPath);
+            }
 
             string[] files = Directory.GetFiles(dir);
-            int i = 1;
+            i = currentListView.Items.Count + 1;
             foreach (var file in files)
             {
+                if (already.Contains(file))
+                {
+                    WriteLog($"{file} 은 이미 리스트에 존재합니다.");
+                    continue;
+                }
                 bool isHidden = File.GetAttributes(file).HasFlag(FileAttributes.Hidden);
-                if (file.EndsWith(".xlsx") && !file.StartsWith("~") && isHidden == false)
+                bool isVisible = false;
+                if (tabContainer.SelectedTab == tab210) // 201은 pdf로 리스트한다
+                {
+                    isVisible = (file.EndsWith(".xlsx") || file.EndsWith(".pdf")) && !file.StartsWith("~") && isHidden == false;
+                }
+                else
+                {
+                    isVisible =  file.EndsWith(".xlsx") && !file.StartsWith("~") && isHidden == false;
+                }
+
+                if (isVisible)
                 {
                     ListViewItem item = new ListViewItem(Convert.ToString(i));
                     item.SubItems.Add(file.Substring(dir.Length + 1));
@@ -739,5 +778,10 @@ namespace EdiUtils
             WriteLog("");
         }
         #endregion
+
+        private void btnLogDelete_Click(object sender, EventArgs e)
+        {
+            currentTextBoxLog.Text = "";
+        }
     }
 }
