@@ -1,4 +1,5 @@
-﻿using iTextSharp.text.pdf;
+﻿using FBH.EDI.Common;
+using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace EdiUtils.Common
             foreach (var pageLines in pages)
             {
                 Hub210Item item = Hub210FromPageLines(pageLines);
+                item.ExcelFileName = pdfFileName;
                 list.Add(item);
             }
             return list;
@@ -37,8 +39,8 @@ namespace EdiUtils.Common
                 for (int page = 1; page <= reader.NumberOfPages; page++)
                 {
                     result.AppendLine(PAGE_START);
-                    //ITextExtractionStrategy strategy =    new SimpleTextExtractionStrategy();
-                    ITextExtractionStrategy strategy =    new LocationTextExtractionStrategy();
+                    ITextExtractionStrategy strategy =    new SimpleTextExtractionStrategy();
+                    //ITextExtractionStrategy strategy =    new LocationTextExtractionStrategy();
                     string pageText = PdfTextExtractor.GetTextFromPage(reader, page, strategy);
                     result.Append(pageText);
                     result.AppendLine(PAGE_END);
@@ -74,7 +76,7 @@ namespace EdiUtils.Common
             }
             return list;
         }
-        internal static Hub210Item Hub210FromPageLines(string[] pdfOneLines)
+        public static Hub210Item Hub210FromPageLines(string[] pdfOneLines)
         {
             Hub210Item item = new Hub210Item();
             bool IsShipper = false;
@@ -87,31 +89,38 @@ namespace EdiUtils.Common
                     string REGEX_INVOICE_PICKUP = @"INVOICE DATE:\s+(?<invoice>[0-9/]{8,10})\s+PICK-UP DATE:\s+(?<pickupdate>[0-9/]{8,10})";
                     item.InvoiceDate = Regex.Match(line, REGEX_INVOICE_PICKUP).Groups["invoice"].Value;
                     item.PickUpDate = Regex.Match(line, REGEX_INVOICE_PICKUP).Groups["pickupdate"].Value;
-                }else if (line.Contains("INVOICE#") && line.Contains("Hub Group BOL #")) 
+                }
+                else if (line.Contains("INVOICE#") && line.Contains("Hub Group BOL #"))
                 {
                     //INVOICE#: 11029915 Hub Group BOL #: 35809-13830770
                     string REGEX_INVOICE_BOL = @"INVOICE#:\s+(?<invoiceNo>[0-9]+) Hub Group BOL #: (?<bolNo>[0-9\-]+)";
                     item.InvoiceNo = Regex.Match(line, REGEX_INVOICE_BOL).Groups["invoiceNo"].Value;
                     item.HubBolNo = Regex.Match(line, REGEX_INVOICE_BOL).Groups["bolNo"].Value;
-                }else if (line.Contains("PAYMENT DUE BY:"))
+                }
+                else if (line.Contains("PAYMENT DUE BY:"))
                 {
                     //PAYMENT DUE BY: 9 / 9 / 2023
                     string REGEX_MDY = @"\b(?<mdy>[\d/]{8,10})\b";
                     item.PaymentDue = Regex.Match(line, REGEX_MDY).Groups["mdy"].Value;
-                }else if(line.Contains("PO Number:")){
+                }
+                else if (line.Contains("PO Number:"))
+                {
                     //PO Number: 1929943146
                     string REGEX_PO = @"\b(?<po>[0-9]+)\b";
                     item.PoNo = Regex.Match(line, REGEX_PO).Groups["po"].Value;
-                }else if(line.StartsWith("TOTAL AMOUNT DUE:"))
+                }
+                else if (line.StartsWith("TOTAL AMOUNT DUE:"))
                 {
                     //TOTAL AMOUNT DUE: $38.15
                     string REGEX_AMOUNT = @"\$(?<amount>[0-9]+\.[0-9]{2})\b";
                     var s = Regex.Match(line, REGEX_AMOUNT).Groups["amount"].Value;
                     item.Amount = Convert.ToDecimal(s);
-                }else if(line.StartsWith("SHIPPER  CONSIGNEE"))
+                }
+                else if (line.StartsWith("CONSIGNEE"))
                 {
                     IsShipper = true;
-                }else if(IsShipper && line.StartsWith("FOR QUESTIONS ABOUT THIS INVOICE"))
+                }
+                else if (IsShipper && line.StartsWith("FOR QUESTIONS ABOUT THIS INVOICE"))
                 {
                     //DcNo추출
                     string REGEX_DCNO = @"DC\s*(?<dcno>[0-9]{2,5})[A-Z]";
@@ -123,7 +132,7 @@ namespace EdiUtils.Common
                 {
                     item.Address += line + " ";
                 }
-                else if(line.Contains(" Mango ") )
+                else if (line.Contains(" Mango "))
                 {
                     var qty = SplitAndPick(line, " ", 0);
                     item.Product += $"Mango({qty}) ";
@@ -137,16 +146,18 @@ namespace EdiUtils.Common
                 {
                     var qty = SplitAndPick(line, " ", 0);
                     item.Product += $"Mandarin({qty}) ";
-                }else if (line.Contains("Total:"))
+                }
+                else if (line.Contains("Total:"))
                 {
                     IsTotal = true;
-                }else if (IsTotal)
+                }
+                else if (IsTotal)
                 {
-                    var total = SplitAndPick(line, " ", 0) ;
+                    var total = SplitAndPick(line, " ", 0);
                     item.Qty = Convert.ToInt16(total);
                     IsTotal = false;
                 }
-                
+
             }
             return item;
         }
@@ -161,10 +172,6 @@ namespace EdiUtils.Common
             return "";
         }
 
-        internal static FreightInvoice210 Hub210ItemToInvoice210(Hub210Item item)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 }

@@ -122,7 +122,7 @@ namespace EdiUtils.Common
         /// <param name="freightInvoice210s"></param>
         /// <param name="config"></param>
         /// <returns></returns>
-        internal static string CreateList210(string template210Path, List<FreightInvoice210> freightInvoice210s, IConfig config)
+        internal static string CreateList210(string template210Path, List<Base210> freightInvoice210s, IConfig config)
         {
             string path = template210Path;
 
@@ -132,30 +132,48 @@ namespace EdiUtils.Common
             try
             {
                 int row = 3;
-                foreach (var invoice in freightInvoice210s)
+                foreach (Base210 base210 in freightInvoice210s)
                 {
-                    
-                    //A payment date
-                    //B amount
-                    worksheet.SetCell(row, "C", YmdFormat(invoice.InvoiceDt));
-                    //D
-                    worksheet.SetCell(row, "E", invoice.InvoiceNo, "@");
-                    worksheet.SetCell(row, "F", invoice.PoNumber, "@");
-                    worksheet.SetCell(row, "G", invoice.BolQtyInCases );
-                    worksheet.SetCell(row, "H", invoice.GetTotalFreightRate());
-                    var dc = ExtractDcNo(invoice.ShipToCompanyName);
-                    worksheet.SetCell(row, "I", dc);
-                    var addr = $"{invoice.ShipToCompanyName}, {invoice.ShipToAddrInfo}, {invoice.ShipToCity}, {invoice.ShipToState}, {invoice.ShipToZipcode}";
-                    worksheet.SetCell(row, "J", addr);
 
+                    if (base210 is FreightInvoice210)
+                    {
+                        var invoice = base210 as FreightInvoice210;
+                        //A payment due
+                        //B amount
+                        worksheet.SetCell(row, "C", YmdFormat(invoice.InvoiceDt));
+                        //D payment due
+                        //worksheet.SetCell(row, "D", YmdFormat(invoice.PaymentDue), "@");
+                        worksheet.SetCell(row, "E", invoice.InvoiceNo, "@");
+                        worksheet.SetCell(row, "F", invoice.PoNumber, "@");
+                        worksheet.SetCell(row, "G", invoice.BolQtyInCases);
+                        worksheet.SetCell(row, "H", invoice.GetTotalFreightRate());
+                        var dc = ExtractDcNo(invoice.ShipToCompanyName);
+                        worksheet.SetCell(row, "I", dc);
+                        var addr = $"{invoice.ShipToCompanyName}, {invoice.ShipToAddrInfo}, {invoice.ShipToCity}, {invoice.ShipToState}, {invoice.ShipToZipcode}";
+                        worksheet.SetCell(row, "J", addr);
+                    }
+                    else //pdf
+                    {
+                        var invoice = base210 as Hub210Item;
+                        //A payment due
+                        //B amount
+                        worksheet.SetCell(row, "C", CommonUtil.MdyToYmd(invoice.InvoiceDate));
+                        //D payment due
+                        worksheet.SetCell(row, "D", CommonUtil.MdyToYmd(invoice.PaymentDue), "@");
+                        worksheet.SetCell(row, "E", invoice.InvoiceNo, "@");
+                        worksheet.SetCell(row, "F", invoice.PoNo, "@");
+                        worksheet.SetCell(row, "G", invoice.Qty);
+                        worksheet.SetCell(row, "H", invoice.Amount);
+                        worksheet.SetCell(row, "I", invoice.DcNo);
+                        worksheet.SetCell(row, "J", invoice.Address);
+                    }
                     row++;
-                    MessageEventHandler?.Invoke(null, new MessageEventArgs($"{invoice.ExcelFileName} to row"));
+                    MessageEventHandler?.Invoke(null, new MessageEventArgs($"{base210.ExcelFileName} to row"));
                 }
-
 
                 var dir = Path.GetDirectoryName(path);
                 var time = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-                var outputPath = $"{dir}\\810_List_{time}.xlsx";
+                var outputPath = $"{dir}\\210_List_{time}.xlsx";
                 worksheet.SaveAs(outputPath, XlFileFormat.xlWorkbookDefault);
                 return outputPath;
             }

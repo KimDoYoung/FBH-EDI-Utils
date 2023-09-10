@@ -17,7 +17,8 @@ namespace EdiUtils
 
         List<Invoice810> invoice810s = new List<Invoice810>();
         List<PurchaseOrder850> purchaseOrder850s = new List<PurchaseOrder850>();
-        List<FreightInvoice210> freightInvoice210s = new List<FreightInvoice210>();
+        //List<FreightInvoice210> freightInvoice210s = new List<FreightInvoice210>();
+        List<Base210> freightInvoice210s = new List<Base210>();
         List<WarehouseShippingOrder945> warehouseShippingOrders = new List<WarehouseShippingOrder945>();
 
         IConfig config; // config
@@ -754,9 +755,7 @@ namespace EdiUtils
                         List<Hub210Item> list = PdfUtil.Hub210ListFromPdf(fullPath);
                         foreach (var item in list)
                         {
-                            FreightInvoice210 invoice210 = PdfUtil.Hub210ItemToInvoice210(item);
-                            invoice210.ExcelFileName = fileName;
-                            freightInvoice210s.Add(invoice210);
+                            freightInvoice210s.Add(item);
                         }
                     }
                     else

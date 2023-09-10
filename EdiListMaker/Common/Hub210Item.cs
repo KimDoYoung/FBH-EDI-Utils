@@ -2,7 +2,7 @@
 
 namespace EdiUtils.Common
 {
-    internal class Hub210Item : IEquatable<Hub210Item>
+    internal class Hub210Item : Base210, IEquatable<Hub210Item>
     {
         public string PaymentDate { get; set; }
         public decimal? Amount { get; set; }

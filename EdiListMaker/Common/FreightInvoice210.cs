@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace EdiUtils.Common
 {
-    public class FreightInvoice210
+    public class FreightInvoice210 : Base210
     {
         //Beginning segment for Carrier's Invoice
         public string InvoiceNo { get; set; }
@@ -47,9 +47,11 @@ namespace EdiUtils.Common
         public int? AmountCharged { get; set; }
 
         public int? BolQtyInCases{get;set ;}
-        public string ExcelFileName { get; internal set; }
+        //public string ExcelFileName { get; internal set; }
 
         public List<FreightInvoice210Detail> Details { get; set; }
+
+        public string PaymentDue { get; set; }
 
         public FreightInvoice210()
         {
