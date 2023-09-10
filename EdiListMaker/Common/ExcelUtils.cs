@@ -143,6 +143,7 @@ namespace EdiUtils.Common
                         worksheet.SetCell(row, "C", YmdFormat(invoice.InvoiceDt));
                         //D payment due
                         //worksheet.SetCell(row, "D", YmdFormat(invoice.PaymentDue), "@");
+                        worksheet.Range["D" + row].Formula = $"=C{row}+D2";
                         worksheet.SetCell(row, "E", invoice.InvoiceNo, "@");
                         worksheet.SetCell(row, "F", invoice.PoNumber, "@");
                         worksheet.SetCell(row, "G", invoice.BolQtyInCases);
@@ -170,6 +171,10 @@ namespace EdiUtils.Common
                     row++;
                     MessageEventHandler?.Invoke(null, new MessageEventArgs($"{base210.ExcelFileName} to row"));
                 }
+                //qty, amount 합계
+                worksheet.Range["G2"].Formula = $"=SUM(G3:G{row-1})";
+                worksheet.Range["H2"].Formula = $"=SUM(H3:H{row-1})";
+
 
                 var dir = Path.GetDirectoryName(path);
                 var time = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
