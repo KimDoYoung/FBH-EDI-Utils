@@ -738,37 +738,60 @@ namespace EdiUtils
             targetDir210.ReadOnly = true;
 
             freightInvoice210s.Clear();
-            WriteLog("Freight Invoice Excel");
-            for (int i = 0; i < currentListView.Items.Count; i++)
+            WriteLog("Freight Invoice Excel... clear memory variable");
+            try
             {
-                string fileName = currentListView.Items[i].SubItems[1].Text;
-                string fullPath = currentListView.Items[i].SubItems[2].Text;
-                WriteLog($"{i + 1} / {currentListView.Items.Count} : {fileName} 작업시작됩니다....");
-                currentListView.Items[i].Selected = true;
-                currentListView.Items[i].Focused = true;
-                DataTable table = ExcelUtils.DataTableFromExcel(fullPath);
-                //적합한 파일인지 체크
-                if (table.CellAsString("A1").Contains("FREIGHT INVOICE") == false)
+                for (int i = 0; i < currentListView.Items.Count; i++)
                 {
-                    MsgBox.Error($"{fileName} 은 적합한 freight invoice 210 파일이 아닙니다");
-                    return;
+                    string fileName = currentListView.Items[i].SubItems[1].Text;
+                    string fullPath = currentListView.Items[i].SubItems[2].Text;
+                    WriteLog($"{i + 1} / {currentListView.Items.Count} : {fileName} 작업시작됩니다....");
+                    currentListView.Items[i].Selected = true;
+                    currentListView.Items[i].Focused = true;
+
+                    if (fileName.ToUpper().EndsWith("PDF"))
+                    {
+                        List<Hub210Item> list = PdfUtil.Hub210ListFromPdf(fullPath);
+                        foreach (var item in list)
+                        {
+                            FreightInvoice210 invoice210 = PdfUtil.Hub210ItemToInvoice210(item);
+                            invoice210.ExcelFileName = fileName;
+                            freightInvoice210s.Add(invoice210);
+                        }
+                    }
+                    else
+                    {
+                        DataTable table = ExcelUtils.DataTableFromExcel(fullPath);
+                        //적합한 파일인지 체크
+                        if (table.CellAsString("A1").Contains("FREIGHT INVOICE") == false)
+                        {
+                            MsgBox.Error($"{fileName} 은 적합한 freight invoice 210 파일이 아닙니다");
+                            return;
+                        }
+                        WriteLog($"{i + 1} / {currentListView.Items.Count} :  엑셀파일 {fileName} 읽어서 DataTable로 만들었습니다...");
+
+                        CommonUtil.PrintDataTable(table);
+                        FreightInvoice210 invoice210 = ExcelUtils.GetFreightInvoice210(table, config);
+                        invoice210.ExcelFileName = fileName; //엑셀파일명
+                        WriteLog($"{i + 1} / {currentListView.Items.Count} : DataTable로부터 invoice810 생성됨...");
+                        WriteLog(invoice210.ToString());
+                        freightInvoice210s.Add(invoice210);
+                    }
+
+
+                    
+                    WriteLog($"{i + 1} / {currentListView.Items.Count} : {fileName} 작업종료됩니다....");
+                    WriteLog("");
                 }
-                WriteLog($"{i + 1} / {currentListView.Items.Count} :  엑셀파일 {fileName} 읽어서 DataTable로 만들었습니다...");
-
-                CommonUtil.PrintDataTable(table);
-                FreightInvoice210 invoice210 = ExcelUtils.GetFreightInvoice210(table, config);
-                invoice210.ExcelFileName = fileName; //엑셀파일명
-
-                WriteLog($"{i + 1} / {currentListView.Items.Count} : DataTable로부터 invoice810 생성됨...");
-                WriteLog(invoice210.ToString());
-
-                freightInvoice210s.Add(invoice210);
-                WriteLog($"{i + 1} / {currentListView.Items.Count} : {fileName} 작업종료됩니다....");
-                WriteLog("");
+                this.currentListView.SelectedItems.Clear();
             }
+            catch (Exception ex)
+            {
+                WriteLog(ex.ToString());
+                MsgBox.Error(ex.Message);
+            }
+ 
 
-
-            this.currentListView.SelectedItems.Clear();
             WriteLog("");
             WriteLog("리스트의 모든 엑셀파일을 로드했습니다");
             WriteLog("");
