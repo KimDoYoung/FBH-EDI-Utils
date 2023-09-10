@@ -6,7 +6,7 @@ namespace EdiUtils.Common
     {
         public string PaymentDate { get; set; }
         public decimal? Amount { get; set; }
-        public string InvoiceDate { get; set; }
+        //public string InvoiceDate { get; set; }
         public string PaymentDue { get; set; }
         public string InvoiceNo { get; set; }
         public string PoNo { get;set; }

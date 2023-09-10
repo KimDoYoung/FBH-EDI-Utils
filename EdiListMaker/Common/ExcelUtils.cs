@@ -131,6 +131,8 @@ namespace EdiUtils.Common
             Excel.Worksheet worksheet = workbook.Worksheets[1];
             try
             {
+                //invoice date로 소팅
+                freightInvoice210s.Sort((x, y) => y.InvoiceDate.CompareTo(x.InvoiceDate));
                 int row = 3;
                 foreach (Base210 base210 in freightInvoice210s)
                 {
@@ -140,7 +142,7 @@ namespace EdiUtils.Common
                         var invoice = base210 as FreightInvoice210;
                         //A payment due
                         //B amount
-                        worksheet.SetCell(row, "C", YmdFormat(invoice.InvoiceDt));
+                        worksheet.SetCell(row, "C", YmdFormat(invoice.InvoiceDate));
                         //D payment due
                         //worksheet.SetCell(row, "D", YmdFormat(invoice.PaymentDue), "@");
                         worksheet.Range["D" + row].Formula = $"=C{row}+D2";
@@ -211,7 +213,7 @@ namespace EdiUtils.Common
             invoice210.InvoiceNo = table.CellAsString("B4");
             invoice210.ShipIdNo = table.CellAsString("B5");
             invoice210.ShipMethodOfPayment = table.CellAsString("B6");
-            invoice210.InvoiceDt= table.CellAsString("B7");
+            invoice210.InvoiceDate= table.CellAsString("B7");
             invoice210.AmountToBePaid = table.CellAsInteger("B8") ;
             
             invoice210.PoNumber = table.CellAsString("D4");

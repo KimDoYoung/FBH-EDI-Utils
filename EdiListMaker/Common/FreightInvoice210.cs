@@ -9,7 +9,7 @@ namespace EdiUtils.Common
         public string InvoiceNo { get; set; }
         public string ShipIdNo { get; set; } //Shipment ID number
         public string ShipMethodOfPayment { get; set; } // Shipment Method of Payment
-        public string InvoiceDt { get; set; } //Invoice Date
+        //public string InvoiceDate { get; set; } //Invoice Date
         public int? AmountToBePaid { get; set; } //Amount to be Paid
 
         //Reference Identification	
@@ -72,7 +72,7 @@ namespace EdiUtils.Common
             string s = $"InvoiceNo : {InvoiceNo}\r\n"
                 + $"ShipIdNo : {ShipIdNo}\r\n"
                 + $"ShipMethodOfPayment : {ShipMethodOfPayment}\r\n"
-                + $"InvoiceDt : {InvoiceDt}\r\n"
+                + $"InvoiceDt : {InvoiceDate}\r\n"
                 + $"AmountToBePaid : {AmountToBePaid}\r\n"
                 + $"PoNumber : {PoNumber}\r\n"
                 + $"VicsBolNo : {VicsBolNo}\r\n"
