@@ -1,39 +1,52 @@
 ﻿using FBH.EDI.Common;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EdiDbUploader
 {
     public partial class FormMain : Form
     {
+        IConfig config = null;
+        string configPath;
         public FormMain()
         {
             InitializeComponent();
+
+            //Drag and Drop
             this.AllowDrop = true;
-
             this.DragEnter += new DragEventHandler(FormMain_DragEnter);
-
             this.DragDrop += new DragEventHandler(FormMain_DragDrop);
 
+            //List View 설정
             ListViewInitialize(lvEdiExcels, "EDI excels");
+
+            //Config 생성
+            string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var programPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+            configPath = $"{programPath}/EdiDbUpload.config";
+            config = new FileConfig(configPath);
+            
         }
 
         private void FormMain_DragDrop(object sender, DragEventArgs e)
         {
-            throw new NotImplementedException();
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files.Length > 0)
+            {
+                AddFilesToListView(files);
+
+
+            }
         }
 
         private void FormMain_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy; //마우스 변경
+            }
         }
 
         private void ListViewInitialize(ListView listView, string text)
@@ -50,10 +63,22 @@ namespace EdiDbUploader
 
         private void btnConfig_Click(object sender, EventArgs e)
         {
-            NetworkConfig configForm = new NetworkConfig();
-            if (configForm.ShowDialog() == DialogResult.OK)
-            {
+            using (NetworkConfig configForm = new NetworkConfig()) {
 
+                configForm.Host = config.Get("Host", "jskn.iptime.org");
+                configForm.Port = Convert.ToInt32(config.Get("Port", "5432"));
+                configForm.Database = config.Get("Database", "fbhdb");
+                configForm.Username = config.Get("Username", "kdy987");
+                configForm.Password = config.Get("Password", "kalpa987!");
+
+                if (configForm.ShowDialog() == DialogResult.OK)
+                {
+                    config.Set("Host", configForm.Host);
+                    config.Set("Port", configForm.Port.ToString());
+                    config.Set("Databse", configForm.Database);
+                    config.Set("Username", configForm.Username);
+                    config.Set("Password", configForm.Password);
+                }
             }
         }
 
@@ -82,7 +107,7 @@ namespace EdiDbUploader
                     fd.Title = "Browse Excel Files";
                     fd.CheckFileExists = fd.CheckPathExists = true;
 
-                    fd.Filter = "excel files (*.xlsx)|*.xlsx|all files (*.*)|*.*";
+                    fd.Filter = "excel files (*.xlsx)|*.xlsx|pdf files|(*.pdf)|all files (*.*)|*.*";
                     fd.FilterIndex = 0;
                     fd.RestoreDirectory = true;
 
@@ -106,11 +131,27 @@ namespace EdiDbUploader
 
         private void AddFilesToListView(string[] files)
         {
-            int i = lvEdiExcels.Items.Count + 1;
+            HashSet<string> already = new HashSet<string>();
+            int i = 0;
+            for(i=0; i< lvEdiExcels.Items.Count; i++)
+            {
+                already.Add(lvEdiExcels.Items[i].SubItems[2].Text);
+            }
+            i = lvEdiExcels.Items.Count + 1;
+
             foreach (var file in files)
             {
+                if (already.Contains(file))
+                {
+                    logBox.Write(file + " is already exist in list");
+                    continue;
+                }
+                //Hidden파일이 아니고 파일이 존재해야하고 파일의 확장자가 xlsx또는 pdf여야한다
                 bool isHidden = File.GetAttributes(file).HasFlag(FileAttributes.Hidden);
-                if (file.EndsWith(".xlsx") && !file.StartsWith("~") && isHidden == false)
+                bool isValid = (file.EndsWith(".xlsx") || file.EndsWith(".pdf")) && !file.StartsWith("~") && isHidden == false;
+                isValid = isValid && File.Exists(file);
+                
+                if (isValid)
                 {
                     ListViewItem item = new ListViewItem(Convert.ToString(i));
                     item.SubItems.Add(Path.GetFileName(file));
@@ -137,6 +178,21 @@ namespace EdiDbUploader
             {
                 System.Windows.Forms.Application.Exit();
             }
+        }
+
+        private void ButtonRunClick(object sender, EventArgs e)
+        {
+            if(lvEdiExcels.Items.Count  == 0)
+            {
+                MsgBox.Warning("리스트가 비어 있습니다");
+                return;
+            }
+        }
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //config save
+            config.Save();
         }
     }
 

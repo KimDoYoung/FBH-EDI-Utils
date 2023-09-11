@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FBH.EDI.Common
 {
     public class FileConfig : IConfig
     {
-        public Dictionary<String, String> map = new Dictionary<string, string> ();
-        
+        public Dictionary<String, String> map;// = new Dictionary<string, string> ();
+        private String filePath;
+        public FileConfig(String filePath)
+        {
+            this.filePath = filePath; 
+            map = new Dictionary<String, String> ();
+            Load(this.filePath);
+        }
         public string Get(string key)
         {
             if( map.ContainsKey(key) )
@@ -21,12 +23,25 @@ namespace FBH.EDI.Common
             }
             return "";
         }
+        public string Get(string key, string defaultValue)
+        {
+            if (map.ContainsKey(key))
+            {
+                return map[key];
+            }
+            Set(key, defaultValue);
+            
+            return defaultValue;
+        }
+
         public void Set(string key, string value)
         {
             map[key] = value;
         }
-
-
+        public void Load()
+        {
+            Load(this.filePath);
+        }
         public void Load(string uri)
         {
             if (File.Exists(uri) == false) return;
@@ -44,13 +59,15 @@ namespace FBH.EDI.Common
                 map[key] = value;   
             }
         }
-
+        public void Save()
+        {
+            this.Save(this.filePath);
+        }
         public void Save(string uri)
         {
             StringBuilder sb = new StringBuilder(); 
             foreach (var item in map)
             {
-
                 sb.AppendLine($"{item.Key}|{item.Value}");
             }
             

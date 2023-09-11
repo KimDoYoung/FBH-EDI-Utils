@@ -3,6 +3,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -15,17 +16,22 @@ namespace EdiUtils.Common
     /// </summary>
     internal static class PdfUtil
     {
+        public static event EventHandler<MessageEventArgs> MessageEventHandler;
+
         private const string PAGE_START = "---->";
         private const string PAGE_END = "<----";
         internal static List<Hub210Item> Hub210ListFromPdf(string pdfFileName)
         {
             var s = ExtractTextFromPDF(pdfFileName);
-            
+#if DEBUG
+            File.WriteAllText(@"C:\\Users\\deHong\tmp\\1.txt",s);
+#endif            
             List<string[]> pages = SplitPages(s);
             List<Hub210Item> list = new List<Hub210Item>();
             foreach (var pageLines in pages)
             {
                 Hub210Item item = Hub210FromPageLines(pageLines);
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"invoice no : {item.InvoiceNo} parsing OK"));
                 item.ExcelFileName = pdfFileName;
                 list.Add(item);
             }
@@ -106,14 +112,18 @@ namespace EdiUtils.Common
                 else if (line.Contains("PO Number:"))
                 {
                     //PO Number: 1929943146
-                    string REGEX_PO = @"\b(?<po>[0-9]+)\b";
-                    item.PoNo = Regex.Match(line, REGEX_PO).Groups["po"].Value;
+                    //string REGEX_PO = @"\b(?<po>[a-zA-Z0-9]+)\b";
+                    //item.PoNo = Regex.Match(line, REGEX_PO).Groups["po"].Value;
+                    string[] tmp = line.Split(':');
+                    if(tmp.Length > 1) {
+                        item.PoNo = tmp[1].Trim();
+                    }
                 }
                 else if (line.StartsWith("TOTAL AMOUNT DUE:"))
                 {
                     //TOTAL AMOUNT DUE: $38.15
-                    string REGEX_AMOUNT = @"\$(?<amount>[0-9]+\.[0-9]{2})\b";
-                    var s = Regex.Match(line, REGEX_AMOUNT).Groups["amount"].Value;
+                    string REGEX_AMOUNT = @"\$(?<amount>[0-9,]+\.[0-9]{2})\b";
+                    var s = Regex.Match(line, REGEX_AMOUNT).Groups["amount"].Value.Replace(",", "");
                     item.Amount = Convert.ToDecimal(s);
                 }
                 else if (line.StartsWith("CONSIGNEE"))

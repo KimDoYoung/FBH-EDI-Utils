@@ -54,8 +54,8 @@ namespace EdiUtils
             string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
             programPath = System.IO.Path.GetDirectoryName(strExeFilePath);
             configPath = $"{programPath}/EdiUtils.config";
-            config = new FileConfig();
-            config.Load(configPath);
+            config = new FileConfig(configPath);
+            //config.Load(configPath);
 
             targetDir850.Text = config.Get("850LastSourceFolder");
             targetDir810.Text = config.Get("810LastSourceFolder");
@@ -115,6 +115,7 @@ namespace EdiUtils
             btnList210.Enabled = true;
             btnOpenDir210.Enabled = true;
             targetDir210.ReadOnly = false;
+            btn210ListCreate.Enabled = true;
             //945 btn 해제
             btnList945.Enabled = true;
             btnOpenDir945.Enabled = true;
