@@ -29,8 +29,6 @@ namespace EdiDbUploader
             {
                 return null;
             }
-
-
         }
     }
 }

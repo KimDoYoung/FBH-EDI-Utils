@@ -1,16 +1,53 @@
-﻿using EdiDbUploader.Uploader;
+﻿using FBH.EDI.Common.Model;
+using Npgsql;
 using System;
+using System.Data;
 
 namespace EdiDbUploader
 {
     /// <summary>
     /// 각 문서의 Uploader의 부모 클래스
     /// </summary>
-    internal class EdiUploader
+    public class EdiUploader
     {
-        public virtual void Insert()
+        private string connectionString;
+        private NpgsqlConnection connection;
+
+        protected string GetConnectionString()
         {
-            ;
+            return connectionString;
+        }
+        protected void SetConnectionString(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
+        protected NpgsqlConnection OpenConnection()
+        {
+            if (connection == null) 
+            {
+                connection = new NpgsqlConnection(GetConnectionString());
+            }
+            if (connection.State == ConnectionState.Closed || connection.State == ConnectionState.Broken)
+            {
+                connection.Open();
+            }
+            return connection;
+        }
+        protected NpgsqlConnection GetConnection()
+        {
+            if (connection == null)
+            {
+                connection = new NpgsqlConnection(GetConnectionString());
+            }
+            return connection;
+        }
+        public NpgsqlTransaction BeginTransaction ()
+        {
+            return OpenConnection().BeginTransaction();
+        }
+        public virtual string Insert(EdiDocument ediDoc)
+        {
+            return "";
         }
     }
 }
