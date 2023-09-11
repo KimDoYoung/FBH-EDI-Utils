@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FBH.EDI.Common.Model
 {
-    public class ShippingAdvice945
+    public class ShippingAdvice945 : EdiDocument
     {
         public string CustomerOrderId { get; set; }
         public string ActualPickupDate { get; set; }

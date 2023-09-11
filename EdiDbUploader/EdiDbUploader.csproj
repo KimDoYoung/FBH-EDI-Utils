@@ -121,6 +121,12 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Uploader\EdiUploade810.cs" />
+    <Compile Include="Uploader\EdiUploader.cs" />
+    <Compile Include="Uploader\EdiFactory.cs" />
+    <Compile Include="Uploader\EdiUploader210.cs" />
+    <Compile Include="Uploader\EdiUploader850.cs" />
+    <Compile Include="Uploader\FbhEdiDbUploader.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +141,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Uploader\IUploader.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace FBH.EDI.Common.Model
 {
-    public class FreightInvoice210
-    {
+    public class FreightInvoice210 : EdiDocument
+    { 
         //Beginning segment for Carrier's Invoice
         public string InvoiceNo { get; set; }
         public string ShipIdNo { get; set; } //Shipment ID number

@@ -1,11 +1,7 @@
 ﻿using Npgsql;
 using NpgsqlTypes;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FBH.EDI.Common.Database
 {

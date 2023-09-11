@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FBH.EDI.Common.Model
 {
-    public class Inquiry846
+    public class Inquiry846 : EdiDocument
     {
         public string HubGroupDocumentNumber { get; set; }
         public string DateExpresses { get; set; }

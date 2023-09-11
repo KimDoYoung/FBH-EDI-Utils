@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace EdiDbUploader
 {
@@ -186,6 +187,32 @@ namespace EdiDbUploader
             {
                 MsgBox.Warning("리스트가 비어 있습니다");
                 return;
+            }
+            List<string> list = new List<string>();
+            for (int i = 0; i < lvEdiExcels.Items.Count; i++)
+            {
+                list.Add(lvEdiExcels.Items[i].SubItems[2].Text);
+            }
+            
+            var Host = config.Get("Host");
+            var Port = config.Get("Port");
+            var Database= config.Get("Database");
+            var Username= config.Get("Username");
+            var Password= config.Get("Password");
+            var url = $"Host={Host};Port={Port};Database={Database};User ID={Username};Password={Password}";
+            
+            try
+            {
+                var ediDbUploader = new FbhEdiDbUploader(url);
+                foreach (var ediFile in list)
+                {
+                    ediDbUploader.upload(ediFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                logBox.Write(ex.ToString());
+                MsgBox.Error(ex.Message); 
             }
         }
 
