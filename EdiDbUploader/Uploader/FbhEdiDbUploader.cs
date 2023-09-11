@@ -23,7 +23,7 @@ namespace EdiDbUploader
             MessageEventHandler?.Invoke(null, new MessageEventArgs($"{ediFile} upload start "));
             EdiDocument doc = EdiUtil.EdiDocumentFromFile(ediFile);
             EdiUploader uploader = EdiFactory.GetUploader(doc);
-            uploader.Upload();
+            uploader.Insert();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace EdiDbUploader
     /// </summary>
     internal class EdiUploader
     {
-        public virtual void Upload()
+        public virtual void Insert()
         {
             ;
         }
