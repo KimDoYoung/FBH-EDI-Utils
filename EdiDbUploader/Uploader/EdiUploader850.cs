@@ -61,7 +61,7 @@ namespace EdiDbUploader
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
-            cmd.CommandText = "insert into edi.invoice_dtl("
+            cmd.CommandText = "insert into edi.po_850_dtl("
                     + "po_no, charge, desc_cd, amount, handling_cd, percent"
                     + ")values("
                     + "@po_no, @charge, @desc_cd, @amount, @handling_cd, @percent"
@@ -80,7 +80,7 @@ namespace EdiDbUploader
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
-            cmd.CommandText = "insert into edi.invoice_dtl("
+            cmd.CommandText = "insert into edi.po_850("
                     + "po_no, line, company_id, msrmnt, unit_price, gtin13, retailer_item_no, vendor_item_no, description, extended_cost"
                     + ")values("
                     + "@po_no, @line, @company_id, @msrmnt, @unit_price, @gtin13, @retailer_item_no, @vendor_item_no, @description, @extended_cost"

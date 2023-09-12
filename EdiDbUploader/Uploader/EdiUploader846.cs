@@ -58,7 +58,7 @@ namespace EdiDbUploader.Uploader
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
-            cmd.CommandText = "insert into edi.invoice_dtl("
+            cmd.CommandText = "insert into edi.inquiry_846_dtl("
                     + "hub_group_document_number, assgnd_no, sku, "
                     + "lot_code, non_committed_in, non_committed_out, on_hand_quantity, "
                     + "inbound_pending, outbound_pending, damaged_quantity, onhold_quantity, "

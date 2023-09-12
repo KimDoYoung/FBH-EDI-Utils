@@ -53,8 +53,8 @@ namespace EdiDbUploader
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
-            cmd.CommandText = "insert into edi.invoice_dtl("
-                    +"invoice_no, transaction_set_line_number, purchase_order_number, shipped_date, "
+            cmd.CommandText = "insert into edi.freight_210_dtl("
+                    + "invoice_no, transaction_set_line_number, purchase_order_number, shipped_date, "
                     +"lading_line_item, lading_description, billedratedasquantity, weight, ladingquantity, "
                     +"freightrate, amountcharged, special_charge_or_allowance_cd"         
                     +")values("
@@ -81,7 +81,7 @@ namespace EdiDbUploader
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
-            cmd.CommandText = "insert into edi.invoice_810("
+            cmd.CommandText = "insert into edi.freight_210("
                 + "invoice_no, shipid_no, ship_method_of_payment, invoice_dt, amount_to_be_paid, po_number, vics_bol_no, "
                 + "ship_from_company_name, ship_from_addrinfo, ship_from_city, ship_from_state, ship_from_zipcode, ship_from_countrycd, "
                 + "ship_to_companyname, ship_to_addrinfo, ship_to_city, ship_to_state, ship_to_zipcode, ship_to_countrycd, "

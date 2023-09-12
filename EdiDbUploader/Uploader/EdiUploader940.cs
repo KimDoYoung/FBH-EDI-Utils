@@ -98,8 +98,8 @@ namespace EdiDbUploader.Uploader
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
-            cmd.CommandText = "insert into edi.invoice_810("
-                +"order_id, order_no, buyer_po_number, warehouse_info, ship_to, "
+            cmd.CommandText = "insert into edi.shipping_order_940("
+                + "order_id, order_no, buyer_po_number, warehouse_info, ship_to, "
                 +"reference_identification, requested_pickup_date, requested_delivery_date,"
                 +"cancel_after_date, purchase_order_date, warehouse_carrier_info, order_group_id,"
                 +"created_by"
