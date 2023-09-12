@@ -91,7 +91,16 @@ namespace FBH.EDI.Common
             }
             return v.ToString();
         }
-
+        public static string GetString(this Excel.Worksheet workSheet, string cellName)
+        {
+            RowCol<int, int> rc = GetRowCol(cellName);
+            object v = workSheet.GetCell(rc.row, rc.col);
+            if (v == null)
+            {
+                return "";
+            }
+            return v.ToString();
+        }
 
         public static object GetCell(this Excel.Worksheet workSheet, string cellName)
         {

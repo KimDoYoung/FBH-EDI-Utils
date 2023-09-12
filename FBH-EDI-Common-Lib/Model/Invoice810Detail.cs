@@ -11,11 +11,11 @@ namespace FBH.EDI.Common.Model
         public string PoNo { get; set; }
         public string InvoiceNo { get; set; }
         public int Seq { get; set; }
-        public int Qty { get; set; }
+        public int? Qty { get; set; }
         public string Msrmnt { get; set; }
-        public decimal UnitPrice { get; set; }
+        public decimal? UnitPrice { get; set; }
         public string Gtin13 { get; set; }
-        public decimal LineTtl { get; set; }
+        public decimal? LineTtl { get; set; }
 
         override public string ToString()
         {

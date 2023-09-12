@@ -158,5 +158,42 @@ namespace FBH.EDI.Common
             }
             return "";
         }
+
+        /// <summary>
+        /// s가 null or empty이면 null로 아니면 integer로 변환한다.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        internal static int? ToIntOrNull(string s)
+        {
+            if(string.IsNullOrEmpty(s))
+            {
+                return null;
+            }
+            return Convert.ToInt32(s);
+        }
+        /// <summary>
+        /// s가 null or empty이면 null을 리턴 아니면 decimal로 convert
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        internal static decimal? ToDecimalOrNull(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return null;
+            }
+            return Convert.ToDecimal(s);
+        }
+
+        internal static bool IsValidCellValue(object o)
+        {
+            if (o == null) return false;
+            string value = o.ToString();
+            if (value.Trim().Length < 1) return false;
+            return true;
+        }
     }
 }

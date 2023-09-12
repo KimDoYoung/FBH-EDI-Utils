@@ -14,7 +14,7 @@ namespace FBH.EDI.Common.Model
         public string DepartmentNo { get; set; }
         public string VendorNo { get; set; }
         public string OrderType { get; set; }
-        public int NetDay { get; set; }
+        public int? NetDay { get; set; }
         public string DeliveryRefNo { get; set; }
         public string ShipNotBefore { get; set; }
         public string ShipNoLater { get; set; }
