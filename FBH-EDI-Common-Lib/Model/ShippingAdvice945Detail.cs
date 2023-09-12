@@ -8,6 +8,7 @@ namespace FBH.EDI.Common.Model
 {
     public class ShippingAdvice945Detail
     {
+        public string CustomerOrderId { get; set; }
         public int? AssignedNumber { get; set; }
         public string PalletId { get; set; }
         public string CarrierTrackingNumber { get; set; }

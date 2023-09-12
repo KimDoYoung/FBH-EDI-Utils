@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace EdiDbUploader
 {
-    public class EdiUploade810 : EdiUploader
+    public class EdiUploader810 : EdiUploader
     {
         public override string Insert(EdiDocument ediDoc)
         {

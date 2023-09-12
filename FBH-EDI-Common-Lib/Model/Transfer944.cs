@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace FBH.EDI.Common.Model
 {
-    public class Transfer944
+    public class Transfer944 : EdiDocument
     {
         public string HubGroupsOrderNumber { get; set; }
         public string ReceiptDate { get; set; }
-        public string CustomerOrderID { get; set; }
+        public string CustomerOrderId { get; set; }
         public string CustomersBolNumber { get; set; }
         public string HubGroupsWarehouseName { get; set; }
         public string HubGroupsCustomersWarehouseId { get; set; }
@@ -41,7 +41,7 @@ namespace FBH.EDI.Common.Model
         {
             string s = $"HubGroupsOrderNumber : {HubGroupsOrderNumber}\r\n"
                         + $"ReceiptDate : {ReceiptDate}\r\n"
-                        + $"CustomerOrderID : {CustomerOrderID}\r\n"
+                        + $"CustomerOrderID : {CustomerOrderId}\r\n"
                         + $"CustomersBolNumber : {CustomersBolNumber}\r\n"
                         + $"HubGroupsWarehouseName : {HubGroupsWarehouseName}\r\n"
                         + $"HubGroupsCustomersWarehouseId : {HubGroupsCustomersWarehouseId}\r\n"

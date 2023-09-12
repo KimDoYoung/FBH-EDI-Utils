@@ -229,7 +229,7 @@ create table if not exists edi.shipping_945
 	total_units_shipped varchar(100) null,
 	total_weight_shipped varchar(100) null,
 	lading_quantity varchar(100) null,
-	unit_or_basisvfor_measurement_code varchar(100) null,
+	unit_or_basis_for_measurement_code varchar(100) null,
 	created_by varchar(30) not null,
 	created_on timestamp not null default current_timestamp,
 	last_update_by varchar(30) null,
@@ -245,7 +245,7 @@ create table if not exists edi.shipping_945_dtl
 	carrier_tracking_number  varchar(100) null,
 	shipment_status  varchar(100) null,
 	requested_quantity  varchar(100) null,
-	actualquantity_shipped  varchar(100) null,
+	actual_quantity_shipped  varchar(100) null,
 	difference_between_actual_and_requested  varchar(100) null,
 	unit_or_basis_measurement_code  varchar(100) null,
 	upc_code  varchar(100) null,
@@ -282,10 +282,15 @@ CREATE TABLE IF NOT EXISTS edi.transfer_944
 	origin_zipcode  varchar(100) null, 
 	scheduled_delivery_date  varchar(100) null, 
 	transportation_method_type_code  varchar(100) null, 
-	standard_carriervalpha_code  varchar(100) null, 
+	standard_carrier_alpha_code  varchar(100) null, 
 	quantity_received  varchar(100) null, 
 	number_of_units_shipped  varchar(100) null, 
 	quantity_damaged_on_hold  varchar(100) null, 
+
+	created_by varchar(30) not null,
+	created_on timestamp not null default current_timestamp,
+	last_update_by varchar(30) null,
+	last_update_on timestamp null,
 
 	primary key(hub_groups_order_number)
 );
@@ -326,6 +331,12 @@ CREATE TABLE IF NOT EXISTS edi.shipping_order_940
 	purchase_order_date  varchar(100) null,
 	warehouse_carrier_info  varchar(100) null,
 	order_group_id  varchar(100) null,
+
+	created_by varchar(30) not null,
+	created_on timestamp not null default current_timestamp,
+	last_update_by varchar(30) null,
+	last_update_on timestamp null,
+
 	primary key(order_id)
 );
 
@@ -356,6 +367,12 @@ CREATE TABLE IF NOT EXISTS edi.shipping_order_940_dtl
 	misc3_size_of_units  varchar(100) null,
 	misc3_size_unit  varchar(100) null,
 	misc3_color_description  varchar(100) null,
+
+	created_by varchar(30) not null,
+	created_on timestamp not null default current_timestamp,
+	last_update_by varchar(30) null,
+	last_update_on timestamp null,
+	
 	primary key(order_id, seq),
 	CONSTRAINT fk_shipping_order_940_dtl FOREIGN KEY (order_id) 
 	    REFERENCES edi.shipping_order_940(order_id) ON DELETE CASCADE ON UPDATE CASCADE		
@@ -376,6 +393,11 @@ CREATE TABLE IF NOT EXISTS edi.inquiry_846
 	city  varchar(100) null,
 	state  varchar(100) null,
 	zipcode  varchar(100) null,
+
+	created_by varchar(30) not null,
+	created_on timestamp not null default current_timestamp,
+	last_update_by varchar(30) null,
+	last_update_on timestamp null,
 	primary key(hub_group_document_number)
 );
 DROP TABLE IF EXISTS edi.inquiry_846_dtl CASCADE ;

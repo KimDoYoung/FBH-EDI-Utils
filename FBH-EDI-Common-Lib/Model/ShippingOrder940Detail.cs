@@ -8,7 +8,7 @@ namespace FBH.EDI.Common.Model
 {
     public class ShippingOrder940Detail
     {
-
+        public string OrderId { get; set; }
         public int Seq { get; set; }
         public string QuantityOrdered { get; set; }
         public string UnitOfMeasure { get; set; }
@@ -20,18 +20,18 @@ namespace FBH.EDI.Common.Model
         public string FreeFormDescription { get; set; }
         public string RetailPrice { get; set; }
         public string CostPrice { get; set; }
-        public string misc1NumberOfPack { get; set; }
-        public string misc1SizeOfUnits { get; set; }
-        public string misc1SizeUnit { get; set; }
-        public string misc1ColorDescription { get; set; }
-        public string misc2NumberOfPack { get; set; }
-        public string misc2SizeOfUnits { get; set; }
-        public string misc2SizeUnit { get; set; }
-        public string misc2ColorDescription { get; set; }
-        public string misc3NumberOfPack { get; set; }
-        public string misc3SizeOfUnits { get; set; }
-        public string misc3SizeUnit { get; set; }
-        public string misc3ColorDescription { get; set; }
+        public string Misc1NumberOfPack { get; set; }
+        public string Misc1SizeOfUnits { get; set; }
+        public string Misc1SizeUnit { get; set; }
+        public string Misc1ColorDescription { get; set; }
+        public string Misc2NumberOfPack { get; set; }
+        public string Misc2SizeOfUnits { get; set; }
+        public string Misc2SizeUnit { get; set; }
+        public string Misc2ColorDescription { get; set; }
+        public string Misc3NumberOfPack { get; set; }
+        public string Misc3SizeOfUnits { get; set; }
+        public string Misc3SizeUnit { get; set; }
+        public string Misc3ColorDescription { get; set; }
         override public string ToString()
         {
             return $"Seq : {Seq}, "
@@ -45,18 +45,18 @@ namespace FBH.EDI.Common.Model
              + $"FreeFormDescription : {FreeFormDescription}, "
              + $"RetailPrice : {RetailPrice}, "
              + $"CostPrice : {CostPrice}, "
-             + $"misc1NumberOfPack : {misc1NumberOfPack}, "
-             + $"misc1SizeOfUnits : {misc1SizeOfUnits}, "
-             + $"misc1SizeUnit : {misc1SizeUnit}, "
-             + $"misc1ColorDescription : {misc1ColorDescription}, "
-             + $"misc2NumberOfPack : {misc2NumberOfPack}, "
-             + $"misc2SizeOfUnits : {misc2SizeOfUnits}, "
-             + $"misc2SizeUnit : {misc2SizeUnit}, "
-             + $"misc2ColorDescription : {misc2ColorDescription}, "
-             + $"misc3NumberOfPack : {misc3NumberOfPack}, "
-             + $"misc3SizeOfUnits : {misc3SizeOfUnits}, "
-             + $"misc3SizeUnit : {misc3SizeUnit}, "
-             + $"misc3ColorDescription : {misc3ColorDescription}";
+             + $"misc1NumberOfPack : {Misc1NumberOfPack}, "
+             + $"misc1SizeOfUnits : {Misc1SizeOfUnits}, "
+             + $"misc1SizeUnit : {Misc1SizeUnit}, "
+             + $"misc1ColorDescription : {Misc1ColorDescription}, "
+             + $"misc2NumberOfPack : {Misc2NumberOfPack}, "
+             + $"misc2SizeOfUnits : {Misc2SizeOfUnits}, "
+             + $"misc2SizeUnit : {Misc2SizeUnit}, "
+             + $"misc2ColorDescription : {Misc2ColorDescription}, "
+             + $"misc3NumberOfPack : {Misc3NumberOfPack}, "
+             + $"misc3SizeOfUnits : {Misc3SizeOfUnits}, "
+             + $"misc3SizeUnit : {Misc3SizeUnit}, "
+             + $"misc3ColorDescription : {Misc3ColorDescription}";
         }
     }
 }

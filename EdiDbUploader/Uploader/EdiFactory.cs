@@ -19,16 +19,18 @@ namespace EdiDbUploader
             }
             else if (doc.DocumentNo == EdiDocumentType.Invoice_810)
             {
-                return new EdiUploade810();
+                return new EdiUploader810();
             }
             else if (doc.DocumentNo == EdiDocumentType.Invoice_810)
             {
-                return new EdiUploade810();
+                return new EdiUploader810();
             }
             else
             {
                 return null;
             }
+
+
         }
     }
 }
