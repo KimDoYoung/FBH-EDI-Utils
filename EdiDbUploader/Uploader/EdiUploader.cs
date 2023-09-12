@@ -45,6 +45,12 @@ namespace EdiDbUploader
         {
             return OpenConnection().BeginTransaction();
         }
+        public object ExecuteScalar(string sql)
+        {
+            NpgsqlCommand command = new NpgsqlCommand(sql);
+            command.Connection = OpenConnection();
+            return command.ExecuteScalar();
+        }
         public virtual string Insert(EdiDocument ediDoc)
         {
             return "";

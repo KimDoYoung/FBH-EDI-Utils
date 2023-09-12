@@ -18,6 +18,7 @@ namespace FBH.EDI.Common.Model
         public string VendorItemNo { get; set; }
         public string Description { get; set; }
         public decimal ExtendedCost { get; set; }
+        public int CompanyId { get; set; }
 
         public override string ToString()
         {

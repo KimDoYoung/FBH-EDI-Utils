@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FBH.EDI.Common.Model
 {
-    internal class Invoice810 : EdiDocument
+    public class Invoice810 : EdiDocument
     {
         public string PoNo { get; set; }
         public string InvoiceNo { get; set; }

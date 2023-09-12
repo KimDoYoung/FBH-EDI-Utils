@@ -18,12 +18,12 @@ namespace EdiDbUploader
             this.connectString = connectString;
         }
 
-        internal void upload(string ediFile)
+        internal void insert(string ediFile)
         {
             MessageEventHandler?.Invoke(null, new MessageEventArgs($"{ediFile} upload start "));
             EdiDocument doc = EdiUtil.EdiDocumentFromFile(ediFile);
             EdiUploader uploader = EdiFactory.GetUploader(doc);
-            uploader.Insert();
+            uploader.Insert(doc);
         }
     }
 }

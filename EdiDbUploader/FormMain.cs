@@ -206,7 +206,7 @@ namespace EdiDbUploader
                 var ediDbUploader = new FbhEdiDbUploader(url);
                 foreach (var ediFile in list)
                 {
-                    ediDbUploader.upload(ediFile);
+                    ediDbUploader.insert(ediFile);
                 }
             }
             catch (Exception ex)
