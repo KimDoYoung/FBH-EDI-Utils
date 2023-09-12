@@ -1,9 +1,6 @@
 ﻿using FBH.EDI.Common.Model;
 using Microsoft.Office.Interop.Excel;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -61,18 +58,11 @@ namespace FBH.EDI.Common
                     ReleaseExcelObject(app);
                 }
             }
-            else if (ediFile.EndsWith("pdf"))
-            {
-                return Create210FromPdf(ediFile);
-            }
+            
             return null;
         }
 
-        private static EdiDocument Create210FromPdf(string ediFile)
-        {
-            throw new NotImplementedException();
-        }
-
+ 
         private static Invoice810 Create810(Worksheet worksheet)
         {
             Invoice810 invoice810 = new Invoice810();
@@ -322,10 +312,49 @@ namespace FBH.EDI.Common
 
         }
 
-        private static EdiDocument Create846(Worksheet worksheet)
+        private static Inquiry846 Create846(Worksheet worksheet)
         {
-            throw new NotImplementedException();
+            Inquiry846 inquiry846 = new Inquiry846();
+            inquiry846.HubGroupDocumentNumber = worksheet.GetString("B4");
+            inquiry846.DateExpresses = worksheet.GetString("B5");
+            inquiry846.DateTimeQualifier = worksheet.GetString("D4");
+            inquiry846.Date = worksheet.GetString("D5");
+
+            inquiry846.WarehouseName = worksheet.GetString("F4");
+            inquiry846.WarehouseId= worksheet.GetString("F5");
+            inquiry846.AddressInformation= worksheet.GetString("F6");
+            inquiry846.City= worksheet.GetString("F7");
+            inquiry846.State= worksheet.GetString("F8");
+            inquiry846.Zipcode= worksheet.GetString("F9");
+
+            int row = 20;
+            while (row < 5000)
+            {
+                Inquiry846Detail detail = new Inquiry846Detail();
+                //마지막 라인 체크
+                var value = worksheet.GetString(row, "A");
+                if (string.IsNullOrEmpty(value)) break;
+
+                detail.AssgndNo = worksheet.GetString(row, "A");
+                detail.Sku= worksheet.GetString(row, "B");
+                detail.LotCode = worksheet.GetString(row, "C");
+                detail.NonCommittedIn= CommonUtil.ToIntOrNull( worksheet.GetString(row, "D"));
+                detail.NonCommittedOut= CommonUtil.ToIntOrNull(worksheet.GetString(row, "E"));
+                detail.OnHandQuantity= CommonUtil.ToIntOrNull(worksheet.GetString(row, "F"));
+                detail.InboundPending = CommonUtil.ToIntOrNull(worksheet.GetString(row, "G"));
+                detail.OutboundPending= CommonUtil.ToIntOrNull(worksheet.GetString(row, "H"));
+                detail.DamagedQuantity= CommonUtil.ToIntOrNull(worksheet.GetString(row, "I"));
+                detail.OnHoldQuantity= CommonUtil.ToIntOrNull(worksheet.GetString(row, "J"));
+                detail.AvailableQuantity= CommonUtil.ToIntOrNull(worksheet.GetString(row, "K"));
+                detail.TotalInventory = CommonUtil.ToIntOrNull(worksheet.GetString(row, "L"));
+
+                inquiry846.Details.Add(detail);
+                row++;
+            }
+
+            return inquiry846;
         }
+
 
         private static FreightInvoice210 Create210(Worksheet worksheet)
         {

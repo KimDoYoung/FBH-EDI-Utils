@@ -37,6 +37,12 @@ namespace FBH.EDI.Common.ExcelPdfUtils
             }
             return list;
         }
+        public static List<FreightInvoice210> Freight210ListFromPdf(string ediFile)
+        {
+            throw new NotImplementedException();
+        }
+
+
         internal static string ExtractTextFromPDF(string pdfFileName)
         {
             StringBuilder result = new StringBuilder();

@@ -1,6 +1,8 @@
 ﻿using FBH.EDI.Common;
+using FBH.EDI.Common.ExcelPdfUtils;
 using FBH.EDI.Common.Model;
 using System;
+using System.Collections.Generic;
 
 namespace EdiDbUploader
 {
@@ -21,9 +23,21 @@ namespace EdiDbUploader
         internal void insert(string ediFile)
         {
             MessageEventHandler?.Invoke(null, new MessageEventArgs($"{ediFile} upload start "));
-            EdiDocument doc = EdiUtil.EdiDocumentFromFile(ediFile);
-            EdiUploader uploader = EdiFactory.GetUploader(doc);
-            uploader.Insert(doc);
+            if (ediFile.ToLower().EndsWith(".xlsx"))
+            {
+                EdiDocument doc = EdiUtil.EdiDocumentFromFile(ediFile);
+                EdiUploader uploader = EdiFactory.GetUploader(doc);
+                uploader.Insert(doc);
+            }
+            else if(ediFile.ToLower().EndsWith(".pdf"))
+            {
+                List<FreightInvoice210> list = PdfUtil.Freight210ListFromPdf(ediFile);
+                EdiUploader210 uploader210 = new EdiUploader210(); ;
+                foreach (FreightInvoice210 freightInvoice210 in list)
+                {
+                    uploader210.Insert(freightInvoice210);
+                }
+            }
         }
     }
 }
