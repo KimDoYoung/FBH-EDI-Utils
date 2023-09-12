@@ -61,17 +61,14 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\Base210.cs" />
     <Compile Include="Common\DataRowExtension.cs" />
     <Compile Include="Common\DcCarton.cs" />
     <Compile Include="Common\DetailItem850.cs" />
     <Compile Include="Common\FreightInvoice210Detail.cs" />
     <Compile Include="Common\ExcelExtension.cs" />
     <Compile Include="Common\ExcelUtils.cs" />
-    <Compile Include="Common\Hub210Item.cs" />
     <Compile Include="Common\Invoice810.cs" />
     <Compile Include="Common\Invoice810Detail.cs" />
-    <Compile Include="Common\PdfUtil.cs" />
     <Compile Include="Common\Po850Compare.cs" />
     <Compile Include="Common\PurchaseOrder850.cs" />
     <Compile Include="Common\PurchaseOrder850Allowance.cs" />

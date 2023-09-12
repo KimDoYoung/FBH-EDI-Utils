@@ -59,9 +59,9 @@ namespace FBH.EDI.Common.Model
             return s;
         }
 
-        internal int SumQty()
+        internal int? SumQty()
         {
-            int sum = 0;
+            int? sum = 0;
             foreach (var detail in Details)
             {
                 sum += detail.Qty;

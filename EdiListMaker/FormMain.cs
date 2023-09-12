@@ -1,5 +1,7 @@
 ﻿using EdiUtils.Common;
 using FBH.EDI.Common;
+using FBH.EDI.Common.ExcelPdfUtils;
+using FBH.EDI.Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,8 +17,8 @@ namespace EdiUtils
         System.Windows.Forms.TextBox currentTextBoxDir = null;
         System.Windows.Forms.TextBox currentTextBoxLog = null;
 
-        List<Invoice810> invoice810s = new List<Invoice810>();
-        List<PurchaseOrder850> purchaseOrder850s = new List<PurchaseOrder850>();
+        List<EdiUtils.Common.Invoice810> invoice810s = new List<EdiUtils.Common.Invoice810>();
+        List<EdiUtils.Common.PurchaseOrder850> purchaseOrder850s = new List<EdiUtils.Common.PurchaseOrder850>();
         //List<FreightInvoice210> freightInvoice210s = new List<FreightInvoice210>();
         List<Base210> freightInvoice210s = new List<Base210>();
         List<WarehouseShippingOrder945> warehouseShippingOrders = new List<WarehouseShippingOrder945>();
@@ -652,7 +654,7 @@ namespace EdiUtils
                 WriteLog($"{i + 1} :  엑셀파일 {fileName} 읽어서 DataTable로 만들었습니다...");
 
                 CommonUtil.PrintDataTable(table);
-                Invoice810 invoice810 = ExcelUtils.GetInvoice810(table);
+                EdiUtils.Common.Invoice810 invoice810 = ExcelUtils.GetInvoice810(table);
                 WriteLog($"{i + 1} : DataTable로부터 invoice810 생성됨...");
                 WriteLog(invoice810.ToString());
                 WriteLog($"{i + 1} : {fileName} 작업종료합니다....");
@@ -701,7 +703,8 @@ namespace EdiUtils
                 WriteLog($"{i + 1} / {currentListView.Items.Count} :  엑셀파일 {fileName} 읽어서 DataTable로 만들었습니다...");
 
                 CommonUtil.PrintDataTable(table);
-                PurchaseOrder850 po850 = ExcelUtils.GetPurchaceOrder850(table, config);
+                
+                EdiUtils.Common.PurchaseOrder850 po850 = ExcelUtils.GetPurchaceOrder850(table, config);
                 po850.ExcelFileName = fileName; //엑셀파일명
 
                 WriteLog($"{i + 1} / {currentListView.Items.Count} : DataTable로부터 invoice810 생성됨...");
@@ -771,7 +774,7 @@ namespace EdiUtils
                         WriteLog($"{i + 1} / {currentListView.Items.Count} :  엑셀파일 {fileName} 읽어서 DataTable로 만들었습니다...");
 
                         CommonUtil.PrintDataTable(table);
-                        FreightInvoice210 invoice210 = ExcelUtils.GetFreightInvoice210(table, config);
+                        EdiUtils.Common.FreightInvoice210 invoice210 = ExcelUtils.GetFreightInvoice210(table, config);
                         invoice210.ExcelFileName = fileName; //엑셀파일명
                         WriteLog($"{i + 1} / {currentListView.Items.Count} : DataTable로부터 invoice810 생성됨...");
                         WriteLog(invoice210.ToString());

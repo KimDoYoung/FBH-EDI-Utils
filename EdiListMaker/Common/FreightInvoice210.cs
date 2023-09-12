@@ -1,9 +1,10 @@
-﻿using System;
+﻿using FBH.EDI.Common.Model;
+using System;
 using System.Collections.Generic;
 
 namespace EdiUtils.Common
 {
-    public class FreightInvoice210 : Base210
+    internal class FreightInvoice210 : Base210
     {
         //Beginning segment for Carrier's Invoice
         public string InvoiceNo { get; set; }

@@ -1,4 +1,4 @@
-﻿using FBH.EDI.Common;
+﻿using FBH.EDI.Common.Model;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using System;
@@ -7,20 +7,20 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace EdiUtils.Common
+namespace FBH.EDI.Common.ExcelPdfUtils
 {
     /// <summary>
     /// iTextSharp 5.5.13.3 사용
     /// 
     /// pdffile-> hug210r2 list-> 201 list
     /// </summary>
-    internal static class PdfUtil
+    public static class PdfUtil
     {
         public static event EventHandler<MessageEventArgs> MessageEventHandler;
 
         private const string PAGE_START = "---->";
         private const string PAGE_END = "<----";
-        internal static List<Hub210Item> Hub210ListFromPdf(string pdfFileName)
+        public static List<Hub210Item> Hub210ListFromPdf(string pdfFileName)
         {
             var s = ExtractTextFromPDF(pdfFileName);
 #if DEBUG

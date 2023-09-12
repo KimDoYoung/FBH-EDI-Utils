@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace EdiUtils.Common
+namespace FBH.EDI.Common.Model
 {
-    internal class Hub210Item : Base210, IEquatable<Hub210Item>
+    public class Hub210Item : Base210, IEquatable<Hub210Item>
     {
         public string PaymentDate { get; set; }
         public decimal? Amount { get; set; }
