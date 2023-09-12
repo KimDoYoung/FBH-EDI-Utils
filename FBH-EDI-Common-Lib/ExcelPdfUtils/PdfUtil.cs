@@ -37,9 +37,20 @@ namespace FBH.EDI.Common.ExcelPdfUtils
             }
             return list;
         }
-        public static List<FreightInvoice210> Freight210ListFromPdf(string ediFile)
+        public static List<FreightInvoice210> Freight210ListFromPdf(string pdfFile)
         {
-            throw new NotImplementedException();
+            var s = ExtractTextFromPDF(pdfFile);
+#if DEBUG
+            File.WriteAllText(@"C:\\Users\\deHong\tmp\\1.txt", s);
+#endif            
+            List<string[]> pages = SplitPages(s);
+            List<FreightInvoice210> list = new List<FreightInvoice210>();
+            foreach (var pageLines in pages)
+            {
+                FreightInvoice210 item = FreightInvoice210FromPageLines(pageLines);
+                list.Add(item);
+            }
+            return list;
         }
 
 
@@ -88,6 +99,11 @@ namespace FBH.EDI.Common.ExcelPdfUtils
             }
             return list;
         }
+        private static FreightInvoice210 FreightInvoice210FromPageLines(string[] pageLines)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Hub210Item Hub210FromPageLines(string[] pdfOneLines)
         {
             Hub210Item item = new Hub210Item();
