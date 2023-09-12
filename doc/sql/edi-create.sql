@@ -1,3 +1,7 @@
+--
+-- EDI Documents Tables
+--
+
 DROP TABLE IF EXISTS edi.invoice_810 CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.invoice_810 
 (
@@ -367,11 +371,6 @@ CREATE TABLE IF NOT EXISTS edi.shipping_order_940_dtl
 	misc3_size_of_units  varchar(100) null,
 	misc3_size_unit  varchar(100) null,
 	misc3_color_description  varchar(100) null,
-
-	created_by varchar(30) not null,
-	created_on timestamp not null default current_timestamp,
-	last_update_by varchar(30) null,
-	last_update_on timestamp null,
 	
 	primary key(order_id, seq),
 	CONSTRAINT fk_shipping_order_940_dtl FOREIGN KEY (order_id) 
