@@ -2,6 +2,7 @@
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace FBH.EDI.Common
@@ -451,6 +452,23 @@ namespace FBH.EDI.Common
             {
                 GC.Collect();
             }
+        }
+
+        /// <summary>
+        /// poNo에 문자열이 포함되어 있는 경우 숫자만을 뽑아낸다.
+        /// 1. PO 숫자5개로 뽑아 있으면 그것으로
+        /// 2. 없으면 받은 문자 그대로
+        /// </summary>
+        /// <param name="poNo"></param>
+        /// <returns></returns>
+        public static string ExtractPo(string poNo)
+        {
+            var resultString = Regex.Match(poNo, @"PO\s*\d{5}").Value;
+            if(string.IsNullOrEmpty(resultString))
+            {
+                return poNo;
+            }
+            return resultString;
         }
     }
 }

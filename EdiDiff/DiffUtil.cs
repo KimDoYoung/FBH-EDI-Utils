@@ -7,9 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using static System.Windows.Forms.AxHost;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EdiDiff
@@ -37,17 +34,22 @@ namespace EdiDiff
 
             try
             {
-                list1 = GetListFromHub210Route1(workbook.Worksheets[1]);
+                //sheet1 읽기
+                list1 = GetListFromHub210Route1(workbook.Worksheets[1], 1);
                 MessageEventHandler?.Invoke(null, new MessageEventArgs($"Route1 reading complete, count :{list1.Count}"));
-                
-                list2 = GetListFromHub210Route2(workbook.Worksheets[2]);
+
+                //sheet2 읽기
+                //list2 = GetListFromHub210Route2(workbook.Worksheets[2]);
+                list2 = GetListFromHub210Route1(workbook.Worksheets[2], 2);
                 MessageEventHandler?.Invoke(null, new MessageEventArgs($"Route2 reading complete, count :{list2.Count}"));
 
-                var intersectList = list1.Select(a => a.InvoiceNo+a.PoNo).Intersect(list2.Select(b =>b.InvoiceNo+b.PoNo));
-                MessageEventHandler?.Invoke(null, new MessageEventArgs("---- intersectList---"));
+                var intersectList = list1.Select(a => a.InvoiceNo + EdiUtil.ExtractPo(a.PoNo)).Intersect(list2.Select(b => b.InvoiceNo + EdiUtil.ExtractPo(b.PoNo)));
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"---- 중복된 것   ---"));
                 foreach (var item in intersectList)
                 {
-                    MessageEventHandler?.Invoke(null, new MessageEventArgs(item.ToString()));
+                    var invoice = item.ToString().Substring(0, 8);
+                    var po = item.ToString().Substring(8);
+                    MessageEventHandler?.Invoke(null, new MessageEventArgs($"invoice: {invoice}, po: {po}"));
                 }
                 MessageEventHandler?.Invoke(null, new MessageEventArgs("----------------------"));
 
@@ -108,7 +110,7 @@ namespace EdiDiff
             MessageEventHandler?.Invoke(null, new MessageEventArgs($"합친 excel파일을 만드는 중......"));
             foreach (Hub210Item item in merged)
             {
-                MessageEventHandler?.Invoke(null, new MessageEventArgs($"{item.PoNo} {item.Status} {item.SrcRouteNo}"));
+                //MessageEventHandler?.Invoke(null, new MessageEventArgs($"{item.PoNo} {item.Status} {item.SrcRouteNo}"));
                 worksheet.SetCell(row, "A", item.PoNo,"@");
                 worksheet.SetCell(row, "B", CommonUtil.YmdFormat(item.PickUpDate), "@");
                 //worksheet.SetCell(row, "C", item.Product);
@@ -122,7 +124,7 @@ namespace EdiDiff
                 worksheet.SetCell(row, "J", item.HubBolNo, "@");
                 worksheet.SetCell(row, "K", item.Address);
                 worksheet.SetCell(row, "L", $"Route{item.SrcRouteNo}", "@");
-                if (intersct.Contains(item.InvoiceNo + item.PoNo))
+                if (intersct.Contains(item.InvoiceNo + EdiUtil.ExtractPo(item.PoNo)))
                 {
                     worksheet.SetCell(row, "M", "중복", "@");
                 }
@@ -143,6 +145,7 @@ namespace EdiDiff
 
         private static List<Hub210Item> GetListFromHub210Route2(Excel.Worksheet workSheet)
         {
+            //사용안함
             List<Hub210Item> list = new List<Hub210Item>();
             int row = 3;
             Hub210Item prev = null;
@@ -189,7 +192,7 @@ namespace EdiDiff
             return Regex.Match(text, @"\d{10}").Value;
         }
 
-        private static List<Hub210Item> GetListFromHub210Route1(Excel.Worksheet workSheet)
+        private static List<Hub210Item> GetListFromHub210Route1(Excel.Worksheet workSheet, int excelOrPdf)
         {
             List<Hub210Item> list = new List<Hub210Item>();
             int row = 4;
@@ -199,7 +202,7 @@ namespace EdiDiff
                 if (string.IsNullOrEmpty(po)) break;
 
                 Hub210Item item = new Hub210Item();
-                item.SrcRouteNo = 1;
+                item.SrcRouteNo = excelOrPdf;
 
                 item.PaymentDate = workSheet.GetString(row, "A");
                 item.Amount  = ConvertToDecimal(workSheet.GetString(row, "B"));
@@ -213,7 +216,7 @@ namespace EdiDiff
                 item.Address= workSheet.GetString(row, "J");
 
                 list.Add(item);
-                MessageEventHandler?.Invoke(null, new MessageEventArgs(item.ToString()));
+                //MessageEventHandler?.Invoke(null, new MessageEventArgs(item.ToString()));
                 row++;
             }
             return list;
