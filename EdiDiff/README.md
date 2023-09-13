@@ -8,6 +8,19 @@
 4. 945에서는 po + item no(retail's item no)로 찾는다.
 5. 찾은 결과는 1) 발견못함 2)일치 3) 불일치 3개로 보여준다.
 
+## hub 210 invoice
+
+1. excel과 pdf 두가지 소스로 리스트를 만든다.
+2. excel에서 만든 리스트와 pdf로 만든 리스트 두 개를 손으로 합친다.
+3. sheet1에는 excel에서 만든 리스트, shee2에는 pdf에서 만든 list를 두고  중복제거
+
+### hub 210 invoice 테스트
+
+1. shee1에 중복된 라인
+2. sheet1과 sheet2에 중복된 라인
+3. sheet1과 sheet2에 각각 1개씩 존재
+4. sheet2의 PO#에 문자열에 포함된 po와 sheet1의 po가 같은 경우
+
 > icon 딸기
 
 ## invoice 특징
@@ -27,17 +40,14 @@
 N/A: RL invoice list.xslx와 invoice list.xslx에 일치하는 데이터가 없다
 N/D: Check Date가 없다
 
-
-
-
 ## 개발시 필요한 패키지
 
 - NuGet Package Manager에서  **Microsoft.Office.Interop.Excel** 찾아서 설치해야한다.
 - [엑셀에 필요한 라이브러리](https://www.freecodespot.com/blog/csharp-import-excel/)
 
-
 ## History
 
-- 2023-09-6 : invoice vs RL invoice 체크 기능 추가 
-- 2023-09-8 : ver 2.0.0.0  hub 210 합치는 기능 추가
+- 2023-09-06 : invoice vs RL invoice 체크 기능 추가 
+- 2023-09-08 : ver 2.0.0.0  hub 210 합치는 기능 추가
+- 2023-09-13 : ver 2.1.0.0  hub 201 합치때 소스를 Listmaker에서 만든 것으로 통일
 

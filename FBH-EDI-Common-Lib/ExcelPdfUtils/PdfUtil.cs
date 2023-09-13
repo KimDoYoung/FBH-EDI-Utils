@@ -24,7 +24,8 @@ namespace FBH.EDI.Common.ExcelPdfUtils
         {
             var s = ExtractTextFromPDF(pdfFileName);
 #if DEBUG
-            File.WriteAllText(@"C:\\Users\\deHong\tmp\\1.txt",s);
+            string docPath= Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            File.WriteAllText(docPath + @"\1.txt",s);
 #endif            
             List<string[]> pages = SplitPages(s);
             List<Hub210Item> list = new List<Hub210Item>();
@@ -155,7 +156,7 @@ namespace FBH.EDI.Common.ExcelPdfUtils
                 else if (IsShipper && line.StartsWith("FOR QUESTIONS ABOUT THIS INVOICE"))
                 {
                     //DcNo추출
-                    string REGEX_DCNO = @"DC\s*(?<dcno>[0-9]{2,5})[A-Z]";
+                    string REGEX_DCNO = @"DC\s*(?<dcno>[0-9]{2,5})[\sA-Z]";
                     item.DcNo = Regex.Match(item.Address, REGEX_DCNO).Groups["dcno"].Value;
                     IsShipper = false;
                     continue;
