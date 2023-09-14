@@ -44,13 +44,14 @@ namespace EdiDiff
                 list2 = GetListFromHub210Route1(workbook.Worksheets[2], 2);
                 MessageEventHandler?.Invoke(null, new MessageEventArgs($"Route2 reading complete, count :{list2.Count}"));
 
-                var intersectList = list1.Select(a => CommonUtil.OnlyNum(a.InvoiceDate) + a.InvoiceNo).Intersect(list2.Select(b => CommonUtil.OnlyNum(b.InvoiceDate) + b.InvoiceNo));
+                var intersectList = list1.Select(a => CommonUtil.OnlyNum(a.InvoiceDate) + a.InvoiceNo + string.Format("{0:0}", a.Qty) + string.Format("{0:0.00}", a.Amount))
+                            .Intersect(list2.Select(b => CommonUtil.OnlyNum(b.InvoiceDate) + b.InvoiceNo + string.Format("{0:0}", b.Qty) + string.Format("{0:0.00}", b.Amount)));
                 MessageEventHandler?.Invoke(null, new MessageEventArgs($"---- 중복된 것   ---"));
                 foreach (var item in intersectList)
                 {
                     var invoiceDate = item.ToString().Substring(0, 8);
-                    var invoiceNum = item.ToString().Substring(8);
-                    MessageEventHandler?.Invoke(null, new MessageEventArgs($"invoice date: {invoiceDate}, invoice no: {invoiceNum}"));
+                    var key = item.ToString().Substring(8);
+                    MessageEventHandler?.Invoke(null, new MessageEventArgs($"invoice date: {invoiceDate}, key: {key}"));
                 }
                 MessageEventHandler?.Invoke(null, new MessageEventArgs("----------------------"));
 
@@ -125,7 +126,7 @@ namespace EdiDiff
                 worksheet.SetCell(row, "J", item.HubBolNo, "@");
                 worksheet.SetCell(row, "K", item.Address);
                 worksheet.SetCell(row, "L", $"Route{item.SrcRouteNo}", "@");
-                if (intersct.Contains( CommonUtil.OnlyNum(item.InvoiceDate) +  item.InvoiceNo) )
+                if ( intersct.Contains( CommonUtil.OnlyNum(item.InvoiceDate) +  item.InvoiceNo + string.Format("{0:0}", item.Qty) + string.Format("{0:0.00}", item.Amount)) )
                 {
                     Hub210Item item1 = FindHub201ItemInList(item, excelList);
                     Hub210Item item2 = FindHub201ItemInList(item, pdfList);
