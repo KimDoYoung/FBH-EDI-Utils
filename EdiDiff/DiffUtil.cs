@@ -1,6 +1,7 @@
 ﻿using FBH.EDI.Common;
 using Microsoft.Office.Interop.Excel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -43,13 +44,13 @@ namespace EdiDiff
                 list2 = GetListFromHub210Route1(workbook.Worksheets[2], 2);
                 MessageEventHandler?.Invoke(null, new MessageEventArgs($"Route2 reading complete, count :{list2.Count}"));
 
-                var intersectList = list1.Select(a => a.InvoiceNo + EdiUtil.ExtractPo(a.PoNo)).Intersect(list2.Select(b => b.InvoiceNo + EdiUtil.ExtractPo(b.PoNo)));
+                var intersectList = list1.Select(a => CommonUtil.OnlyNum(a.InvoiceDate) + a.InvoiceNo).Intersect(list2.Select(b => CommonUtil.OnlyNum(b.InvoiceDate) + b.InvoiceNo));
                 MessageEventHandler?.Invoke(null, new MessageEventArgs($"---- 중복된 것   ---"));
                 foreach (var item in intersectList)
                 {
-                    var invoice = item.ToString().Substring(0, 8);
-                    var po = item.ToString().Substring(8);
-                    MessageEventHandler?.Invoke(null, new MessageEventArgs($"invoice: {invoice}, po: {po}"));
+                    var invoiceDate = item.ToString().Substring(0, 8);
+                    var invoiceNum = item.ToString().Substring(8);
+                    MessageEventHandler?.Invoke(null, new MessageEventArgs($"invoice date: {invoiceDate}, invoice no: {invoiceNum}"));
                 }
                 MessageEventHandler?.Invoke(null, new MessageEventArgs("----------------------"));
 
@@ -58,14 +59,14 @@ namespace EdiDiff
                 var merge = new HashSet<Hub210Item>(list1, new Hub210ItemCompare());
                 merge.UnionWith(list2);
                 var merged = merge.ToList();
-                var sorted = merged.OrderBy(item => item.InvoiceDate).ToList();
+                var sorted = merged.OrderBy( item => ( CommonUtil.OnlyNum(item.InvoiceDate)+item.InvoiceNo) ).ToList() ;
                 //새로운 sheet추가
                 worksheet = workbook.Sheets.Add(After: workbook.Sheets[workbook.Sheets.Count]);
                 worksheet.Name = "중복배제합침";
                 
 
                 //새로운 sheet에 merged list를 가지고 sheet를 만든다.
-                CreateMergeSheet(worksheet, sorted, intersectList);
+                CreateMergeSheet(worksheet, sorted, intersectList, list1, list2);
                 worksheet.Columns.AutoFit();
 
                 MessageEventHandler?.Invoke(null, new MessageEventArgs($"save output file......"));
@@ -91,7 +92,7 @@ namespace EdiDiff
             }
         }
 
-        private static void CreateMergeSheet(Worksheet worksheet, List<Hub210Item> merged, IEnumerable<String> intersct)
+        private static void CreateMergeSheet(Worksheet worksheet, List<Hub210Item> merged, IEnumerable<String> intersct, List<Hub210Item> excelList, List<Hub210Item> pdfList)
         {
             worksheet.SetCell(1, "A", "PO#");
             worksheet.SetCell(1, "B", "PICK-UP DATE");
@@ -124,8 +125,20 @@ namespace EdiDiff
                 worksheet.SetCell(row, "J", item.HubBolNo, "@");
                 worksheet.SetCell(row, "K", item.Address);
                 worksheet.SetCell(row, "L", $"Route{item.SrcRouteNo}", "@");
-                if (intersct.Contains(item.InvoiceNo + EdiUtil.ExtractPo(item.PoNo)))
+                if (intersct.Contains( CommonUtil.OnlyNum(item.InvoiceDate) +  item.InvoiceNo) )
                 {
+                    Hub210Item item1 = FindHub201ItemInList(item, excelList);
+                    Hub210Item item2 = FindHub201ItemInList(item, pdfList);
+                    if (item1 == null || item2 == null) throw new EdiException($"{item.InvoiceDate} , {item.InvoiceNo} 는 excel, pdf 에 모두 존재해야하는데, 존재하지 않음");
+                    if (item1.PoNo.Length > item2.PoNo.Length)
+                    {
+                        worksheet.SetCell(row, "A", item1.PoNo, "@");
+                    }
+                    else
+                    {
+                        worksheet.SetCell(row, "A", item2.PoNo, "@");
+                    }
+
                     worksheet.SetCell(row, "M", "중복", "@");
                 }
                 row++;
@@ -141,6 +154,18 @@ namespace EdiDiff
             {
                 worksheet.SetColor($"{value}1", Color.Black, Color.Salmon);
             }
+        }
+
+        private static Hub210Item FindHub201ItemInList(Hub210Item item, List<Hub210Item> list)
+        {
+            foreach(Hub210Item hub210Item in list)
+            {
+                if(CommonUtil.OnlyNum(item.InvoiceDate) == CommonUtil.OnlyNum(hub210Item.InvoiceDate) && item.InvoiceNo == hub210Item.InvoiceNo)
+                {
+                    return hub210Item;
+                }
+            }
+            return null;
         }
 
         private static List<Hub210Item> GetListFromHub210Route2(Excel.Worksheet workSheet)

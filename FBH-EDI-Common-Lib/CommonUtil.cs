@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -7,12 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FBH.EDI.Common
 {
     public class CommonUtil
     {
-        public static void PrintDataTable(DataTable table)
+        public static void PrintDataTable(System.Data.DataTable table)
         {
             if(table == null)
             {
@@ -194,6 +196,18 @@ namespace FBH.EDI.Common
             string value = o.ToString();
             if (value.Trim().Length < 1) return false;
             return true;
+        }
+
+        /// <summary>
+        /// 숫자아닌 문자를 제거한다.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static string OnlyNum(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return s;
+            return Regex.Replace(s, @"\D","");
         }
     }
 }

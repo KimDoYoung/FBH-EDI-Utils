@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FBH.EDI.Common;
+using System;
 using System.Collections.Generic;
 
 namespace EdiDiff
@@ -7,12 +8,13 @@ namespace EdiDiff
     {
         public bool Equals(Hub210Item x, Hub210Item y)
         {
-            return (x.InvoiceNo.Trim()+ x.PoNo.Trim()) == (x.InvoiceNo.Trim() + y.PoNo.Trim());
+
+            return ( CommonUtil.OnlyNum(x.InvoiceDate)+x.InvoiceNo ) == ( CommonUtil.OnlyNum(x.InvoiceDate) + x.InvoiceNo );
         }
 
-        public int GetHashCode(Hub210Item obj)
+        public int GetHashCode(Hub210Item o)
         {
-            return (obj.InvoiceNo + obj.PoNo).GetHashCode();
+            return (CommonUtil.OnlyNum(o.InvoiceDate) + o.InvoiceNo).GetHashCode();
         }
     }
 }
