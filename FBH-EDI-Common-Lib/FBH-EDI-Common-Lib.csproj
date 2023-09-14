@@ -114,7 +114,6 @@
     <Compile Include="MessageEventArgs.cs" />
     <Compile Include="Model\EdiDocument.cs" />
     <Compile Include="Model\FreightInvoice210.cs" />
-    <Compile Include="Model\FreightInvoice210Detail.cs" />
     <Compile Include="Model\Inquiry846.cs" />
     <Compile Include="Model\Inquiry846Detail.cs" />
     <Compile Include="Model\Invoice810.cs" />

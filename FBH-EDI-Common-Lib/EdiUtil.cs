@@ -370,61 +370,36 @@ namespace FBH.EDI.Common
             invoice210.PoNumber = worksheet.GetString("D4");
             invoice210.VicsBolNo = worksheet.GetString("D5");
 
-            invoice210.ShipFromCompanyName = worksheet.GetString("F4");
-            invoice210.ShipFromAddrInfo = worksheet.GetString("F5");
-            invoice210.ShipFromCity = worksheet.GetString("F6");
-            invoice210.ShipFromState = worksheet.GetString("F7");
-            invoice210.ShipFromZipcode = worksheet.GetString("F8");
-            invoice210.ShipFromCountryCd = worksheet.GetString("F9");
+            invoice210.WarehouseName = worksheet.GetString("F4");
+            var ShipFromAddrInfo = worksheet.GetString("F5");
+            var ShipFromCity = worksheet.GetString("F6");
+            var ShipFromState = worksheet.GetString("F7");
+            var ShipFromZipcode = worksheet.GetString("F8");
+            var ShipFromCountryCd = worksheet.GetString("F9");
+            invoice210.WarehouseAddress = $"{ShipFromAddrInfo}, {ShipFromCity}, {ShipFromState}, {ShipFromZipcode}, {ShipFromZipcode}";
 
-            invoice210.ShipToCompanyName = worksheet.GetString("H4");
-            invoice210.ShipToAddrInfo = worksheet.GetString("H5");
-            invoice210.ShipToCity = worksheet.GetString("H6");
-            invoice210.ShipToState = worksheet.GetString("H7");
-            invoice210.ShipToZipcode = worksheet.GetString("H8");
-            invoice210.ShipToCountryCd = worksheet.GetString("H9");
+            invoice210.ConsigneeName = worksheet.GetString("H4");
+            var ShipToAddrInfo = worksheet.GetString("H5");
+            var ShipToCity = worksheet.GetString("H6");
+            var ShipToState = worksheet.GetString("H7");
+            var ShipToZipcode = worksheet.GetString("H8");
+            var ShipToCountryCd = worksheet.GetString("H9");
+            invoice210.ConsigneeAddress = $"{ShipToAddrInfo}, {ShipToCity}, {ShipToState}, {ShipToZipcode}, {ShipToCountryCd}";
 
-            invoice210.BillToCompanyName = worksheet.GetString("J4");
-            invoice210.BillToAddrInfo = worksheet.GetString("J5");
-            invoice210.BillToCity = worksheet.GetString("J6");
-            invoice210.BillToState = worksheet.GetString("J7");
-            invoice210.BillToZipcode = worksheet.GetString("J8");
-            invoice210.BillToCountryCd = worksheet.GetString("J9");
+            invoice210.BillToName = worksheet.GetString("J4"); 
+            var BillToAddrInfo = worksheet.GetString("J5");
+            var BillToCity = worksheet.GetString("J6");
+            var BillToState = worksheet.GetString("J7");
+            var BillToZipcode = worksheet.GetString("J8");
+            var BillToCountryCd = worksheet.GetString("J9");
+            invoice210.BillToAddress = $"{BillToAddrInfo}, {BillToCity}, {BillToState}, {BillToZipcode}, {BillToCountryCd}";
 
             invoice210.TotalWeight = CommonUtil.ToDecimalOrNull(worksheet.GetString("B13"));
             invoice210.TotalWeightUnit = worksheet.GetString("C13");
             invoice210.WeightQualifier = worksheet.GetString("B14");
-            invoice210.AmountCharged = CommonUtil.ToIntOrNull(worksheet.GetString("B15"));
-            invoice210.BolQtyInCases = CommonUtil.ToIntOrNull(worksheet.GetString("B16"));
+            invoice210.AmountCharged = CommonUtil.ToDecimalOrNull(worksheet.GetString("B15"));
+            invoice210.Qty = CommonUtil.ToIntOrNull(worksheet.GetString("B16"));
 
-            //details
-            int row = 19;
-            while (true)
-            {
-                FreightInvoice210Detail detail210 = new FreightInvoice210Detail();
-                //마지막 라인 체크
-                var value = worksheet.GetString(row, "A");
-                if (string.IsNullOrEmpty(value)) break;
-                
-                detail210.InvoiceNo = invoice210.PoNumber;
-                detail210.TransactionSetLineNumber = CommonUtil.ToIntOrNull(worksheet.GetString(row,"A"));
-                detail210.PurchaseOrderNumber = worksheet.GetString("B");
-                detail210.ShippedDate = worksheet.GetString("C");
-                detail210.LadingLineItem = worksheet.GetString("D");
-                detail210.LadingDescription = worksheet.GetString("E");
-                detail210.BilledRatedAsQuantity = CommonUtil.ToIntOrNull(worksheet.GetString("F"));
-                detail210.Weight = CommonUtil.ToDecimalOrNull(worksheet.GetString("H"));
-                detail210.LadingQuantity = CommonUtil.ToIntOrNull(worksheet.GetString("I"));
-                detail210.FreightRate = CommonUtil.ToDecimalOrNull(worksheet.GetString("J"));
-                detail210.AmountCharged = CommonUtil.ToIntOrNull(worksheet.GetString("K"));
-                detail210.SpecialChargeOrAllowanceCd = worksheet.GetString("L");
-
-                invoice210.Details.Add(detail210);
-                row++;
-                if(row > 5000) {
-                    throw new EdiException("detail210 parsing fail 5000 row over");
-                }
-            }
 
             return invoice210;
         }
