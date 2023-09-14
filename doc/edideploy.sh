@@ -11,7 +11,7 @@ rm -rf ${BASE_DES_DIR}
 mkdir -p ${BASE_DES_DIR}
 
 # cp 
-declare -a programs=( "EdiDiff" "EdiRename" "EdiListMaker" "EdiViewer" "EdiDbUploader" )
+declare -a programs=( "EdiDiff" "EdiRename" "EdiListMaker" "EdiDbUploader" )
 for program in "${programs[@]}"; do
    AsmFile="$BASE_SRC_DIR/$program/Properties/AssemblyInfo.cs"
    AsmLine=$(awk '/AssemblyFileVersion/{print $0}' $AsmFile)
