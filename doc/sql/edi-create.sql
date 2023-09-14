@@ -132,20 +132,20 @@ CREATE TABLE IF NOT EXISTS edi.freight_210
 	amount_to_be_paid  decimal(10,2) null,
 	po_number  varchar(100) null,
 	vics_bol_no  varchar(100) null,
-	
+	--
 	warehouse_name varchar(100) null,
 	warehouse_address varchar(200) null,
 	consignee_name varchar(100) null,	
 	consignee_address varchar(200) null,
 	bill_to_name varchar(100) null,
 	bill_to_address varchar(200) null,
-	
+	--
 	total_weight decimal(10,2) null,
 	total_weight_unit varchar(10) null,
 	weight_qualifier  varchar(10) null,
 	amount_charged  decimal(10,2) null,
-	qty int,
-	
+	qty int,	
+	--
 	created_by varchar(30) not null,
 	created_on timestamp not null default CURRENT_TIMESTAMP,
 	last_update_by varchar(30) null,
