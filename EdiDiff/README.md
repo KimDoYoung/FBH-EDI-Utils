@@ -50,4 +50,5 @@ N/D: Check Date가 없다
 - 2023-09-06 : invoice vs RL invoice 체크 기능 추가 
 - 2023-09-08 : ver 2.0.0.0  hub 210 합치는 기능 추가
 - 2023-09-13 : ver 2.1.0.0  hub 201 합치때 소스를 Listmaker에서 만든 것으로 통일
+- 2023-09-14 : ver 2.2.0.0  invoicedate + invoiceno로 중복을 체크함.
 
