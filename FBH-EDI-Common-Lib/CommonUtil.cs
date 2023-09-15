@@ -158,7 +158,7 @@ namespace FBH.EDI.Common
                 var dt  = new DateTime(y, m, d, 0, 0,0);
                 return dt.ToString("yyyy-MM-dd");
             }
-            return "";
+            return mdy;
         }
 
         /// <summary>

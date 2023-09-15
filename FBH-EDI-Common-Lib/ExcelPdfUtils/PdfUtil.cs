@@ -104,16 +104,20 @@ namespace FBH.EDI.Common.ExcelPdfUtils
         private static FreightInvoice210 FreightInvoice210FromPageLines(string[] pageLines)
         {
             FreightInvoice210 item = new FreightInvoice210();
+            bool IsConsignee = false;
+            bool IsConsignee_FirstLine = false;
+            bool IsTotal = false;
             bool IsShipper = false;
             bool IsShipper_FirstLine = false;
-            bool IsTotal = false;
             foreach (string line in pageLines)
             {
                 if (line.Contains("INVOICE DATE:") && line.Contains("PICK-UP DATE:"))
                 {
                     //INVOICE DATE: 8/10/2023 PICK-UP DATE: 8/9/2023
                     string REGEX_INVOICE_PICKUP = @"INVOICE DATE:\s+(?<invoice>[0-9/]{8,10})\s+PICK-UP DATE:\s+(?<pickupdate>[0-9/]{8,10})";
-                    item.InvoiceDt = Regex.Match(line, REGEX_INVOICE_PICKUP).Groups["invoice"].Value;
+                    var dt = Regex.Match(line, REGEX_INVOICE_PICKUP).Groups["invoice"].Value;
+                    item.InvoiceDt = Regex.Replace(CommonUtil.MdyToYmd(dt), "\\D", "");
+
                     //item.= Regex.Match(line, REGEX_INVOICE_PICKUP).Groups["pickupdate"].Value;
                 }
                 else if (line.Contains("INVOICE#") && line.Contains("Hub Group BOL #"))
@@ -148,31 +152,49 @@ namespace FBH.EDI.Common.ExcelPdfUtils
                     item.AmountCharged = Convert.ToDecimal(s);
                     item.AmountToBePaid = item.AmountCharged;
                 }
-                else if (line.StartsWith("CONSIGNEE"))
+                else if (line.StartsWith("SHIPPER"))
                 {
                     IsShipper = true;
                     IsShipper_FirstLine = true;
                 }
-                else if (IsShipper && line.StartsWith("FOR QUESTIONS ABOUT THIS INVOICE"))
+                else if (line.StartsWith("CONSIGNEE"))
+                {
+                    IsShipper = false;
+                    IsConsignee = true;
+                    IsConsignee_FirstLine = true;
+                }
+                else if (IsConsignee && line.StartsWith("FOR QUESTIONS ABOUT THIS INVOICE"))
                 {
                     //DcNo추출
                     string REGEX_DCNO = @"DC\s*(?<dcno>[0-9]{2,5})[\sA-Z]";
-                    item. DcNo = Regex.Match(item.ConsigneeName, REGEX_DCNO).Groups["dcno"].Value;
-                    IsShipper = false;
+                    item.DcNo = Regex.Match(item.ConsigneeName, REGEX_DCNO).Groups["dcno"].Value;
+                    IsConsignee = false;
                     continue;
                 }
                 else if (IsShipper)
                 {
                     if (IsShipper_FirstLine)
                     {
-                        item.ConsigneeName = line;
+                        item.WarehouseName = line;
                         IsShipper_FirstLine = false;
+                    }
+                    else
+                    {
+                        item.WarehouseAddress+= line + " ";
+                    }
+                }
+                else if (IsConsignee)
+                {
+                    if (IsConsignee_FirstLine)
+                    {
+                        item.ConsigneeName = line;
+                        IsConsignee_FirstLine = false;
                     }
                     else
                     {
                         item.ConsigneeAddress += line + " ";
                     }
-                    
+
                 }
                 else if (line.Contains(" Mango "))
                 {
@@ -195,8 +217,10 @@ namespace FBH.EDI.Common.ExcelPdfUtils
                 }
                 else if (IsTotal)
                 {
-                    var total = SplitAndPick(line, " ", 0);
+                    var line2 = Regex.Replace(line, @"\s+", " ");
+                    var total = SplitAndPick(line2, " ", 0);
                     item.Qty = Convert.ToInt16(total);
+                    item.TotalWeight = CommonUtil.ToDecimalOrNull( SplitAndPick(line2, " ", 1) );
                     IsTotal = false;
                 }
 

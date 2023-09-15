@@ -114,7 +114,7 @@ namespace EdiDbUploader
                     fd.Title = "Browse Excel Files";
                     fd.CheckFileExists = fd.CheckPathExists = true;
 
-                    fd.Filter = "excel files (*.xlsx)|*.xlsx|pdf files (*.pdf)|(*.pdf)|all files (*.*)|*.*";
+                    fd.Filter = "excel files (*.xlsx)|*.xlsx|pdf files (*.pdf)|*.pdf|all files (*.*)|*.*";
                     fd.FilterIndex = 0;
                     fd.RestoreDirectory = true;
 
@@ -129,7 +129,7 @@ namespace EdiDbUploader
             }
             else if (sender == btnClearList)
             {
-                if (lvEdiExcels.Items.Count > 0 && MsgBox.Confirm("리스트 내용을 모두 지우시겠습니까?") == DialogResult.OK)
+                if (lvEdiExcels.Items.Count > 0 && MsgBox.Confirm("리스트 내용을 모두 지우시겠습니까?") == DialogResult.Yes)
                 {
                     lvEdiExcels.Items.Clear();
                 }

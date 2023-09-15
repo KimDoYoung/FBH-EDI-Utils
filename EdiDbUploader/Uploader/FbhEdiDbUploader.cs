@@ -41,9 +41,13 @@ namespace EdiDbUploader
             {
                 List<FreightInvoice210> list = PdfUtil.Freight210ListFromPdf(ediFile);
                 EdiUploader210 uploader210 = new EdiUploader210(); ;
+                uploader210.SetConnectionString(connectString);
+
                 string result = "OK";
                 foreach (FreightInvoice210 freightInvoice210 in list)
                 {
+                    freightInvoice210.FileName = Path.GetFileName(ediFile);
+
                     var r = uploader210.Insert(freightInvoice210);
                     if (r.StartsWith("NK")) result = r;
                     var msg = $"insert result : {r}";
