@@ -18,3 +18,7 @@ SELECT * FROM edi.stocks;
 SELECT * FROM edi.stocks;
 
 
+select * from edi.shipping_945 s ;
+select * from edi.shipping_945_dtl sd ;
+delete from edi.shipping_945 ;
+delete from edi.shipping_945_dtl ;

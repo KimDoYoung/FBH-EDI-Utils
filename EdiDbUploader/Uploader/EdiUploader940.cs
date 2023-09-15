@@ -14,7 +14,7 @@ namespace EdiDbUploader.Uploader
         {
             var so940 = ediDoc as ShippingOrder940;
 
-            object alreadyCount = ExecuteScalar($"select count(*) as count from edi.shipping_order_940 where oorder_id = '{so940.OrderId}'");
+            object alreadyCount = ExecuteScalar($"select count(*) as count from edi.shipping_order_940 where order_id = '{so940.OrderId}'");
             int count = Convert.ToInt32(alreadyCount);
             if (count > 0)
             {
@@ -99,18 +99,19 @@ namespace EdiDbUploader.Uploader
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.shipping_order_940("
-                + "order_id, order_no, buyer_po_number, warehouse_info, ship_to, "
-                +"reference_identification, requested_pickup_date, requested_delivery_date,"
-                +"cancel_after_date, purchase_order_date, warehouse_carrier_info, order_group_id,"
+                + "order_id, order_no, balsong_chasu, buyer_po_number, warehouse_info, ship_to, "
+                + "reference_identification, requested_pickup_date, requested_delivery_date,"
+                +"cancel_after_date, purchase_order_date, warehouse_carrier_info, order_group_id, memo, file_name,"
                 +"created_by"
                 + ")values("
-                + "@order_id, @order_no, @buyer_po_number, @warehouse_info, @ship_to, "
+                + "@order_id, @order_no,@balsong_chasu, @buyer_po_number, @warehouse_info, @ship_to, "
                 + "@reference_identification, @requested_pickup_date, @requested_delivery_date,"
-                + "@cancel_after_date, @purchase_order_date, @warehouse_carrier_info, @order_group_id,"
+                + "@cancel_after_date, @purchase_order_date, @warehouse_carrier_info, @order_group_id, @memo, @file_name,"
                 + "@@created_by"
                 + ")";
             cmd.Parameters.Add(NewSafeParameter("@order_id", so940.OrderId));
             cmd.Parameters.Add(NewSafeParameter("@order_no", so940.OrderNo));
+            cmd.Parameters.Add(NewSafeParameter("@balsong_chasu", so940.BalsongChasu));
             cmd.Parameters.Add(NewSafeParameter("@buyer_po_number", so940.BuyerPoNumber));
             cmd.Parameters.Add(NewSafeParameter("@warehouse_info", so940.WarehouseInfo));
             cmd.Parameters.Add(NewSafeParameter("@ship_to", so940.ShipTo));
@@ -121,6 +122,8 @@ namespace EdiDbUploader.Uploader
             cmd.Parameters.Add(NewSafeParameter("@purchase_order_date", so940.PurchaseOrderDate));
             cmd.Parameters.Add(NewSafeParameter("@warehouse_carrier_info", so940.WarehouseCarrierInfo));
             cmd.Parameters.Add(NewSafeParameter("@order_group_id", so940.OrderGroupId));
+            cmd.Parameters.Add(NewSafeParameter("@memo", so940.Memo));
+            cmd.Parameters.Add(NewSafeParameter("@file_name", so940.FileName));
             cmd.Parameters.Add(NewSafeParameter("@created_by", "DbUploader"));
 
             return cmd;

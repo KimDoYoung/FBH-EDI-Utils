@@ -20,6 +20,8 @@ namespace FBH.EDI.Common
                 {
                     var o = worksheet.GetCell("A1");
                     var a1 = o.ToString().Trim().ToUpper();
+                    o = worksheet.GetCell("C2");
+                    var c2 = o.ToString().Trim().ToUpper();
                     if (a1.Contains("FREIGHT"))
                     {
                         return Create210(worksheet);
@@ -39,6 +41,10 @@ namespace FBH.EDI.Common
                     else if (a1.Contains("INVOICE"))
                     {
                         return Create810(worksheet);
+                    }
+                    else if (c2.Contains("ORDERNO"))
+                    {
+                        return Create940(worksheet);
                     }
                     else
                     {
@@ -63,65 +69,6 @@ namespace FBH.EDI.Common
             return null;
         }
 
- 
-        private static Invoice810 Create810(Worksheet worksheet)
-        {
-            Invoice810 invoice810 = new Invoice810();
-            invoice810.PoNo = worksheet.GetString("B3");
-            invoice810.DepartmentNo = worksheet.GetString("E3");
-            invoice810.Currency = worksheet.GetString("H3");
-
-            invoice810.InvoiceNo = worksheet.GetString("B4");
-            invoice810.VendorNo = worksheet.GetString("E4");
-            invoice810.NetDay = worksheet.GetString("H4");
-
-            invoice810.McdType = worksheet.GetString("E5");
-            invoice810.Fob = worksheet.GetString("H5");
-
-            invoice810.SupplierNm = worksheet.GetString("B6");
-            invoice810.SupplierCity = worksheet.GetString("B7");
-            invoice810.SupplierState = worksheet.GetString("B8");
-            invoice810.SupplierZip = worksheet.GetString("B9");
-            invoice810.SupplierCountry = worksheet.GetString("B10");
-
-            invoice810.ShipToNm = worksheet.GetString("E6");
-            invoice810.ShipToGln = worksheet.GetString("E7");
-            invoice810.ShipToAddr = worksheet.GetString("E8");
-
-            string s = worksheet.GetString("A12");
-            if (string.IsNullOrEmpty(s))
-            {
-                invoice810.TtlAmt = 0;
-            }
-            else
-            {
-                invoice810.TtlAmt = Convert.ToDecimal(s);
-            }
-            //details
-            int row = 15;
-            int seq = 1;
-            string value;
-            while (row < 5000)
-            {
-                Invoice810Detail detail810 = new Invoice810Detail();
-                value = worksheet.GetString(row,"A");
-                if (CommonUtil.IsValidCellValue(value) == false) break;
-
-                detail810.InvoiceNo = invoice810.InvoiceNo;
-                detail810.PoNo = invoice810.PoNo;
-                detail810.Seq = seq;
-                detail810.Qty = CommonUtil.ToIntOrNull(worksheet.GetString(row, "A"));
-                detail810.Msrmnt = worksheet.GetString(row, "B");
-                detail810.UnitPrice = CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "C"));
-                detail810.Gtin13 = worksheet.GetString(row, "D");
-                detail810.LineTtl = CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "E"));
-
-                invoice810.Details.Add(detail810);
-                row++; seq++;
-            }
-
-            return invoice810;
-        }
 
         private static ShippingAdvice945 Create945(Worksheet worksheet)
         {
@@ -192,7 +139,7 @@ namespace FBH.EDI.Common
                 var value = worksheet.GetString(row, "A");
                 if (CommonUtil.IsValidCellValue(value) == false) break;
 
-
+                detail945.CustomerOrderId = wso945.CustomerOrderId;
                 detail945.AssignedNumber = CommonUtil.ToIntOrNull(worksheet.GetString(row,"A"));
                 detail945.PalletId = worksheet.GetString(row, "B");
                 detail945.CarrierTrackingNumber = worksheet.GetString(row, "C");
@@ -220,6 +167,21 @@ namespace FBH.EDI.Common
             }
 
             return wso945;
+        }
+
+        private static ShippingOrder940 Create940(Worksheet worksheet)
+        {
+            ShippingOrder940 so940 = new ShippingOrder940();
+            so940.OrderNo = worksheet.GetString("C3");
+            so940.BalsongChasu = CommonUtil.ToIntOrNull(worksheet.GetString("D3"));
+
+            int row = 29;
+            //while (true)
+            //{
+            //    ShippingAdvice945Detail detail945 = new ShippingAdvice945Detail();
+            //}
+
+            return so940;
         }
 
         private static PurchaseOrder850 Create850(Worksheet worksheet)
@@ -360,6 +322,64 @@ namespace FBH.EDI.Common
             return inquiry846;
         }
 
+        private static Invoice810 Create810(Worksheet worksheet)
+        {
+            Invoice810 invoice810 = new Invoice810();
+            invoice810.PoNo = worksheet.GetString("B3");
+            invoice810.DepartmentNo = worksheet.GetString("E3");
+            invoice810.Currency = worksheet.GetString("H3");
+
+            invoice810.InvoiceNo = worksheet.GetString("B4");
+            invoice810.VendorNo = worksheet.GetString("E4");
+            invoice810.NetDay = worksheet.GetString("H4");
+
+            invoice810.McdType = worksheet.GetString("E5");
+            invoice810.Fob = worksheet.GetString("H5");
+
+            invoice810.SupplierNm = worksheet.GetString("B6");
+            invoice810.SupplierCity = worksheet.GetString("B7");
+            invoice810.SupplierState = worksheet.GetString("B8");
+            invoice810.SupplierZip = worksheet.GetString("B9");
+            invoice810.SupplierCountry = worksheet.GetString("B10");
+
+            invoice810.ShipToNm = worksheet.GetString("E6");
+            invoice810.ShipToGln = worksheet.GetString("E7");
+            invoice810.ShipToAddr = worksheet.GetString("E8");
+
+            string s = worksheet.GetString("A12");
+            if (string.IsNullOrEmpty(s))
+            {
+                invoice810.TtlAmt = 0;
+            }
+            else
+            {
+                invoice810.TtlAmt = Convert.ToDecimal(s);
+            }
+            //details
+            int row = 15;
+            int seq = 1;
+            string value;
+            while (row < 5000)
+            {
+                Invoice810Detail detail810 = new Invoice810Detail();
+                value = worksheet.GetString(row, "A");
+                if (CommonUtil.IsValidCellValue(value) == false) break;
+
+                detail810.InvoiceNo = invoice810.InvoiceNo;
+                detail810.PoNo = invoice810.PoNo;
+                detail810.Seq = seq;
+                detail810.Qty = CommonUtil.ToIntOrNull(worksheet.GetString(row, "A"));
+                detail810.Msrmnt = worksheet.GetString(row, "B");
+                detail810.UnitPrice = CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "C"));
+                detail810.Gtin13 = worksheet.GetString(row, "D");
+                detail810.LineTtl = CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "E"));
+
+                invoice810.Details.Add(detail810);
+                row++; seq++;
+            }
+
+            return invoice810;
+        }
 
         private static FreightInvoice210 Create210(Worksheet worksheet)
         {

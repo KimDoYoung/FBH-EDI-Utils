@@ -10,6 +10,7 @@ namespace FBH.EDI.Common.Model
     {
         public string OrderId { get; set; }
         public string OrderNo { get; set; }
+        public int? BalsongChasu { get; set; }
         public string BuyerPoNumber { get; set; }
         public string WarehouseInfo { get; set; }
         public string ShipTo { get; set; }

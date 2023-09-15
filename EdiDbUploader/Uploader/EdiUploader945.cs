@@ -99,18 +99,18 @@ namespace EdiDbUploader.Uploader
                 + "bt_company_name, bt_seller_buyer, bt_location_id_code, bt_address_info, bt_city, bt_state, bt_zipcode,"
                 + "bt_country_code, pro_number, master_bol_number, service_level, delivery_appointment_number, purchase_order_date, "
                 + "transportation_mode, carriers_scac_code, carriers_name, payment_method, allowance_or_charge_total_amount, total_units_shipped,"
-                + "total_weight_shipped, lading_quantity, unit_or_basisvfor_measurement_code, "
+                + "total_weight_shipped, lading_quantity, unit_or_basis_for_measurement_code, memo, file_name, "
                 + "created_by"
                 + ")values("
-                + "@customer_order_id, @actual_pickup_date, @vics_bol, @hub_groups_order_number, @purchase_order_number, @"
-                + "@mater_vics_bol, @link_sequence_number, @sf_company_name, @sf_seller_buyer, @sf_location_id_code, @"
-                + "@sf_address_info, @sf_city, @sf_state, @sf_zipcode, @sf_country_code, @st_company_name, @st_seller_buyer, @"
-                + "@st_location_id_code, @st_address_info, @st_city, @st_state, @st_zipcode, @st_country_code, @mf_company_name, @"
-                + "@mf_seller_buyer, @mf_location_id_code, @mf_address_info, @mf_city, @mf_state, @mf_zipcode, @mf_country_code, @"
+                + "@customer_order_id, @actual_pickup_date, @vics_bol, @hub_groups_order_number, @purchase_order_number, "
+                + "@mater_vics_bol, @link_sequence_number, @sf_company_name, @sf_seller_buyer, @sf_location_id_code, "
+                + "@sf_address_info, @sf_city, @sf_state, @sf_zipcode, @sf_country_code, @st_company_name, @st_seller_buyer, "
+                + "@st_location_id_code, @st_address_info, @st_city, @st_state, @st_zipcode, @st_country_code, @mf_company_name, "
+                + "@mf_seller_buyer, @mf_location_id_code, @mf_address_info, @mf_city, @mf_state, @mf_zipcode, @mf_country_code, "
                 + "@bt_company_name, @bt_seller_buyer, @bt_location_id_code, @bt_address_info, @bt_city, @bt_state, @bt_zipcode,"
-                + "@bt_country_code, @pro_number, @master_bol_number, @service_level, @delivery_appointment_number, @purchase_order_date, @"
+                + "@bt_country_code, @pro_number, @master_bol_number, @service_level, @delivery_appointment_number, @purchase_order_date, "
                 + "@transportation_mode, @carriers_scac_code, @carriers_name, @payment_method, @allowance_or_charge_total_amount, @total_units_shipped,"
-                + "@total_weight_shipped, @lading_quantity, @unit_or_basisvfor_measurement_code,"
+                + "@total_weight_shipped, @lading_quantity, @unit_or_basis_for_measurement_code, @memo, @file_name,"
                 + "@created_by"
                 + ")";
             cmd.Parameters.Add(NewSafeParameter("@customer_order_id", sa945.CustomerOrderId));
@@ -166,6 +166,8 @@ namespace EdiDbUploader.Uploader
             cmd.Parameters.Add(NewSafeParameter("@total_weight_shipped", sa945.TotalWeightShipped));
             cmd.Parameters.Add(NewSafeParameter("@lading_quantity", sa945.LadingQuantity));
             cmd.Parameters.Add(NewSafeParameter("@unit_or_basis_for_measurement_code", sa945.UnitOrBasisForMeasurementCode));
+            cmd.Parameters.Add(NewSafeParameter("@memo", sa945.Memo));
+            cmd.Parameters.Add(NewSafeParameter("@file_name", sa945.FileName));
             cmd.Parameters.Add(NewSafeParameter("@created_by", "DbUploader"));
 
             return cmd;

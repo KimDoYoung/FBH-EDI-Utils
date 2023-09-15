@@ -225,6 +225,7 @@ create table if not exists edi.shipping_945
 	last_update_by varchar(30) null,
 	last_update_on timestamp null,
 	memo varchar(500) NULL,
+	file_name varchar(300) null,
 	primary key(customer_order_id)
 );  
 drop table if exists edi.shipping_945_dtl cascade ;
@@ -314,6 +315,7 @@ CREATE TABLE IF NOT EXISTS edi.shipping_order_940
 (
 	order_id varchar(100) not null,
 	order_no varchar(100) null,
+	balsong_chasu int null,
 	buyer_po_number  varchar(100) null,
 	warehouse_info  varchar(100) null,
 	ship_to  varchar(100) null,
