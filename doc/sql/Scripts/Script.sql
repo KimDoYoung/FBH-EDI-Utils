@@ -9,4 +9,12 @@ SELECT * FROM edi.po_850 p ;
 SELECT * FROM edi.po_850_dtl pd ;
 SELECT * FROM edi.po_850_allowance pa ;
 
-SELECT * FROM edi.
+DELETE FROM edi.po_850 ;
+DELETE FROM edi.po_850_dtl ;
+DELETE FROM edi.po_850_allowance ;
+
+SELECT * FROM edi.company c ;
+SELECT * FROM edi.stocks;
+SELECT * FROM edi.stocks;
+
+

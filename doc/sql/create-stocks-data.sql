@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS edi.stocks
  stk_no varchar(10) null,
  retail_item_no varchar(15) null,
  retail_item_name varchar(100) null,
+ company_id int NULL,
  primary key(warehouse_stock_no)
 );
 
@@ -114,7 +115,12 @@ insert into edi.ship_to_addr(company_id,st_id, dc_nm,ucc_ean_loc_cd, cd_qualifer
 insert into edi.ship_to_addr(company_id,st_id, dc_nm,ucc_ean_loc_cd, cd_qualifer,	des_addr_info,des_city,des_state,des_zip)values(2,'ST-6','REGIONAL DISTRIBUTION CENTER 7853','0078742085470','UL','5100 N RIDGE TRL','DAVENPORT','FL','33897');
 insert into edi.ship_to_addr(company_id,st_id, dc_nm,ucc_ean_loc_cd, cd_qualifer,	des_addr_info,des_city,des_state,des_zip)values(2,'ST-7','CHINO COMBO WHSE 8103','0078742080604','UL','6750 KIMBALL AVENUE','CHINO','CA','91708');
 
+--
+UPDATE edi.stocks SET company_id = 1 WHERE hub_group  = 'Walmart';
+UPDATE edi.stocks SET company_id = 3 WHERE hub_group  = 'Walmart.com';
+UPDATE edi.stocks SET company_id = 3 WHERE hub_group  = 'Kroger';
 
+--SELECT company_id FROM edi.stocks s WHERE retail_item_no ='658517851';
 --select * from edi.ship_to_addr;
 
 -- ship_to_addr
@@ -185,4 +191,3 @@ insert into edi.week_of_year values(3, '20240114',51);
 insert into edi.week_of_year values(3, '20240121',52);
 insert into edi.week_of_year values(3, '20240128',53);
 
-select * from edi.week_of_year;
