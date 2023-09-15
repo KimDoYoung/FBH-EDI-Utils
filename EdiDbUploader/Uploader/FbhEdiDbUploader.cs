@@ -3,6 +3,7 @@ using FBH.EDI.Common.ExcelPdfUtils;
 using FBH.EDI.Common.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace EdiDbUploader
 {
@@ -20,29 +21,38 @@ namespace EdiDbUploader
             this.connectString = connectString;
         }
 
-        internal void insert(string ediFile)
+        internal string insert(string ediFile)
         {
             MessageEventHandler?.Invoke(null, new MessageEventArgs($"{ediFile} upload start "));
             if (ediFile.ToLower().EndsWith(".xlsx"))
             {
                 EdiDocument doc = EdiUtil.EdiDocumentFromFile(ediFile);
-                doc.FileName = ediFile; //filename setting
+                doc.FileName = Path.GetFileName( ediFile ); //filename setting
 
                 EdiUploader uploader = EdiFactory.GetUploader(doc);
                 uploader.SetConnectionString(connectString);
 
                 var result = uploader.Insert(doc);
-                var msg = $"{doc} insert result : {result}";
-                MessageEventHandler?.Invoke(null, new MessageEventArgs(result));
+                var msg = $"insert result : {result}";
+                MessageEventHandler?.Invoke(null, new MessageEventArgs(msg));
+                return result;
             }
             else if(ediFile.ToLower().EndsWith(".pdf"))
             {
                 List<FreightInvoice210> list = PdfUtil.Freight210ListFromPdf(ediFile);
                 EdiUploader210 uploader210 = new EdiUploader210(); ;
+                string result = "OK";
                 foreach (FreightInvoice210 freightInvoice210 in list)
                 {
-                    uploader210.Insert(freightInvoice210);
+                    var r = uploader210.Insert(freightInvoice210);
+                    if (r.StartsWith("NK")) result = r;
+                    var msg = $"insert result : {r}";
+                    MessageEventHandler?.Invoke(null, new MessageEventArgs(msg));
                 }
+                return result;
+            }else
+            {
+                return "NK:지원하지 않는 파일형식입니다";
             }
         }
     }

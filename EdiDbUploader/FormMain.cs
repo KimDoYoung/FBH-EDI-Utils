@@ -114,7 +114,7 @@ namespace EdiDbUploader
                     fd.Title = "Browse Excel Files";
                     fd.CheckFileExists = fd.CheckPathExists = true;
 
-                    fd.Filter = "excel files (*.xlsx)|*.xlsx|pdf files|(*.pdf)|all files (*.*)|*.*";
+                    fd.Filter = "excel files (*.xlsx)|*.xlsx|pdf files (*.pdf)|(*.pdf)|all files (*.*)|*.*";
                     fd.FilterIndex = 0;
                     fd.RestoreDirectory = true;
 
@@ -210,10 +210,18 @@ namespace EdiDbUploader
             try
             {
                 var ediDbUploader = new FbhEdiDbUploader(url);
+                int countOK = 0;
+                int countNK = 0;
                 foreach (var ediFile in list)
                 {
-                    ediDbUploader.insert(ediFile);
+                    var result = ediDbUploader.insert(ediFile);
+                    if (result.StartsWith("OK")) countOK++;
+                    else if (result.StartsWith("NK")) countNK++;
                 }
+                logBox.Write("");
+                logBox.Write("---------------------------------------------------------");
+                logBox.Write($"총파일갯수: {lvEdiExcels.Items.Count}, 성공갯수: {countOK}, 실패갯수 : {countNK}");
+                logBox.Write("---------------------------------------------------------");
             }
             catch (Exception ex)
             {
