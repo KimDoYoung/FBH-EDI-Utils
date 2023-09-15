@@ -107,6 +107,7 @@ namespace FBH.EDI.Common
                 value = worksheet.GetString(row,"A");
                 if (CommonUtil.IsValidCellValue(value) == false) break;
 
+                detail810.InvoiceNo = invoice810.InvoiceNo;
                 detail810.PoNo = invoice810.PoNo;
                 detail810.Seq = seq;
                 detail810.Qty = CommonUtil.ToIntOrNull(worksheet.GetString(row, "A"));
@@ -286,6 +287,7 @@ namespace FBH.EDI.Common
             }
             //allowences
             row = 4;
+            int seq = 1;
             while (row < 5000)
             {
                 PurchaseOrder850Allowance allowence = new PurchaseOrder850Allowance();
@@ -293,6 +295,8 @@ namespace FBH.EDI.Common
                 var value = worksheet.GetString(row, "K");
                 if (CommonUtil.IsValidCellValue(value) == false) break;
 
+                allowence.PoNo = po.PoNo;
+                allowence.Seq = seq;
                 allowence.Charge = worksheet.GetString(row, "K");
                 allowence.DescCd = worksheet.GetString(row, "L");
                 allowence.Amount = CommonUtil.ToInteger(worksheet.GetString(row, "M"));
@@ -300,7 +304,7 @@ namespace FBH.EDI.Common
                 allowence.Percent = CommonUtil.ToDecimal(worksheet.GetString(row, "O"));
 
                 po.Allowences.Add(allowence);
-                row++;
+                row++;seq++;
             }
 
             //companyname

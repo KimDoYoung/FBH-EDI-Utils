@@ -69,19 +69,19 @@ namespace EdiDbUploader.Uploader
                     + "@inbound_pending, @outbound_pending, @damaged_quantity, @onhold_quantity, "
                     + "@available_quantity, @total_inventory"
                     + ")";
-            cmd.Parameters.Add(new NpgsqlParameter("@hub_group_document_number", detail.HubGroupDocumentNumber));
-            cmd.Parameters.Add(new NpgsqlParameter("@assgnd_no", detail.AssgndNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@sku", detail.Sku));
-            cmd.Parameters.Add(new NpgsqlParameter("@lot_code", detail.LotCode));
-            cmd.Parameters.Add(new NpgsqlParameter("@non_committed_in", detail.NonCommittedIn));
-            cmd.Parameters.Add(new NpgsqlParameter("@non_committed_out", detail.NonCommittedOut));
-            cmd.Parameters.Add(new NpgsqlParameter("@on_hand_quantity", detail.OnHandQuantity));
-            cmd.Parameters.Add(new NpgsqlParameter("@inbound_pending", detail.InboundPending));
-            cmd.Parameters.Add(new NpgsqlParameter("@outbound_pending", detail.OutboundPending));
-            cmd.Parameters.Add(new NpgsqlParameter("@damaged_quantity", detail.DamagedQuantity));
-            cmd.Parameters.Add(new NpgsqlParameter("@onhold_quantity", detail.OnHoldQuantity));
-            cmd.Parameters.Add(new NpgsqlParameter("@available_quantity", detail.AvailableQuantity));
-            cmd.Parameters.Add(new NpgsqlParameter("@total_inventory", detail.TotalInventory));
+            cmd.Parameters.Add(NewSafeParameter("@hub_group_document_number", detail.HubGroupDocumentNumber));
+            cmd.Parameters.Add(NewSafeParameter("@assgnd_no", detail.AssgndNo));
+            cmd.Parameters.Add(NewSafeParameter("@sku", detail.Sku));
+            cmd.Parameters.Add(NewSafeParameter("@lot_code", detail.LotCode));
+            cmd.Parameters.Add(NewSafeParameter("@non_committed_in", detail.NonCommittedIn));
+            cmd.Parameters.Add(NewSafeParameter("@non_committed_out", detail.NonCommittedOut));
+            cmd.Parameters.Add(NewSafeParameter("@on_hand_quantity", detail.OnHandQuantity));
+            cmd.Parameters.Add(NewSafeParameter("@inbound_pending", detail.InboundPending));
+            cmd.Parameters.Add(NewSafeParameter("@outbound_pending", detail.OutboundPending));
+            cmd.Parameters.Add(NewSafeParameter("@damaged_quantity", detail.DamagedQuantity));
+            cmd.Parameters.Add(NewSafeParameter("@onhold_quantity", detail.OnHoldQuantity));
+            cmd.Parameters.Add(NewSafeParameter("@available_quantity", detail.AvailableQuantity));
+            cmd.Parameters.Add(NewSafeParameter("@total_inventory", detail.TotalInventory));
             return cmd;
         }
 
@@ -94,17 +94,17 @@ namespace EdiDbUploader.Uploader
                     + ")values("
                     + "@hub_group_document_number, @date_expresses, @date_time_qualifier, @date, @warehouse_name, @warehouse_id, @address_information, @city, @state, @zipcode, @created_by"
                     + ")";
-            cmd.Parameters.Add(new NpgsqlParameter("@hub_group_document_number", inquiry846.HubGroupDocumentNumber));
-            cmd.Parameters.Add(new NpgsqlParameter("@date_expresses", inquiry846.DateExpresses));
-            cmd.Parameters.Add(new NpgsqlParameter("@date_time_qualifier", inquiry846.DateTimeQualifier));
-            cmd.Parameters.Add(new NpgsqlParameter("@date", inquiry846.Date));
-            cmd.Parameters.Add(new NpgsqlParameter("@warehouse_name", inquiry846.WarehouseName));
-            cmd.Parameters.Add(new NpgsqlParameter("@warehouse_id", inquiry846.WarehouseId));
-            cmd.Parameters.Add(new NpgsqlParameter("@address_information", inquiry846.AddressInformation));
-            cmd.Parameters.Add(new NpgsqlParameter("@city", inquiry846.City));
-            cmd.Parameters.Add(new NpgsqlParameter("@state", inquiry846.State));
-            cmd.Parameters.Add(new NpgsqlParameter("@zipcode", inquiry846.Zipcode));
-            cmd.Parameters.Add(new NpgsqlParameter("@created_by", "DbUploader"));
+            cmd.Parameters.Add(NewSafeParameter("@hub_group_document_number", inquiry846.HubGroupDocumentNumber));
+            cmd.Parameters.Add(NewSafeParameter("@date_expresses", inquiry846.DateExpresses));
+            cmd.Parameters.Add(NewSafeParameter("@date_time_qualifier", inquiry846.DateTimeQualifier));
+            cmd.Parameters.Add(NewSafeParameter("@date", inquiry846.Date));
+            cmd.Parameters.Add(NewSafeParameter("@warehouse_name", inquiry846.WarehouseName));
+            cmd.Parameters.Add(NewSafeParameter("@warehouse_id", inquiry846.WarehouseId));
+            cmd.Parameters.Add(NewSafeParameter("@address_information", inquiry846.AddressInformation));
+            cmd.Parameters.Add(NewSafeParameter("@city", inquiry846.City));
+            cmd.Parameters.Add(NewSafeParameter("@state", inquiry846.State));
+            cmd.Parameters.Add(NewSafeParameter("@zipcode", inquiry846.Zipcode));
+            cmd.Parameters.Add(NewSafeParameter("@created_by", "DbUploader"));
             return cmd;
         }
     }

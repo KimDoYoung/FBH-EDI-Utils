@@ -55,18 +55,18 @@ namespace EdiDbUploader
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.invoice_810_dtl("
-                    + "invoice_no,	seq,	po_no,	qty,	msrmnt,	unit_price,	gtin13,	line_ttl"
+                    + "invoice_no,	seq, 	po_no,	qty,	 msrmnt, unit_price,	gtin13,	line_ttl"
                     + ")values("
-                    + "@invoice_no,	@seq,	@po_no,	@qty,	@msrmnt,	@unit_price,	@gtin13,	@line_ttl"
+                    + "@invoice_no,	@seq,	@po_no,	@qty,	@msrmnt,	 @unit_price,	@gtin13, 	@line_ttl"
                     + ")";
-            cmd.Parameters.Add(new NpgsqlParameter("@invoice_no", detail.InvoiceNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@seq", detail.Seq));
-            cmd.Parameters.Add(new NpgsqlParameter("@po_no", detail.PoNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@qty", detail.Qty));
-            cmd.Parameters.Add(new NpgsqlParameter("@msrmnt", detail.Msrmnt));
-            cmd.Parameters.Add(new NpgsqlParameter("@unit_price", detail.UnitPrice));
-            cmd.Parameters.Add(new NpgsqlParameter("@gtin13", detail.Gtin13));
-            cmd.Parameters.Add(new NpgsqlParameter("@line_ttl", detail.LineTtl));
+            cmd.Parameters.Add(NewSafeParameter("@invoice_no", detail.InvoiceNo));
+            cmd.Parameters.Add(NewSafeParameter("@seq", detail.Seq));
+            cmd.Parameters.Add(NewSafeParameter("@po_no", detail.PoNo));
+            cmd.Parameters.Add(NewSafeParameter("@qty", detail.Qty));
+            cmd.Parameters.Add(NewSafeParameter("@msrmnt", detail.Msrmnt));
+            cmd.Parameters.Add(NewSafeParameter("@unit_price", detail.UnitPrice));
+            cmd.Parameters.Add(NewSafeParameter("@gtin13", detail.Gtin13));
+            cmd.Parameters.Add(NewSafeParameter("@line_ttl", detail.LineTtl));
             return cmd;
         }
 
@@ -78,33 +78,35 @@ namespace EdiDbUploader
                 + "invoice_no, po_no,"
                 + "supplier_nm, supplier_city, supplier_state, supplier_zip, supplier_country,"
                 + "department_no, currency, vendor_no, net_day, mcd_type, fob,"
-                + "ship_to_nm, ship_to_gln, ship_to_addr, ttl_amt,"
+                + "ship_to_nm, ship_to_gln, ship_to_addr, ttl_amt, memo, file_name,"
                 + "created_by"
                 + ")values("
                 + "@invoice_no, @po_no,"
                 + "@supplier_nm, @supplier_city, @supplier_state, @supplier_zip, @supplier_country,"
                 + "@department_no, @currency, @vendor_no, @net_day, @mcd_type, @fob,"
-                + "@ship_to_nm, @ship_to_gln, @ship_to_addr, @ttl_amt,"
+                + "@ship_to_nm, @ship_to_gln, @ship_to_addr, @ttl_amt, @memo, @file_name,"
                 + "@created_by"
                 + ")";
-            cmd.Parameters.Add(new NpgsqlParameter("@invoice_no", invoice810.InvoiceNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@po_no", invoice810.PoNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@supplier_nm", invoice810.SupplierNm));
-            cmd.Parameters.Add(new NpgsqlParameter("@supplier_city", invoice810.SupplierCity));
-            cmd.Parameters.Add(new NpgsqlParameter("@supplier_state", invoice810.SupplierState));
-            cmd.Parameters.Add(new NpgsqlParameter("@supplier_zip", invoice810.SupplierZip));
-            cmd.Parameters.Add(new NpgsqlParameter("@supplier_country", invoice810.SupplierCountry));
-            cmd.Parameters.Add(new NpgsqlParameter("@department_no", invoice810.DepartmentNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@currency", invoice810.Currency));
-            cmd.Parameters.Add(new NpgsqlParameter("@vendor_no", invoice810.VendorNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@net_day", invoice810.NetDay));
-            cmd.Parameters.Add(new NpgsqlParameter("@mcd_type", invoice810.McdType));
-            cmd.Parameters.Add(new NpgsqlParameter("@fob", invoice810.Fob));
-            cmd.Parameters.Add(new NpgsqlParameter("@ship_to_nm", invoice810.ShipToNm));
-            cmd.Parameters.Add(new NpgsqlParameter("@ship_to_gln", invoice810.ShipToGln));
-            cmd.Parameters.Add(new NpgsqlParameter("@ship_to_addr", invoice810.ShipToAddr));
-            cmd.Parameters.Add(new NpgsqlParameter("@ttl_amt", invoice810.TtlAmt));
-            cmd.Parameters.Add(new NpgsqlParameter("@created_by", "DbUploader"));
+            cmd.Parameters.Add(NewSafeParameter("@invoice_no", invoice810.InvoiceNo));
+            cmd.Parameters.Add(NewSafeParameter("@po_no", invoice810.PoNo));
+            cmd.Parameters.Add(NewSafeParameter("@supplier_nm", invoice810.SupplierNm));
+            cmd.Parameters.Add(NewSafeParameter("@supplier_city", invoice810.SupplierCity));
+            cmd.Parameters.Add(NewSafeParameter("@supplier_state", invoice810.SupplierState));
+            cmd.Parameters.Add(NewSafeParameter("@supplier_zip", invoice810.SupplierZip));
+            cmd.Parameters.Add(NewSafeParameter("@supplier_country", invoice810.SupplierCountry));
+            cmd.Parameters.Add(NewSafeParameter("@department_no", invoice810.DepartmentNo));
+            cmd.Parameters.Add(NewSafeParameter("@currency", invoice810.Currency));
+            cmd.Parameters.Add(NewSafeParameter("@vendor_no", invoice810.VendorNo));
+            cmd.Parameters.Add(NewSafeParameter("@net_day", invoice810.NetDay));
+            cmd.Parameters.Add(NewSafeParameter("@mcd_type", invoice810.McdType));
+            cmd.Parameters.Add(NewSafeParameter("@fob", invoice810.Fob));
+            cmd.Parameters.Add(NewSafeParameter("@ship_to_nm", invoice810.ShipToNm));
+            cmd.Parameters.Add(NewSafeParameter("@ship_to_gln", invoice810.ShipToGln));
+            cmd.Parameters.Add(NewSafeParameter("@ship_to_addr", invoice810.ShipToAddr));
+            cmd.Parameters.Add(NewSafeParameter("@ttl_amt", invoice810.TtlAmt));
+            cmd.Parameters.Add(NewSafeParameter("@memo", invoice810.Memo));
+            cmd.Parameters.Add(NewSafeParameter("@file_name", invoice810.FileName));
+            cmd.Parameters.Add(NewSafeParameter("@created_by", "DbUploader"));
 
             return cmd;
         }

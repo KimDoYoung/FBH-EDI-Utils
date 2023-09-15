@@ -33,7 +33,7 @@ namespace EdiDbUploader
                 uploader.SetConnectionString(connectString);
 
                 var result = uploader.Insert(doc);
-                var msg = $"insert result : {result}";
+                var msg = $"{doc} insert result : {result}";
                 MessageEventHandler?.Invoke(null, new MessageEventArgs(msg));
                 return result;
             }

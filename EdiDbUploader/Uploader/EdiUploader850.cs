@@ -61,17 +61,18 @@ namespace EdiDbUploader
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
-            cmd.CommandText = "insert into edi.po_850_dtl("
-                    + "po_no, charge, desc_cd, amount, handling_cd, percent"
+            cmd.CommandText = "insert into edi.po_850_allowance("
+                    + "po_no, seq, charge, desc_cd, amount, handling_cd, percent"
                     + ")values("
-                    + "@po_no, @charge, @desc_cd, @amount, @handling_cd, @percent"
+                    + "@po_no, @seq, @charge, @desc_cd, @amount, @handling_cd, @percent"
                     + ")";
-            cmd.Parameters.Add(new NpgsqlParameter("@po_no", allowance.PoNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@charge", allowance.Charge));
-            cmd.Parameters.Add(new NpgsqlParameter("@desc_cd", allowance.DescCd));
-            cmd.Parameters.Add(new NpgsqlParameter("@amount", allowance.Amount));
-            cmd.Parameters.Add(new NpgsqlParameter("@handling_cd", allowance.HandlingCd));
-            cmd.Parameters.Add(new NpgsqlParameter("@percent", allowance.Percent));
+            cmd.Parameters.Add(NewSafeParameter("@po_no", allowance.PoNo));
+            cmd.Parameters.Add(NewSafeParameter("@seq", allowance.Seq));
+            cmd.Parameters.Add(NewSafeParameter("@charge", allowance.Charge));
+            cmd.Parameters.Add(NewSafeParameter("@desc_cd", allowance.DescCd));
+            cmd.Parameters.Add(NewSafeParameter("@amount", allowance.Amount));
+            cmd.Parameters.Add(NewSafeParameter("@handling_cd", allowance.HandlingCd));
+            cmd.Parameters.Add(NewSafeParameter("@percent", allowance.Percent));
             return cmd;
 
         }
@@ -80,21 +81,21 @@ namespace EdiDbUploader
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
-            cmd.CommandText = "insert into edi.po_850("
+            cmd.CommandText = "insert into edi.po_850_dtl("
                     + "po_no, line, company_id, msrmnt, unit_price, gtin13, retailer_item_no, vendor_item_no, description, extended_cost"
                     + ")values("
                     + "@po_no, @line, @company_id, @msrmnt, @unit_price, @gtin13, @retailer_item_no, @vendor_item_no, @description, @extended_cost"
                     + ")";
-            cmd.Parameters.Add(new NpgsqlParameter("@po_no", detail.PoNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@line", detail.Line));
-            cmd.Parameters.Add(new NpgsqlParameter("@company_id", detail. CompanyId));
-            cmd.Parameters.Add(new NpgsqlParameter("@msrmnt", detail.Msrmnt));
-            cmd.Parameters.Add(new NpgsqlParameter("@unit_price", detail.UnitPrice));
-            cmd.Parameters.Add(new NpgsqlParameter("@gtin13", detail.Gtin13));
-            cmd.Parameters.Add(new NpgsqlParameter("@retailer_item_no", detail.RetailerItemNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@vendor_item_no", detail.VendorItemNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@description", detail.Description));
-            cmd.Parameters.Add(new NpgsqlParameter("@extended_cost", detail.ExtendedCost));
+            cmd.Parameters.Add(NewSafeParameter("@po_no", detail.PoNo));
+            cmd.Parameters.Add(NewSafeParameter("@line", detail.Line));
+            cmd.Parameters.Add(NewSafeParameter("@company_id", detail. CompanyId));
+            cmd.Parameters.Add(NewSafeParameter("@msrmnt", detail.Msrmnt));
+            cmd.Parameters.Add(NewSafeParameter("@unit_price", detail.UnitPrice));
+            cmd.Parameters.Add(NewSafeParameter("@gtin13", detail.Gtin13));
+            cmd.Parameters.Add(NewSafeParameter("@retailer_item_no", detail.RetailerItemNo));
+            cmd.Parameters.Add(NewSafeParameter("@vendor_item_no", detail.VendorItemNo));
+            cmd.Parameters.Add(NewSafeParameter("@description", detail.Description));
+            cmd.Parameters.Add(NewSafeParameter("@extended_cost", detail.ExtendedCost));
             return cmd;
         }
 
@@ -102,13 +103,13 @@ namespace EdiDbUploader
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
-            cmd.CommandText = "insert into edi.invoice_810("
+            cmd.CommandText = "insert into edi.po_850("
                + "po_no, po_dt, promotion_deal_no, department_no, vendor_no, order_type, net_day, "
                + "delivery_ref_no, ship_not_before, ship_no_later, must_arrive_by, carrier_detail, "
                + "location, ship_payment, description, note, "
                + "bt_gln, bt_nm, bt_addr, bt_city, bt_state, bt_zip, bt_country, "
                + "st_gln, st_nm, st_addr, st_city, st_state, st_zip, st_country, "
-               + "company_name, week_of_year, "
+               + "company_name, week_of_year, memo, file_name, "
                + "created_by"
                + ")values("
                + "@po_no, @po_dt, @promotion_deal_no, @department_no, @vendor_no, @order_type, @net_day, "
@@ -116,42 +117,44 @@ namespace EdiDbUploader
                + "@location, @ship_payment, @description, @note, "
                + "@bt_gln, @bt_nm, @bt_addr, @bt_city, @bt_state, @bt_zip, @bt_country, "
                + "@st_gln, @st_nm, @st_addr, @st_city, @st_state, @st_zip, @st_country, "
-               + "@company_name, @week_of_year, "
+               + "@company_name, @week_of_year, @memo, @file_name,"
                + "@created_by"
                + ")";
-            cmd.Parameters.Add(new NpgsqlParameter("@po_no", po850.PoNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@po_dt", po850.PoDt));
-            cmd.Parameters.Add(new NpgsqlParameter("@promotion_deal_no", po850.PromotionDealNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@department_no", po850.DepartmentNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@vendor_no", po850.VendorNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@order_type", po850.OrderType));
-            cmd.Parameters.Add(new NpgsqlParameter("@net_day", po850.NetDay));
-            cmd.Parameters.Add(new NpgsqlParameter("@delivery_ref_no", po850.DeliveryRefNo));
-            cmd.Parameters.Add(new NpgsqlParameter("@ship_not_before", po850.ShipNotBefore));
-            cmd.Parameters.Add(new NpgsqlParameter("@ship_no_later", po850.ShipNoLater));
-            cmd.Parameters.Add(new NpgsqlParameter("@must_arrive_by", po850.MustArriveBy));
-            cmd.Parameters.Add(new NpgsqlParameter("@carrier_detail", po850.CarrierDetail));
-            cmd.Parameters.Add(new NpgsqlParameter("@location", po850.Location));
-            cmd.Parameters.Add(new NpgsqlParameter("@ship_payment", po850.ShipPayment));
-            cmd.Parameters.Add(new NpgsqlParameter("@description", po850.Description));
-            cmd.Parameters.Add(new NpgsqlParameter("@note", po850.Note));
-            cmd.Parameters.Add(new NpgsqlParameter("@bt_gln", po850.BtGln));
-            cmd.Parameters.Add(new NpgsqlParameter("@bt_nm", po850.BtNm));
-            cmd.Parameters.Add(new NpgsqlParameter("@bt_addr", po850.BtAddr));
-            cmd.Parameters.Add(new NpgsqlParameter("@bt_city", po850.BtCity));
-            cmd.Parameters.Add(new NpgsqlParameter("@bt_state", po850.BtState));
-            cmd.Parameters.Add(new NpgsqlParameter("@bt_zip", po850.BtZip));
-            cmd.Parameters.Add(new NpgsqlParameter("@bt_country", po850.BtCountry));
-            cmd.Parameters.Add(new NpgsqlParameter("@st_gln", po850.StGln));
-            cmd.Parameters.Add(new NpgsqlParameter("@st_nm", po850.StNm));
-            cmd.Parameters.Add(new NpgsqlParameter("@st_addr", po850.StAddr));
-            cmd.Parameters.Add(new NpgsqlParameter("@st_city", po850.StCity));
-            cmd.Parameters.Add(new NpgsqlParameter("@st_state", po850.StState));
-            cmd.Parameters.Add(new NpgsqlParameter("@st_zip", po850.StZip));
-            cmd.Parameters.Add(new NpgsqlParameter("@st_country", po850.StCountry));
-            cmd.Parameters.Add(new NpgsqlParameter("@company_name", po850.CompanyName));
-            cmd.Parameters.Add(new NpgsqlParameter("@week_of_year", po850.WeekOfYear));
-            cmd.Parameters.Add(new NpgsqlParameter("@created_by", "DbUploader"));
+            cmd.Parameters.Add(NewSafeParameter("@po_no", po850.PoNo));
+            cmd.Parameters.Add(NewSafeParameter("@po_dt", po850.PoDt));
+            cmd.Parameters.Add(NewSafeParameter("@promotion_deal_no", po850.PromotionDealNo));
+            cmd.Parameters.Add(NewSafeParameter("@department_no", po850.DepartmentNo));
+            cmd.Parameters.Add(NewSafeParameter("@vendor_no", po850.VendorNo));
+            cmd.Parameters.Add(NewSafeParameter("@order_type", po850.OrderType));
+            cmd.Parameters.Add(NewSafeParameter("@net_day", po850.NetDay));
+            cmd.Parameters.Add(NewSafeParameter("@delivery_ref_no", po850.DeliveryRefNo));
+            cmd.Parameters.Add(NewSafeParameter("@ship_not_before", po850.ShipNotBefore));
+            cmd.Parameters.Add(NewSafeParameter("@ship_no_later", po850.ShipNoLater));
+            cmd.Parameters.Add(NewSafeParameter("@must_arrive_by", po850.MustArriveBy));
+            cmd.Parameters.Add(NewSafeParameter("@carrier_detail", po850.CarrierDetail));
+            cmd.Parameters.Add(NewSafeParameter("@location", po850.Location));
+            cmd.Parameters.Add(NewSafeParameter("@ship_payment", po850.ShipPayment));
+            cmd.Parameters.Add(NewSafeParameter("@description", po850.Description));
+            cmd.Parameters.Add(NewSafeParameter("@note", po850.Note));
+            cmd.Parameters.Add(NewSafeParameter("@bt_gln", po850.BtGln));
+            cmd.Parameters.Add(NewSafeParameter("@bt_nm", po850.BtNm));
+            cmd.Parameters.Add(NewSafeParameter("@bt_addr", po850.BtAddr));
+            cmd.Parameters.Add(NewSafeParameter("@bt_city", po850.BtCity));
+            cmd.Parameters.Add(NewSafeParameter("@bt_state", po850.BtState));
+            cmd.Parameters.Add(NewSafeParameter("@bt_zip", po850.BtZip));
+            cmd.Parameters.Add(NewSafeParameter("@bt_country", po850.BtCountry));
+            cmd.Parameters.Add(NewSafeParameter("@st_gln", po850.StGln));
+            cmd.Parameters.Add(NewSafeParameter("@st_nm", po850.StNm));
+            cmd.Parameters.Add(NewSafeParameter("@st_addr", po850.StAddr));
+            cmd.Parameters.Add(NewSafeParameter("@st_city", po850.StCity));
+            cmd.Parameters.Add(NewSafeParameter("@st_state", po850.StState));
+            cmd.Parameters.Add(NewSafeParameter("@st_zip", po850.StZip));
+            cmd.Parameters.Add(NewSafeParameter("@st_country", po850.StCountry));
+            cmd.Parameters.Add(NewSafeParameter("@company_name", po850.CompanyName));
+            cmd.Parameters.Add(NewSafeParameter("@week_of_year", po850.WeekOfYear));
+            cmd.Parameters.Add(NewSafeParameter("@memo", po850.Memo));
+            cmd.Parameters.Add(NewSafeParameter("@file_name", po850.FileName));
+            cmd.Parameters.Add(NewSafeParameter("@created_by", "DbUploader"));
             return cmd;
         }
     }

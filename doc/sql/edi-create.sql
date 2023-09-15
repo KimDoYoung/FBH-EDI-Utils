@@ -5,7 +5,7 @@
 DROP TABLE IF EXISTS edi.invoice_810 CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.invoice_810 
 (
-	invoice_no VARCHAR(30) PRIMARY KEY,	 
+	invoice_no VARCHAR(30) NOT null,	 
 	po_no varchar(30) null,
 	supplier_nm  varchar(100) null,
 	supplier_city varchar(100) null,
@@ -23,10 +23,13 @@ CREATE TABLE IF NOT EXISTS edi.invoice_810
 	ship_to_addr varchar(100) null,
 	ttl_amt decimal(10,2) null,
 	memo varchar(500) NULL,
+	file_name varchar(300) NULL,
 	created_by varchar(30) not null,
 	created_on timestamp not null default CURRENT_TIMESTAMP,
 	last_update_by varchar(30) null,
-	last_update_on timestamp null
+	last_update_on timestamp NULL,
+	--
+	PRIMARY key(invoice_no )
 );
 
 DROP TABLE IF EXISTS edi.invoice_810_dtl CASCADE ;
@@ -64,7 +67,7 @@ CREATE TABLE IF NOT EXISTS edi.po_850
 	location  varchar(100) null,
 	ship_payment  varchar(100) null,
 	description  varchar(100) null,
-	note  varchar(100) null,
+	note  varchar(1000) null,
 	bt_gln  varchar(100) null,
 	bt_nm  varchar(100) null,
 	bt_addr  varchar(100) null,
@@ -86,6 +89,7 @@ CREATE TABLE IF NOT EXISTS edi.po_850
 	last_update_by varchar(30) null,
 	last_update_on timestamp null,
 	memo varchar(500) NULL,
+	file_name varchar(300) NULL,
 	primary key( po_no)
  );
 DROP TABLE IF EXISTS edi.po_850_dtl CASCADE ;
@@ -109,12 +113,13 @@ DROP TABLE IF EXISTS edi.po_850_allowance CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.po_850_allowance
 (
 	po_no varchar(30) not null,
+	seq int NOT NULL,
 	charge varchar(100) not null,
 	desc_cd varchar(100) null,
 	amount int null,
 	handling_cd varchar(100) null,
 	percent decimal(8,2) null,
-	primary key (po_no, charge),
+	primary key (po_no, seq),
 	CONSTRAINT fk_po_no_allowance FOREIGN KEY (po_no) 
 	    REFERENCES edi.po_850(po_no) ON DELETE CASCADE ON UPDATE CASCADE
 );
