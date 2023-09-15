@@ -28,7 +28,13 @@ namespace EdiDbUploader
             var programPath = System.IO.Path.GetDirectoryName(strExeFilePath);
             configPath = $"{programPath}/EdiDbUpload.config";
             config = new FileConfig(configPath);
-            
+
+            FbhEdiDbUploader.MessageEventHandler += FbhEdiDbUploader_MessageEventHandler;
+        }
+
+        private void FbhEdiDbUploader_MessageEventHandler(object sender, MessageEventArgs e)
+        {
+            logBox.Write(e.Message);
         }
 
         private void FormMain_DragDrop(object sender, DragEventArgs e)
@@ -69,8 +75,8 @@ namespace EdiDbUploader
                 configForm.Host = config.Get("Host", "jskn.iptime.org");
                 configForm.Port = Convert.ToInt32(config.Get("Port", "5432"));
                 configForm.Database = config.Get("Database", "fbhdb");
-                configForm.Username = config.Get("Username", "kdy987");
-                configForm.Password = config.Get("Password", "kalpa987!");
+                configForm.Username = config.Get("Username", "postgres");
+                configForm.Password = config.Get("Password", "postgres");
 
                 if (configForm.ShowDialog() == DialogResult.OK)
                 {
@@ -200,7 +206,7 @@ namespace EdiDbUploader
             var Username= config.Get("Username");
             var Password= config.Get("Password");
             var url = $"Host={Host};Port={Port};Database={Database};User ID={Username};Password={Password}";
-            
+            logBox.Write("db url:" + url);
             try
             {
                 var ediDbUploader = new FbhEdiDbUploader(url);

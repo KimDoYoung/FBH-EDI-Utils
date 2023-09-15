@@ -50,6 +50,7 @@ namespace FBH.EDI.Common.Model
 
         public PurchaseOrder850()
         {
+            DocumentNo = EdiDocumentNo.Purchase_Order_850;
             Details = new List<PurchaseOrder850Detail>();
             Allowences = new List<PurchaseOrder850Allowance>();
         }

@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS edi.invoice_810
 	ship_to_gln varchar(100) null,
 	ship_to_addr varchar(100) null,
 	ttl_amt decimal(10,2) null,
+	memo varchar(500) NULL,
 	created_by varchar(30) not null,
 	created_on timestamp not null default CURRENT_TIMESTAMP,
 	last_update_by varchar(30) null,
@@ -84,6 +85,7 @@ CREATE TABLE IF NOT EXISTS edi.po_850
 	created_on timestamp not null default CURRENT_TIMESTAMP,
 	last_update_by varchar(30) null,
 	last_update_on timestamp null,
+	memo varchar(500) NULL,
 	primary key( po_no)
  );
 DROP TABLE IF EXISTS edi.po_850_dtl CASCADE ;
@@ -132,6 +134,7 @@ CREATE TABLE IF NOT EXISTS edi.freight_210
 	amount_to_be_paid  decimal(10,2) null,
 	po_number  varchar(100) null,
 	vics_bol_no  varchar(100) null,
+	dc_no varchar(10) NULL,
 	--
 	warehouse_name varchar(100) null,
 	warehouse_address varchar(200) null,
@@ -144,12 +147,14 @@ CREATE TABLE IF NOT EXISTS edi.freight_210
 	total_weight_unit varchar(10) null,
 	weight_qualifier  varchar(10) null,
 	amount_charged  decimal(10,2) null,
-	qty int,	
+	qty int,
+	memo varchar(500) NULL,
 	--
 	created_by varchar(30) not null,
 	created_on timestamp not null default CURRENT_TIMESTAMP,
 	last_update_by varchar(30) null,
 	last_update_on timestamp null,
+	file_name varchar(300) NULL,
 	primary key(invoice_no)
 );
 
@@ -214,6 +219,7 @@ create table if not exists edi.shipping_945
 	created_on timestamp not null default current_timestamp,
 	last_update_by varchar(30) null,
 	last_update_on timestamp null,
+	memo varchar(500) NULL,
 	primary key(customer_order_id)
 );  
 drop table if exists edi.shipping_945_dtl cascade ;
@@ -235,6 +241,7 @@ create table if not exists edi.shipping_945_dtl
 	retailers_item_number  varchar(100) null,
 	line_number  varchar(100) null,
 	expiration_date  varchar(100) null,
+	memo varchar(500) NULL,
 	primary key(customer_order_id, assigned_number),
 	CONSTRAINT fk_customer_order_id_945 FOREIGN KEY (customer_order_id) 
 	    REFERENCES edi.shipping_945(customer_order_id) ON DELETE CASCADE ON UPDATE CASCADE	
@@ -266,12 +273,13 @@ CREATE TABLE IF NOT EXISTS edi.transfer_944
 	quantity_received  varchar(100) null, 
 	number_of_units_shipped  varchar(100) null, 
 	quantity_damaged_on_hold  varchar(100) null, 
-
+	memo varchar(500) NULL,
+--
 	created_by varchar(30) not null,
 	created_on timestamp not null default current_timestamp,
 	last_update_by varchar(30) null,
 	last_update_on timestamp null,
-
+--
 	primary key(hub_groups_order_number)
 );
 
@@ -311,7 +319,8 @@ CREATE TABLE IF NOT EXISTS edi.shipping_order_940
 	purchase_order_date  varchar(100) null,
 	warehouse_carrier_info  varchar(100) null,
 	order_group_id  varchar(100) null,
-
+	memo varchar(500) NULL,
+--	
 	created_by varchar(30) not null,
 	created_on timestamp not null default current_timestamp,
 	last_update_by varchar(30) null,
@@ -368,7 +377,8 @@ CREATE TABLE IF NOT EXISTS edi.inquiry_846
 	city  varchar(100) null,
 	state  varchar(100) null,
 	zipcode  varchar(100) null,
-
+	memo varchar(500) NULL,
+--
 	created_by varchar(30) not null,
 	created_on timestamp not null default current_timestamp,
 	last_update_by varchar(30) null,

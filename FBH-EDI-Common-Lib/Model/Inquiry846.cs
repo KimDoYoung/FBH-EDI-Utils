@@ -22,6 +22,7 @@ namespace FBH.EDI.Common.Model
         public List<Inquiry846Detail> Details = null;
         public Inquiry846()
         {
+            DocumentNo = EdiDocumentNo.Inventory_Inquiry_Advice_846;
             Details = new List<Inquiry846Detail>();
         }
         override public string ToString()

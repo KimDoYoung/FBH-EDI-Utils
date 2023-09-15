@@ -1,0 +1,36 @@
+{
+	"folders": {},
+	"connections": {
+		"postgres-jdbc-18a9642c3b1-3701fba59d3333ec": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "fbhdb",
+			"save-password": true,
+			"configuration": {
+				"host": "jskn.iptime.org",
+				"port": "5432",
+				"database": "fbhdb",
+				"url": "jdbc:postgresql://jskn.iptime.org:5432/fbhdb",
+				"configurationType": "MANUAL",
+				"home": "postgresql-x64-12",
+				"type": "dev",
+				"provider-properties": {},
+				"auth-model": "native"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"smart-commit": false,
+			"smart-commit-recover": false,
+			"auto-close-transactions": true,
+			"close-transactions-period": 1800
+		}
+	}
+}

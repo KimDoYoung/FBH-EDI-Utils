@@ -40,7 +40,7 @@ namespace EdiDbUploader
                 conn.Open();
                 if (conn.State == System.Data.ConnectionState.Open)
                 {
-                    MessageBox.Show("Connection OK");
+                    MessageBox.Show("Connection OK","성공", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {

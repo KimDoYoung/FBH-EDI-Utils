@@ -35,6 +35,7 @@ namespace FBH.EDI.Common.Model
 
         public Transfer944()
         {
+            DocumentNo = EdiDocumentNo.Warehouse_Stock_Transfer_Receipt_Advice_944;
             Details = new List<Transfer944Detail>();
         }
         override public string ToString()

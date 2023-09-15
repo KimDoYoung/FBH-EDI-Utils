@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace FBH.EDI.Common
 {
-    public enum EdiDocumentType
+    public enum EdiDocumentNo
     {
         Unknown = 0,
         Freight_Invoice_210 = 210,
         Invoice_810 = 810,
-        Inventory_Inquiry_Advice = 846,
+        Inventory_Inquiry_Advice_846 = 846,
         Purchase_Order_850 = 850,
         Warehouse_Shipping_Order_940 = 940,
         Warehouse_Stock_Transfer_Receipt_Advice_944 = 944,

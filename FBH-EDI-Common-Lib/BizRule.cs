@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FBH.EDI.Common
@@ -36,6 +37,16 @@ namespace FBH.EDI.Common
                 }
             }
             return false;
+        }
+        /// <summary>
+        /// DCNo는 DC라는 문자열 다음에 3~4개의 숫자로 되어 있다.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        internal static string ExtractDc(string s)
+        {
+            var resultString = Regex.Match(s, @"\d{3,4}").Value;
+            return resultString;
         }
     }
 }

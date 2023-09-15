@@ -11,11 +11,12 @@ namespace FBH.EDI.Common.Model
         public string ShipIdNo { get; set; } //Shipment ID number
         public string ShipMethodOfPayment { get; set; } // Shipment Method of Payment
 
-        public int? AmountToBePaid { get; set; } //Amount to be Paid
+        public decimal? AmountToBePaid { get; set; } //Amount to be Paid
 
         //Reference Identification	
         public string PoNumber { get; set; } // Purchase Order Number
         public string VicsBolNo { get; set; } //VICS BOL Number
+        public string DcNo { get; set; }
 
         public string WarehouseName { get; set; }
         public string WarehouseAddress { get; set; }
@@ -32,11 +33,11 @@ namespace FBH.EDI.Common.Model
         public decimal? AmountCharged { get; set; }
 
         public int? Qty { get; set; }
-        public string ExcelFileName { get; internal set; }
 
 
         public FreightInvoice210()
         {
+            DocumentNo = EdiDocumentNo.Freight_Invoice_210;
         }
 
         override public string ToString()
@@ -51,7 +52,7 @@ namespace FBH.EDI.Common.Model
                 + $"TotalWeight : {TotalWeight}\r\n"
                 + $"TotalWeightUnit : {TotalWeightUnit}\r\n"
                 + $"AmountCharged : {AmountCharged}\r\n"
-                + $"ExcelFileName : {ExcelFileName}\r\n";
+                + $"ExcelFileName : {FileName}\r\n";
             return s;
         }
 

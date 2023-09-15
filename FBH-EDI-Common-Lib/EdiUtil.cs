@@ -376,7 +376,7 @@ namespace FBH.EDI.Common
             var ShipFromState = worksheet.GetString("F7");
             var ShipFromZipcode = worksheet.GetString("F8");
             var ShipFromCountryCd = worksheet.GetString("F9");
-            invoice210.WarehouseAddress = $"{ShipFromAddrInfo}, {ShipFromCity}, {ShipFromState}, {ShipFromZipcode}, {ShipFromZipcode}";
+            invoice210.WarehouseAddress = AddressString(ShipFromAddrInfo, ShipFromCity, ShipFromState, ShipFromZipcode, ShipFromZipcode);
 
             invoice210.ConsigneeName = worksheet.GetString("H4");
             var ShipToAddrInfo = worksheet.GetString("H5");
@@ -384,7 +384,8 @@ namespace FBH.EDI.Common
             var ShipToState = worksheet.GetString("H7");
             var ShipToZipcode = worksheet.GetString("H8");
             var ShipToCountryCd = worksheet.GetString("H9");
-            invoice210.ConsigneeAddress = $"{ShipToAddrInfo}, {ShipToCity}, {ShipToState}, {ShipToZipcode}, {ShipToCountryCd}";
+            invoice210.ConsigneeAddress = AddressString(ShipToAddrInfo, ShipToCity, ShipToState, ShipToZipcode, ShipToCountryCd);
+            invoice210.DcNo = BizRule.ExtractDc(invoice210.ConsigneeName);
 
             invoice210.BillToName = worksheet.GetString("J4"); 
             var BillToAddrInfo = worksheet.GetString("J5");
@@ -392,7 +393,7 @@ namespace FBH.EDI.Common
             var BillToState = worksheet.GetString("J7");
             var BillToZipcode = worksheet.GetString("J8");
             var BillToCountryCd = worksheet.GetString("J9");
-            invoice210.BillToAddress = $"{BillToAddrInfo}, {BillToCity}, {BillToState}, {BillToZipcode}, {BillToCountryCd}";
+            invoice210.BillToAddress = AddressString(BillToAddrInfo, BillToCity, BillToState, BillToZipcode, BillToCountryCd);
 
             invoice210.TotalWeight = CommonUtil.ToDecimalOrNull(worksheet.GetString("B13"));
             invoice210.TotalWeightUnit = worksheet.GetString("C13");
@@ -402,6 +403,25 @@ namespace FBH.EDI.Common
 
 
             return invoice210;
+        }
+
+
+
+        private static string AddressString(string shipFromAddrInfo, string shipFromCity, string shipFromState, string shipFromZipcode1, string shipFromZipcode2)
+        {
+            var address = string.IsNullOrEmpty(shipFromAddrInfo) ? "" : shipFromAddrInfo + ", ";
+            address += string.IsNullOrEmpty(shipFromCity) ? "" : shipFromCity + ", ";
+            address += string.IsNullOrEmpty(shipFromState) ? "" : shipFromState + ", ";
+            address += string.IsNullOrEmpty(shipFromZipcode1) ? "" : shipFromZipcode1 + ", ";
+            address += string.IsNullOrEmpty(shipFromZipcode2) ? "" : shipFromZipcode2;
+
+            address = address.Trim();
+            if (address.EndsWith(","))
+            {
+                address = address.Substring(0, address.Length - 1);
+            }
+            return address;
+
         }
 
         /// <summary>

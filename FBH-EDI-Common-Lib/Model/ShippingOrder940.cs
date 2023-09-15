@@ -24,6 +24,7 @@ namespace FBH.EDI.Common.Model
         public List<ShippingOrder940Detail> Details = null;
         public ShippingOrder940()
         {
+            DocumentNo = EdiDocumentNo.Warehouse_Shipping_Order_940;
             Details = new List<ShippingOrder940Detail>();
         }
 

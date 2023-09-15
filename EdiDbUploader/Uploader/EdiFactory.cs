@@ -9,19 +9,19 @@ namespace EdiDbUploader
     {
         internal static EdiUploader GetUploader(EdiDocument doc)
         {
-            if(doc.DocumentNo == EdiDocumentType.Freight_Invoice_210)
+            if(doc.DocumentNo == EdiDocumentNo.Freight_Invoice_210)
             {
                 return new EdiUploader210();
             }
-            else if(doc.DocumentNo == EdiDocumentType.Purchase_Order_850)
+            else if(doc.DocumentNo == EdiDocumentNo.Purchase_Order_850)
             {
                 return new EdiUploader850();
             }
-            else if (doc.DocumentNo == EdiDocumentType.Invoice_810)
+            else if (doc.DocumentNo == EdiDocumentNo.Invoice_810)
             {
                 return new EdiUploader810();
             }
-            else if (doc.DocumentNo == EdiDocumentType.Invoice_810)
+            else if (doc.DocumentNo == EdiDocumentNo.Invoice_810)
             {
                 return new EdiUploader810();
             }

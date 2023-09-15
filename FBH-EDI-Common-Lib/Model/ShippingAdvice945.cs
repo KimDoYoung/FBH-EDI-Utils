@@ -73,6 +73,7 @@ namespace FBH.EDI.Common.Model
         public List<ShippingAdvice945Detail> Details { get; set; }
         public ShippingAdvice945()
         {
+            DocumentNo = EdiDocumentNo.Warehouse_Shipping_Advice_945;
             Details = new List<ShippingAdvice945Detail>();
         }
 

@@ -30,6 +30,7 @@ namespace FBH.EDI.Common.Model
 
         public Invoice810()
         {
+            DocumentNo = EdiDocumentNo.Invoice_810;
             Details = new List<Invoice810Detail>();
         }
         override public string ToString()

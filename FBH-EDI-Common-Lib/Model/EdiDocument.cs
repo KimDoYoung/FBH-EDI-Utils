@@ -11,6 +11,8 @@ namespace FBH.EDI.Common.Model
     /// </summary>
     public class EdiDocument
     {
-        public EdiDocumentType DocumentNo { get; set; }
+        public EdiDocumentNo DocumentNo { get; set; }
+        public string FileName { get;  set; }
+        public string Memo { get; set; }
     }
 }

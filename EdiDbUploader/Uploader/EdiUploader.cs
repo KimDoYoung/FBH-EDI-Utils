@@ -1,5 +1,6 @@
 ﻿using FBH.EDI.Common.Model;
 using Npgsql;
+using NpgsqlTypes;
 using System;
 using System.Data;
 
@@ -13,17 +14,17 @@ namespace EdiDbUploader
         private string connectionString;
         private NpgsqlConnection connection;
 
-        protected string GetConnectionString()
+        public string GetConnectionString()
         {
             return connectionString;
         }
-        protected void SetConnectionString(string connectionString)
+        public void SetConnectionString(string connectionString)
         {
             this.connectionString = connectionString;
         }
         protected NpgsqlConnection OpenConnection()
         {
-            if (connection == null) 
+            if (connection == null)
             {
                 connection = new NpgsqlConnection(GetConnectionString());
             }
@@ -41,7 +42,7 @@ namespace EdiDbUploader
             }
             return connection;
         }
-        public NpgsqlTransaction BeginTransaction ()
+        public NpgsqlTransaction BeginTransaction()
         {
             return OpenConnection().BeginTransaction();
         }
@@ -54,6 +55,25 @@ namespace EdiDbUploader
         public virtual string Insert(EdiDocument ediDoc)
         {
             return "";
+        }
+        protected NpgsqlParameter NewSafeParameter(string parameterName, object data) 
+        {
+            if (data == null)
+            {
+                return new NpgsqlParameter() { ParameterName = parameterName, Value = DBNull.Value };
+            } else if (data is int)
+            {
+                return new NpgsqlParameter() { ParameterName = parameterName, NpgsqlDbType = NpgsqlDbType.Numeric, Value = data };
+            } else if (data is decimal)
+            {
+                return new NpgsqlParameter() { ParameterName = parameterName, NpgsqlDbType = NpgsqlDbType.Numeric, Value = data };
+            } else if (data is DateTime) {
+                return new NpgsqlParameter()  { ParameterName = parameterName, NpgsqlDbType = NpgsqlDbType.Date,  Value = data  };
+            }
+            else
+            {
+                return new NpgsqlParameter() { ParameterName = parameterName, NpgsqlDbType = NpgsqlDbType.Varchar, Value = data };
+            }
         }
     }
 }

@@ -26,8 +26,14 @@ namespace EdiDbUploader
             if (ediFile.ToLower().EndsWith(".xlsx"))
             {
                 EdiDocument doc = EdiUtil.EdiDocumentFromFile(ediFile);
+                doc.FileName = ediFile; //filename setting
+
                 EdiUploader uploader = EdiFactory.GetUploader(doc);
-                uploader.Insert(doc);
+                uploader.SetConnectionString(connectString);
+
+                var result = uploader.Insert(doc);
+                var msg = $"{doc} insert result : {result}";
+                MessageEventHandler?.Invoke(null, new MessageEventArgs(result));
             }
             else if(ediFile.ToLower().EndsWith(".pdf"))
             {
