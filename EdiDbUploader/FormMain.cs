@@ -214,9 +214,13 @@ namespace EdiDbUploader
                 int countNK = 0;
                 foreach (var ediFile in list)
                 {
-                    var result = ediDbUploader.insert(ediFile);
-                    if (result.StartsWith("OK")) countOK++;
-                    else if (result.StartsWith("NK")) countNK++;
+                    var results = ediDbUploader.Insert(ediFile);
+                    foreach (var result in results)
+                    {
+                        if (result.StartsWith("OK")) countOK++;
+                        else if (result.StartsWith("NK")) countNK++;
+                        logBox.Write(result);
+                    }
                 }
                 logBox.Write("");
                 logBox.Write("---------------------------------------------------------");

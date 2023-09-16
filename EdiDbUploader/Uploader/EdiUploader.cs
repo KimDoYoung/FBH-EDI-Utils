@@ -2,6 +2,7 @@
 using Npgsql;
 using NpgsqlTypes;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace EdiDbUploader
@@ -34,6 +35,7 @@ namespace EdiDbUploader
             }
             return connection;
         }
+
         protected NpgsqlConnection GetConnection()
         {
             if (connection == null)
@@ -56,6 +58,12 @@ namespace EdiDbUploader
         {
             return "";
         }
+
+        public virtual List<String> Insert(List<EdiDocument> ediDocumentList)
+        {
+            return null;
+        }
+
         protected NpgsqlParameter NewSafeParameter(string parameterName, object data) 
         {
             if (data == null)

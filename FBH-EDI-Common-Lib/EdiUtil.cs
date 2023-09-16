@@ -1,6 +1,9 @@
-﻿using FBH.EDI.Common.Model;
+﻿using FBH.EDI.Common.ExcelPdfUtils;
+using FBH.EDI.Common.Model;
 using Microsoft.Office.Interop.Excel;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -44,7 +47,7 @@ namespace FBH.EDI.Common
                     }
                     else if (c2.Contains("ORDERNO"))
                     {
-                        return Create940(worksheet);
+                        //return Create940List(worksheet);
                     }
                     else
                     {
@@ -69,6 +72,110 @@ namespace FBH.EDI.Common
             return null;
         }
 
+        public static ParsingResult EdiDocumentParsing(string ediFile)
+        {
+            if (ediFile.EndsWith("xlsx"))
+            {
+                return ParsingExcel(ediFile);
+            }else
+            {
+                return ParsingPdf(ediFile);
+            }
+        }
+        /// <summary>
+        /// 210 pdf 파싱
+        /// </summary>
+        /// <param name="ediFile"></param>
+        /// <returns></returns>
+        private static ParsingResult ParsingPdf(string ediFile)
+        {
+            ParsingResult parsingResult = new ParsingResult();
+            parsingResult.EdiDocumentNumber = EdiDocumentNo.Freight_Invoice_210;
+
+            List<FreightInvoice210> list = PdfUtil.Freight210ListFromPdf(ediFile);
+
+            foreach (FreightInvoice210 freightInvoice210 in list)
+            {
+                freightInvoice210.FileName = Path.GetFileName(ediFile);
+                parsingResult.Add(freightInvoice210);
+            }
+            return parsingResult;
+        }
+
+        private static ParsingResult ParsingExcel(string ediFile)
+        {
+            ParsingResult parsingResult = new ParsingResult();
+
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook workbook = app.Workbooks.Open(ediFile);
+            Excel.Worksheet worksheet = workbook.Worksheets[1];
+            try
+            {
+                var o = worksheet.GetString("A1");
+                var a1 = o.ToString().Trim().ToUpper();
+                o = worksheet.GetString("C2");
+                var c2 = o.ToString().Trim().ToUpper();
+                if (a1.Contains("FREIGHT"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Freight_Invoice_210;
+                    EdiDocument doc = Create210(worksheet);
+                    parsingResult.Add(doc);
+                }
+                else if (a1.Contains("INQUIRY"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Inventory_Inquiry_Advice_846;
+                    EdiDocument doc = Create846(worksheet);
+                    parsingResult.Add(doc);
+                }
+                else if (a1.Contains("PURCHASE"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Purchase_Order_850;
+                    EdiDocument doc = Create850(worksheet);
+                    parsingResult.Add(doc);
+                }
+                else if (a1.Contains("WAREHOUSE"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Warehouse_Shipping_Advice_945;
+                    EdiDocument doc = Create945(worksheet);
+                    parsingResult.Add(doc);
+                }
+                else if (a1.Contains("INVOICE"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Invoice_810;
+                    EdiDocument doc = Create810(worksheet);
+                    parsingResult.Add(doc);
+
+                }
+                else if (c2.Contains("ORDERNO"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Warehouse_Shipping_Order_940;
+
+                    ShippingOrder940[] array = Create940List(worksheet);
+                    foreach (EdiDocument item in array)
+                    {
+                        parsingResult.Add(item);
+                    }
+                }
+                else
+                {
+                    throw new EdiException($"알려지지 않은 EDI 문서 타입입니다.{ediFile}");
+                }
+                return parsingResult;
+            }
+            catch (Exception ex)
+            {
+                throw new EdiException(ex.Message);
+            }
+            finally
+            {
+                workbook.Close(false);
+                app.Quit();
+
+                ReleaseExcelObject(worksheet);
+                ReleaseExcelObject(workbook);
+                ReleaseExcelObject(app);
+            }
+        }
 
         private static ShippingAdvice945 Create945(Worksheet worksheet)
         {
@@ -169,7 +276,7 @@ namespace FBH.EDI.Common
             return wso945;
         }
 
-        private static ShippingOrder940 Create940(Worksheet worksheet)
+        private static ShippingOrder940[] Create940List(Worksheet worksheet)
         {
             ShippingOrder940 so940 = new ShippingOrder940();
             so940.OrderNo = worksheet.GetString("C3");
@@ -180,8 +287,9 @@ namespace FBH.EDI.Common
             //{
             //    ShippingAdvice945Detail detail945 = new ShippingAdvice945Detail();
             //}
-
-            return so940;
+            List<ShippingOrder940> list = new List<ShippingOrder940>();
+            list.Add(so940);
+            return list.ToArray();
         }
 
         private static PurchaseOrder850 Create850(Worksheet worksheet)

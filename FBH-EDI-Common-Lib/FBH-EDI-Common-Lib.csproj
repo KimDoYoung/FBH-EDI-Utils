@@ -128,6 +128,7 @@
     <Compile Include="Model\ShippingAdvice945.cs" />
     <Compile Include="Model\ShippingAdvice945Detail.cs" />
     <Compile Include="MsgBox.cs" />
+    <Compile Include="ParsingResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RowCol.cs" />
   </ItemGroup>
