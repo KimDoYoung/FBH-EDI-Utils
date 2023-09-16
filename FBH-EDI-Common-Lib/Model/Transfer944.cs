@@ -27,9 +27,9 @@ namespace FBH.EDI.Common.Model
         public string ScheduledDeliveryDate { get; set; }
         public string TransportationMethodTypeCode { get; set; }
         public string StandardCarrierAlphaCode { get; set; }
-        public string QuantityReceived { get; set; }
-        public string NumberOfUnitsShipped { get; set; }
-        public string QuantityDamagedOnHold { get; set; }
+        public int? QuantityReceived { get; set; }
+        public int? NumberOfUnitsShipped { get; set; }
+        public int? QuantityDamagedOnHold { get; set; }
 
         public List<Transfer944Detail> Details = null;
 

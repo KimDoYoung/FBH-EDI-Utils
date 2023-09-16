@@ -121,6 +121,13 @@ namespace FBH.EDI.Common
                     EdiDocument doc = Create210(worksheet);
                     parsingResult.Add(doc);
                 }
+                else if (a1.Contains("INVOICE"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Invoice_810;
+                    EdiDocument doc = Create810(worksheet);
+                    parsingResult.Add(doc);
+
+                }
                 else if (a1.Contains("INQUIRY"))
                 {
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Inventory_Inquiry_Advice_846;
@@ -133,19 +140,6 @@ namespace FBH.EDI.Common
                     EdiDocument doc = Create850(worksheet);
                     parsingResult.Add(doc);
                 }
-                else if (a1.Contains("WAREHOUSE"))
-                {
-                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Warehouse_Shipping_Advice_945;
-                    EdiDocument doc = Create945(worksheet);
-                    parsingResult.Add(doc);
-                }
-                else if (a1.Contains("INVOICE"))
-                {
-                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Invoice_810;
-                    EdiDocument doc = Create810(worksheet);
-                    parsingResult.Add(doc);
-
-                }
                 else if (c2.Contains("ORDERNO"))
                 {
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Warehouse_Shipping_Order_940;
@@ -155,6 +149,19 @@ namespace FBH.EDI.Common
                     {
                         parsingResult.Add(item);
                     }
+                }
+                else if (c2.Contains("STOCK TRANSFER"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Warehouse_Stock_Transfer_Receipt_Advice_944;
+
+                    Transfer944 tr944 = Create944(worksheet);
+                    parsingResult.Add(tr944);
+                }
+                else if (a1.Contains("WAREHOUSE"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Warehouse_Shipping_Advice_945;
+                    EdiDocument doc = Create945(worksheet);
+                    parsingResult.Add(doc);
                 }
                 else
                 {
@@ -176,6 +183,7 @@ namespace FBH.EDI.Common
                 ReleaseExcelObject(app);
             }
         }
+
 
         private static ShippingAdvice945 Create945(Worksheet worksheet)
         {
@@ -274,6 +282,62 @@ namespace FBH.EDI.Common
             }
 
             return wso945;
+        }
+
+        private static Transfer944 Create944(Worksheet worksheet)
+        {
+            Transfer944 tr944 = new Transfer944();
+            tr944.ReceiptDate = worksheet.GetString("B4");
+            tr944.HubGroupsOrderNumber = worksheet.GetString("B5");
+            tr944.CustomerOrderId = worksheet.GetString("B6");
+            tr944.CustomersBolNumber= worksheet.GetString("B7");
+            
+            tr944.HubGroupsWarehouseName = worksheet.GetString("D4");
+            tr944.HubGroupsCustomersWarehouseId = worksheet.GetString("D5");
+            tr944.DestinationAddressInformation = worksheet.GetString("D6");
+            tr944.DestinationCity = worksheet.GetString("D7");
+            tr944.DestinationState = worksheet.GetString("D8");
+            tr944.DestinationZipcode = worksheet.GetString("D9");
+
+            tr944.OriginCompanyName = worksheet.GetString("F4");
+            tr944.ShipperCompanyId = worksheet.GetString("F5");
+            tr944.OriginAddressInformation = worksheet.GetString("F6");
+            tr944.OriginCity = worksheet.GetString("F7");
+            tr944.OriginState = worksheet.GetString("F8");
+            tr944.OriginZipcode = worksheet.GetString("F9");
+            
+            tr944.ScheduledDeliveryDate = worksheet.GetString("H4");
+            tr944.TransportationMethodTypeCode = worksheet.GetString("J4");
+            tr944.StandardCarrierAlphaCode = worksheet.GetString("J5");
+
+            tr944.QuantityReceived = CommonUtil.ToIntOrNull( worksheet.GetString("B13") );
+            tr944.NumberOfUnitsShipped = CommonUtil.ToIntOrNull( worksheet.GetString("B14") );
+            tr944.QuantityDamagedOnHold = CommonUtil.ToIntOrNull( worksheet.GetString("B15") );
+
+            //detail
+            int row = 19;
+            while (row < 5000)
+            {
+                Transfer944Detail detail = new Transfer944Detail();
+
+                var value = worksheet.GetString(row, "A");
+                if (CommonUtil.IsValidCellValue(value) == false) break;
+
+                detail.AssignedNumber = CommonUtil.ToIntOrNull( worksheet.GetString(row, "A") );
+                detail.StockReceiptQuantityReceived = CommonUtil.ToIntOrNull( worksheet.GetString(row, "B") );
+                detail.StockReceiptUnitOfMeasureCode = worksheet.GetString(row, "C");
+                detail.StockReceiptSku = worksheet.GetString(row, "D");
+                detail.StockReceiptLotBatchCode = worksheet.GetString(row, "E");
+                detail.ExceptionQuantity = CommonUtil.ToIntOrNull(worksheet.GetString(row, "F"));
+                detail.ExceptionUnitOfMeasureCode = worksheet.GetString(row, "G");
+                detail.ExceptionReceivingConditionCode = worksheet.GetString(row, "H");
+                detail.ExceptionLotBatchCode = worksheet.GetString(row, "I");
+                detail.ExceptionDamageCondition = worksheet.GetString(row, "J");
+
+                tr944.Details.Add(detail);
+                row++;
+            }
+            return tr944;
         }
 
         private static ShippingOrder940[] Create940List(Worksheet worksheet)

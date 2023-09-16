@@ -92,14 +92,14 @@ namespace EdiDbUploader.Uploader
                 +"hub_groups_customers_warehouse_id, destination_address_information, destination_city, destination_state, "
                 +"destination_zipcode, origin_company_name, shipper_company_id, origin_address_information, origin_city, "
                 +"origin_state, origin_zipcode, scheduled_delivery_date, transportation_method_type_code, standard_carriervalpha_code, "
-                +"quantity_received, number_of_units_shipped, quantity_damaged_on_hold," 
+                +"quantity_received, number_of_units_shipped, quantity_damaged_on_hold, memo, file_name," 
                 +"created_by"
                 + ")values("
                 + "@hub_groups_order_number, @receipt_date, @customer_order_id, @customers_bol_number, @hub_groups_warehousename, "
                 + "@hub_groups_customers_warehouse_id, @destination_address_information, @destination_city, @destination_state, "
                 + "@destination_zipcode, @origin_company_name, @shipper_company_id, @origin_address_information, @origin_city, "
                 + "@origin_state, @origin_zipcode, @scheduled_delivery_date, @transportation_method_type_code, @standard_carriervalpha_code, "
-                + "@quantity_received, @number_of_units_shipped, @quantity_damaged_on_hold,"
+                + "@quantity_received, @number_of_units_shipped, @quantity_damaged_on_hold, @memo, @file_name,"
                 + "@created_by"
                 + ")";
             cmd.Parameters.Add(NewSafeParameter("@hub_groups_order_number", tr944.HubGroupsOrderNumber));
@@ -124,6 +124,8 @@ namespace EdiDbUploader.Uploader
             cmd.Parameters.Add(NewSafeParameter("@quantity_received", tr944.QuantityReceived));
             cmd.Parameters.Add(NewSafeParameter("@number_of_units_shipped", tr944.NumberOfUnitsShipped));
             cmd.Parameters.Add(NewSafeParameter("@quantity_damaged_on_hold", tr944.QuantityDamagedOnHold));
+            cmd.Parameters.Add(NewSafeParameter("@memo", tr944.Memo));
+            cmd.Parameters.Add(NewSafeParameter("@file_name", tr944.FileName));
             cmd.Parameters.Add(NewSafeParameter("@created_by", "DbUploader"));
 
             return cmd;

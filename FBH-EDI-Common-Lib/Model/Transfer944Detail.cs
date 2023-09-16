@@ -10,12 +10,12 @@ namespace FBH.EDI.Common.Model
     {
         public string ReceiptDate { get; set; }
         public string HubGroupsOrderNumber { get; set; }
-        public string AssignedNumber { get; set; }
-        public string StockReceiptQuantityReceived { get; set; }
+        public int? AssignedNumber { get; set; }
+        public int? StockReceiptQuantityReceived { get; set; }
         public string StockReceiptUnitOfMeasureCode { get; set; }
         public string StockReceiptSku { get; set; }
         public string StockReceiptLotBatchCode { get; set; }
-        public string ExceptionQuantity { get; set; }
+        public int? ExceptionQuantity { get; set; }
         public string ExceptionUnitOfMeasureCode { get; set; }
         public string ExceptionReceivingConditionCode { get; set; }
         public string ExceptionLotBatchCode { get; set; }
