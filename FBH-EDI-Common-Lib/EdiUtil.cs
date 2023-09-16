@@ -278,17 +278,68 @@ namespace FBH.EDI.Common
 
         private static ShippingOrder940[] Create940List(Worksheet worksheet)
         {
-            ShippingOrder940 so940 = new ShippingOrder940();
-            so940.OrderNo = worksheet.GetString("C3");
-            so940.BalsongChasu = CommonUtil.ToIntOrNull(worksheet.GetString("D3"));
 
-            int row = 29;
-            //while (true)
-            //{
-            //    ShippingAdvice945Detail detail945 = new ShippingAdvice945Detail();
-            //}
             List<ShippingOrder940> list = new List<ShippingOrder940>();
-            list.Add(so940);
+            string orderNo = worksheet.GetString("C3");
+            int? balsongChasu = CommonUtil.ToIntOrNull(worksheet.GetString("D3"));
+
+            int row = 7;
+            while (row < 5000) {
+                var chk = worksheet.GetString(row, "A");
+                if (string.IsNullOrEmpty(chk)) break;
+
+                ShippingOrder940 so940 = new ShippingOrder940();
+                so940.OrderId = worksheet.GetString(row, "A");
+                so940.BuyerPoNumber= worksheet.GetString(row, "B");
+                so940.WarehouseInfo= worksheet.GetString(row, "C");
+                so940.ShipTo= worksheet.GetString(row, "D");
+                so940.ReferenceIdentification= worksheet.GetString(row, "E");
+                so940.RequestedPickupDate= worksheet.GetString(row, "F");
+                so940.RequestedDeliveryDate= worksheet.GetString(row, "G");
+                so940.CancelAfterDate= worksheet.GetString(row, "H");
+                so940.PurchaseOrderDate= worksheet.GetString(row, "I");
+                so940.WarehouseCarrierInfo= worksheet.GetString(row, "J");
+                so940.OrderGroupId= worksheet.GetString(row, "K");
+                list.Add(so940);
+                var orderId = so940.OrderId;
+                var seq = 1;
+                if(orderId == worksheet.GetString(row, "A"))
+                {
+                    ShippingOrder940Detail detail = new ShippingOrder940Detail();
+                    detail.OrderId = orderId;
+                    detail.Seq = seq;
+                    detail.QuantityOrdered = CommonUtil.ToIntOrNull(worksheet.GetString(row, "L"));
+                    detail.UnitOfMeasure = worksheet.GetString(row, "M");
+                    detail.UpcCode= worksheet.GetString(row, "N");
+                    detail.Sku= worksheet.GetString(row, "O");
+                    detail.RetailersItemCode= worksheet.GetString(row, "P");
+                    detail.LotNumber= worksheet.GetString(row, "Q");
+                    detail.Scc14= worksheet.GetString(row, "R");
+                    detail.FreeFormDescription= worksheet.GetString(row, "S");
+                    detail.RetailPrice= CommonUtil.ToDecimalOrNull( worksheet.GetString(row, "T"));
+                    detail.CostPrice= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "U"));
+                    detail.Misc1NumberOfPack = CommonUtil.ToIntOrNull( worksheet.GetString(row, "V"));
+
+                    detail.Misc1SizeOfUnits = worksheet.GetString(row, "W");
+                    detail.Misc1SizeUnit= worksheet.GetString(row, "X");
+                    detail.Misc1ColorDescription= worksheet.GetString(row, "Y");
+
+                    detail.Misc2NumberOfPack = CommonUtil.ToIntOrNull(worksheet.GetString(row, "Z"));
+                    detail.Misc2SizeOfUnits = worksheet.GetString(row, "AA");
+                    detail.Misc1SizeUnit = worksheet.GetString(row, "AB");
+                    detail.Misc1ColorDescription = worksheet.GetString(row, "AC");
+
+                    detail.Misc2NumberOfPack = CommonUtil.ToIntOrNull(worksheet.GetString(row, "AD"));
+                    detail.Misc2SizeOfUnits = worksheet.GetString(row, "AE");
+                    detail.Misc1SizeUnit = worksheet.GetString(row, "AF");
+                    detail.Misc1ColorDescription = worksheet.GetString(row, "AG");
+
+                    so940.Details.Add(detail);
+                    row++;
+                }
+                list.Add(so940);
+                row--;
+            }
             return list.ToArray();
         }
 

@@ -10,7 +10,7 @@ namespace FBH.EDI.Common.Model
     {
         public string OrderId { get; set; }
         public int Seq { get; set; }
-        public string QuantityOrdered { get; set; }
+        public int? QuantityOrdered { get; set; }
         public string UnitOfMeasure { get; set; }
         public string UpcCode { get; set; }
         public string Sku { get; set; }
@@ -18,17 +18,17 @@ namespace FBH.EDI.Common.Model
         public string LotNumber { get; set; }
         public string Scc14 { get; set; }
         public string FreeFormDescription { get; set; }
-        public string RetailPrice { get; set; }
-        public string CostPrice { get; set; }
-        public string Misc1NumberOfPack { get; set; }
+        public decimal? RetailPrice { get; set; }
+        public decimal? CostPrice { get; set; }
+        public int? Misc1NumberOfPack { get; set; }
         public string Misc1SizeOfUnits { get; set; }
         public string Misc1SizeUnit { get; set; }
         public string Misc1ColorDescription { get; set; }
-        public string Misc2NumberOfPack { get; set; }
+        public int? Misc2NumberOfPack { get; set; }
         public string Misc2SizeOfUnits { get; set; }
         public string Misc2SizeUnit { get; set; }
         public string Misc2ColorDescription { get; set; }
-        public string Misc3NumberOfPack { get; set; }
+        public int? Misc3NumberOfPack { get; set; }
         public string Misc3SizeOfUnits { get; set; }
         public string Misc3SizeUnit { get; set; }
         public string Misc3ColorDescription { get; set; }
