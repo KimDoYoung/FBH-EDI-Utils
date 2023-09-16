@@ -54,10 +54,6 @@ namespace EdiDbUploader
             command.Connection = OpenConnection();
             return command.ExecuteScalar();
         }
-        public virtual string Insert(EdiDocument ediDoc)
-        {
-            return "";
-        }
 
         public virtual List<String> Insert(List<EdiDocument> ediDocumentList)
         {

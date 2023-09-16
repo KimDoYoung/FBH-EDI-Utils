@@ -11,12 +11,10 @@ namespace EdiDbUploader
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
             List<String> logList = new List<string>();
-
-            NpgsqlTransaction tran = null;
             NpgsqlCommand cmd = null;
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
-                tran = BeginTransaction();
+                NpgsqlTransaction tran = BeginTransaction();
                 var freight210 = ediDoc as FreightInvoice210;
                 try
                 {
@@ -49,43 +47,6 @@ namespace EdiDbUploader
             }
             return logList;
         }
-
-        public override string Insert(EdiDocument ediDoc)
-        {
-            var freight210 = ediDoc as FreightInvoice210;
-
-            object alreadyCount = ExecuteScalar($"select count(*) as count from edi.freight_210 where invoice_no = '{freight210.InvoiceNo}'");
-            int count = Convert.ToInt32(alreadyCount);
-            if (count > 0)
-            {
-                return $"NK: {freight210.InvoiceNo} is alread exist in table";
-            }
-
-            NpgsqlTransaction tran = null;
-            NpgsqlCommand cmd = null;
-            try
-            {
-                tran = BeginTransaction();
-                cmd = NewSqCommand210(freight210);
-                cmd.Transaction = tran;
-                cmd.ExecuteNonQuery();
-
-                tran.Commit();
-                return "OK";
-            }
-            catch (NpgsqlException ex)
-            {
-                tran?.Rollback();
-                return "NK:" + ex.Message;
-            }
-            finally
-            {
-                tran?.Dispose();
-                cmd.Connection?.Close();
-            }
-        }
-
-  
         private NpgsqlCommand NewSqCommand210(FreightInvoice210 freight210)
         {
             NpgsqlCommand cmd = new NpgsqlCommand();

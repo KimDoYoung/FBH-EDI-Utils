@@ -1,6 +1,7 @@
 ﻿using FBH.EDI.Common.Model;
 using Npgsql;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms.VisualStyles;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
@@ -9,6 +10,46 @@ namespace EdiDbUploader
 {
     internal class EdiUploader850 : EdiUploader
     {
+        public override List<String> Insert(List<EdiDocument> ediDocumentList)
+        {
+            List<String> logList = new List<string>();
+            NpgsqlCommand cmd = null;
+            foreach (EdiDocument ediDoc in ediDocumentList)
+            {
+                NpgsqlTransaction tran = BeginTransaction();
+                var item = ediDoc as PurchaseOrder850;
+                try
+                {
+                    var alreadyCount = ExecuteScalar($"select count(*) as count from edi.po_850 where po_no = '{item.PoNo}'");
+                    int count = Convert.ToInt32(alreadyCount);
+                    if (count > 0)
+                    {
+                        logList.Add($"NK: {item.PoNo} is alread exist in table");
+                        tran.Commit();
+                        continue;
+                    }
+
+                    cmd = NewSqCommand850(item);
+                    cmd.Transaction = tran;
+                    cmd.ExecuteNonQuery();
+
+                    tran.Commit();
+                    logList.Add($"OK: {item.PoNo}");
+                }
+                catch (NpgsqlException ex)
+                {
+                    tran?.Rollback();
+                    logList.Add("NK:" + ex.Message);
+                }
+                finally
+                {
+                    tran?.Dispose();
+                    cmd?.Connection?.Close();
+                }
+            }
+            return logList;
+        }
+
         public override string Insert(EdiDocument ediDoc)
         {
             var po850 = ediDoc as PurchaseOrder850;

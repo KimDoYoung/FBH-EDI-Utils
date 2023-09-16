@@ -10,6 +10,46 @@ namespace EdiDbUploader.Uploader
 {
     internal class EdiUploader940 : EdiUploader
     {
+        public override List<String> Insert(List<EdiDocument> ediDocumentList)
+        {
+            List<String> logList = new List<string>();
+            NpgsqlCommand cmd = null;
+            foreach (EdiDocument ediDoc in ediDocumentList)
+            {
+                NpgsqlTransaction tran = BeginTransaction();
+                var item = ediDoc as ShippingOrder940;
+                try
+                {
+                    var alreadyCount = ExecuteScalar($"select count(*) as count from edi.shipping_order_940 where order_id = '{item.OrderId}'");
+                    int count = Convert.ToInt32(alreadyCount);
+                    if (count > 0)
+                    {
+                        logList.Add($"NK: {item.OrderId} is alread exist in table");
+                        tran.Commit();
+                        continue;
+                    }
+
+                    cmd = NewSqCommand940(item);
+                    cmd.Transaction = tran;
+                    cmd.ExecuteNonQuery();
+
+                    tran.Commit();
+                    logList.Add($"OK: {item.OrderId}");
+                }
+                catch (NpgsqlException ex)
+                {
+                    tran?.Rollback();
+                    logList.Add("NK:" + ex.Message);
+                }
+                finally
+                {
+                    tran?.Dispose();
+                    cmd?.Connection?.Close();
+                }
+            }
+            return logList;
+        }
+
         public override string Insert(EdiDocument ediDoc)
         {
             var so940 = ediDoc as ShippingOrder940;

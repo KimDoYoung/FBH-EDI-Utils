@@ -2,14 +2,51 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EdiDbUploader.Uploader
 {
+   
     internal class EdiUploader945 : EdiUploader
     {
+        public override List<string> Insert(List<EdiDocument> ediDocumentList)
+        {
+            List<String> logList = new List<string>();
+            NpgsqlCommand cmd = null;
+            foreach (EdiDocument ediDoc in ediDocumentList)
+            {
+                NpgsqlTransaction tran = BeginTransaction();
+                var item = ediDoc as ShippingAdvice945;
+                try
+                {
+                    var alreadyCount = ExecuteScalar($"select count(*) as count from edi.shipping_945 where customer_order_id = '{item.CustomerOrderId}'");
+                    int count = Convert.ToInt32(alreadyCount);
+                    if (count > 0)
+                    {
+                        logList.Add($"NK: {item.CustomerOrderId} is alread exist in table");
+                        tran.Commit();
+                        continue;
+                    }
+
+                    cmd = NewSqCommand945(item);
+                    cmd.Transaction = tran;
+                    cmd.ExecuteNonQuery();
+
+                    tran.Commit();
+                    logList.Add($"OK: {item.CustomerOrderId}");
+                }
+                catch (NpgsqlException ex)
+                {
+                    tran?.Rollback();
+                    logList.Add("NK:" + ex.Message);
+                }
+                finally
+                {
+                    tran?.Dispose();
+                    cmd?.Connection?.Close();
+                }
+            }
+            return logList;
+        }
         public override string Insert(EdiDocument ediDoc)
         {
             var sa945 = ediDoc as ShippingAdvice945;

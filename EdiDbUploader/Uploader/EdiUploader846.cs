@@ -12,6 +12,45 @@ namespace EdiDbUploader.Uploader
 {
     internal class EdiUploader846 : EdiUploader
     {
+        public override List<String> Insert(List<EdiDocument> ediDocumentList)
+        {
+            List<String> logList = new List<string>();
+            NpgsqlCommand cmd = null;
+            foreach (EdiDocument ediDoc in ediDocumentList)
+            {
+                NpgsqlTransaction tran = BeginTransaction();
+                var item = ediDoc as Inquiry846;
+                try
+                {
+                    var alreadyCount = ExecuteScalar($"select count(*) as count from edi.inquiry_846 where hub_group_document_number = '{item.HubGroupDocumentNumber}'");
+                    int count = Convert.ToInt32(alreadyCount);
+                    if (count > 0)
+                    {
+                        logList.Add($"NK: {item.HubGroupDocumentNumber} is alread exist in table");
+                        tran.Commit();
+                        continue;
+                    }
+
+                    cmd = NewSqCommand846(item);
+                    cmd.Transaction = tran;
+                    cmd.ExecuteNonQuery();
+
+                    tran.Commit();
+                    logList.Add($"OK: {item.HubGroupDocumentNumber}");
+                }
+                catch (NpgsqlException ex)
+                {
+                    tran?.Rollback();
+                    logList.Add("NK:" + ex.Message);
+                }
+                finally
+                {
+                    tran?.Dispose();
+                    cmd?.Connection?.Close();
+                }
+            }
+            return logList;
+        }
         public override string Insert(EdiDocument ediDoc)
         {
             var inquiry846 = ediDoc as Inquiry846;
