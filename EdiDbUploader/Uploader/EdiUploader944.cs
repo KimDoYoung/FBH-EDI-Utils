@@ -52,50 +52,7 @@ namespace EdiDbUploader.Uploader
             }
             return logList;
         }
-        public override string Insert(EdiDocument ediDoc)
-        {
-            var tr944 = ediDoc as Transfer944;
-
-            var where = $"hub_groups_order_number='{tr944.HubGroupsOrderNumber}'"
-                        + $" and receipt_date={tr944.ReceiptDate}"
-                        + $" and customer_order_id={tr944.CustomerOrderId}";
-            object alreadyCount = ExecuteScalar($"select count(*) as count from edi.transfer_944 where 1=1 {where}'");
-            int count = Convert.ToInt32(alreadyCount);
-            if (count > 0)
-            {
-                return $"NK: {tr944.HubGroupsOrderNumber}-{tr944.ReceiptDate}-{tr944.CustomerOrderId} is alread exist in table";
-            }
-
-            NpgsqlTransaction tran = null;
-            NpgsqlCommand cmd = null;
-            try
-            {
-                tran = BeginTransaction();
-                cmd = NewSqCommand944(tr944);
-                cmd.Transaction = tran;
-                cmd.ExecuteNonQuery();
-
-                foreach (Transfer944Detail detail in tr944.Details)
-                {
-                    cmd = NewSqlCommand944Detail(detail);
-                    cmd.Transaction = tran;
-                    cmd.ExecuteNonQuery();
-                }
-
-                tran.Commit();
-                return "OK";
-            }
-            catch (NpgsqlException ex)
-            {
-                tran?.Rollback();
-                return "NK:" + ex.Message;
-            }
-            finally
-            {
-                tran?.Dispose();
-                cmd.Connection?.Close();
-            }
-        }
+      
 
         private NpgsqlCommand NewSqlCommand944Detail(Transfer944Detail detail)
         {

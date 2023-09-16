@@ -51,48 +51,7 @@ namespace EdiDbUploader.Uploader
             }
             return logList;
         }
-        public override string Insert(EdiDocument ediDoc)
-        {
-            var inquiry846 = ediDoc as Inquiry846;
-
-            object alreadyCount = ExecuteScalar($"select count(*) as count from edi.inquiry_846 where hub_group_document_number = '{inquiry846.HubGroupDocumentNumber}'");
-            int count = Convert.ToInt32(alreadyCount);
-            if (count > 0)
-            {
-                return $"NK: {inquiry846.HubGroupDocumentNumber} is alread exist in table";
-            }
-
-            NpgsqlTransaction tran = null;
-            NpgsqlCommand cmd = null;
-            try
-            {
-                tran = BeginTransaction();
-                cmd = NewSqCommand846(inquiry846);
-                cmd.Transaction = tran;
-                cmd.ExecuteNonQuery();
-
-                foreach (Inquiry846Detail detail in inquiry846.Details)
-                {
-                    cmd = NewSqlCommand846Detail(detail);
-                    cmd.Transaction = tran;
-                    cmd.ExecuteNonQuery();
-                }
-
-                tran.Commit();
-                return "OK";
-            }
-            catch (NpgsqlException ex)
-            {
-                tran?.Rollback();
-                return "NK:" + ex.Message;
-            }
-            finally
-            {
-                tran?.Dispose();
-                cmd.Connection?.Close();
-            }
-        }
-
+       
         private NpgsqlCommand NewSqlCommand846Detail(Inquiry846Detail detail)
         {
             NpgsqlCommand cmd = new NpgsqlCommand();

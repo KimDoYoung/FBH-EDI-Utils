@@ -47,47 +47,7 @@ namespace EdiDbUploader.Uploader
             }
             return logList;
         }
-        public override string Insert(EdiDocument ediDoc)
-        {
-            var sa945 = ediDoc as ShippingAdvice945;
-
-            object alreadyCount = ExecuteScalar($"select count(*) as count from edi.shipping_945 where customer_order_id = '{sa945.CustomerOrderId}'");
-            int count = Convert.ToInt32(alreadyCount);
-            if (count > 0)
-            {
-                return $"NK: {sa945.CustomerOrderId} is alread exist in table";
-            }
-
-            NpgsqlTransaction tran = null;
-            NpgsqlCommand cmd = null;
-            try
-            {
-                tran = BeginTransaction();
-                cmd = NewSqCommand945(sa945);
-                cmd.Transaction = tran;
-                cmd.ExecuteNonQuery();
-
-                foreach (ShippingAdvice945Detail detail in sa945.Details)
-                {
-                    cmd = NewSqlCommand945Detail(detail);
-                    cmd.Transaction = tran;
-                    cmd.ExecuteNonQuery();
-                }
-
-                tran.Commit();
-                return "OK";
-            }
-            catch (NpgsqlException ex)
-            {
-                tran?.Rollback();
-                return "NK:" + ex.Message;
-            }
-            finally
-            {
-                tran?.Dispose();
-                cmd.Connection?.Close();
-            }
-        }
+        
 
         private NpgsqlCommand NewSqlCommand945Detail(ShippingAdvice945Detail detail)
         {

@@ -50,54 +50,6 @@ namespace EdiDbUploader
             return logList;
         }
 
-        public override string Insert(EdiDocument ediDoc)
-        {
-            var po850 = ediDoc as PurchaseOrder850;
-
-            object alreadyCount = ExecuteScalar($"select count(*) as count from edi.po_850 where po_no = '{po850.PoNo}'");
-            int count = Convert.ToInt32(alreadyCount);
-            if (count > 0)
-            {
-                return $"NK: {po850.PoNo} is alread exist in table";
-            }
-
-            NpgsqlTransaction tran = null;
-            NpgsqlCommand cmd = null;
-            try
-            {
-                tran = BeginTransaction();
-                cmd = NewSqCommand850(po850);
-                cmd.Transaction = tran;
-                cmd.ExecuteNonQuery();
-
-                foreach (PurchaseOrder850Detail detail in po850.Details)
-                {
-                    cmd = NewSqlCommand850Detail(detail);
-                    cmd.Transaction = tran;
-                    cmd.ExecuteNonQuery();
-                }
-                foreach (PurchaseOrder850Allowance allowance in po850.Allowences)
-                {
-                    cmd = NewSqlCommand850Allowance(allowance);
-                    cmd.Transaction = tran;
-                    cmd.ExecuteNonQuery();
-                }
-
-                tran.Commit();
-                return "OK";
-            }
-            catch (NpgsqlException ex)
-            {
-                tran?.Rollback();
-                return "NK:" + ex.Message;
-            }
-            finally
-            {
-                tran?.Dispose();
-                cmd.Connection?.Close();
-            }
-        }
-
         private NpgsqlCommand NewSqlCommand850Allowance(PurchaseOrder850Allowance allowance)
         {
             NpgsqlCommand cmd = new NpgsqlCommand();

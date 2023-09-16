@@ -50,48 +50,6 @@ namespace EdiDbUploader.Uploader
             return logList;
         }
 
-        public override string Insert(EdiDocument ediDoc)
-        {
-            var so940 = ediDoc as ShippingOrder940;
-
-            object alreadyCount = ExecuteScalar($"select count(*) as count from edi.shipping_order_940 where order_id = '{so940.OrderId}'");
-            int count = Convert.ToInt32(alreadyCount);
-            if (count > 0)
-            {
-                return $"NK: {so940.OrderId} is alread exist in table";
-            }
-
-            NpgsqlTransaction tran = null;
-            NpgsqlCommand cmd = null;
-            try
-            {
-                tran = BeginTransaction();
-                cmd = NewSqCommand940(so940);
-                cmd.Transaction = tran;
-                cmd.ExecuteNonQuery();
-
-                foreach (ShippingOrder940Detail detail in so940.Details)
-                {
-                    cmd = NewSqlCommand940Detail(detail);
-                    cmd.Transaction = tran;
-                    cmd.ExecuteNonQuery();
-                }
-
-                tran.Commit();
-                return "OK";
-            }
-            catch (NpgsqlException ex)
-            {
-                tran?.Rollback();
-                return "NK:" + ex.Message;
-            }
-            finally
-            {
-                tran?.Dispose();
-                cmd.Connection?.Close();
-            }
-        }
-
         private NpgsqlCommand NewSqlCommand940Detail(ShippingOrder940Detail detail)
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
