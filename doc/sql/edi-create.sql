@@ -163,212 +163,9 @@ CREATE TABLE IF NOT EXISTS edi.freight_210
 	primary key(invoice_no)
 );
 
--- warehouse shipping order 945
-drop table if exists edi.shipping_945 cascade ;
-create table if not exists edi.shipping_945
-(
-	customer_order_id varchar(100) not null,
-	actual_pickup_date varchar(100) null,
-	vics_bol varchar(100) null,
-	hub_groups_order_number varchar(100) null,
-	purchase_order_number varchar(100) null,
-	mater_vics_bol varchar(100) null,
-	link_sequence_number varchar(100) null,
-	sf_company_name varchar(100) null,
-	sf_seller_buyer varchar(100) null,
-	sf_location_id_code varchar(100) null,
-	sf_address_info varchar(100) null,
-	sf_city varchar(100) null,
-	sf_state varchar(100) null,
-	sf_zipcode varchar(100) null,
-	sf_country_code varchar(100) null,
-	st_company_name varchar(100) null,
-	st_seller_buyer varchar(100) null,
-	st_location_id_code varchar(100) null,
-	st_address_info varchar(100) null,
-	st_city varchar(100) null,
-	st_state varchar(100) null,
-	st_zipcode varchar(100) null,
-	st_country_code varchar(100) null,
-	mf_company_name varchar(100) null,
-	mf_seller_buyer varchar(100) null,
-	mf_location_id_code varchar(100) null,
-	mf_address_info varchar(100) null,
-	mf_city varchar(100) null,
-	mf_state varchar(100) null,
-	mf_zipcode varchar(100) null,
-	mf_country_code varchar(100) null,
-	bt_company_name varchar(100) null,
-	bt_seller_buyer varchar(100) null,
-	bt_location_id_code varchar(100) null,
-	bt_address_info varchar(100) null,
-	bt_city varchar(100) null,
-	bt_state varchar(100) null,
-	bt_zipcode varchar(100) null,
-	bt_country_code varchar(100) null,
-	pro_number varchar(100) null,
-	master_bol_number varchar(100) null,
-	service_level varchar(100) null,
-	delivery_appointment_number varchar(100) null,
-	purchase_order_date varchar(100) null,
-	transportation_mode varchar(100) null,
-	carriers_scac_code varchar(100) null,
-	carriers_name varchar(100) null,
-	payment_method varchar(100) null,
-	allowance_or_charge_total_amount varchar(100) null,
-	total_units_shipped varchar(100) null,
-	total_weight_shipped varchar(100) null,
-	lading_quantity varchar(100) null,
-	unit_or_basis_for_measurement_code varchar(100) null,
-	created_by varchar(30) not null,
-	created_on timestamp not null default current_timestamp,
-	last_update_by varchar(30) null,
-	last_update_on timestamp null,
-	memo varchar(500) NULL,
-	file_name varchar(300) null,
-	primary key(customer_order_id)
-);  
-drop table if exists edi.shipping_945_dtl cascade ;
-create table if not exists edi.shipping_945_dtl
-(
-	customer_order_id varchar(100) not null,
-	assigned_number int not null,
-	pallet_id varchar(100) null,
-	carrier_tracking_number  varchar(100) null,
-	shipment_status  varchar(100) null,
-	requested_quantity  varchar(100) null,
-	actual_quantity_shipped  varchar(100) null,
-	difference_between_actual_and_requested  varchar(100) null,
-	unit_or_basis_measurement_code  varchar(100) null,
-	upc_code  varchar(100) null,
-	sku_no  varchar(100) null,
-	lot_batch_code  varchar(100) null,
-	total_weight_for_item_line  varchar(100) null,
-	retailers_item_number  varchar(100) null,
-	line_number  varchar(100) null,
-	expiration_date  varchar(100) null,
-	memo varchar(500) NULL,
-	primary key(customer_order_id, assigned_number),
-	CONSTRAINT fk_customer_order_id_945 FOREIGN KEY (customer_order_id) 
-	    REFERENCES edi.shipping_945(customer_order_id) ON DELETE CASCADE ON UPDATE CASCADE	
-);
 
---944
-DROP TABLE IF EXISTS edi.transfer_944 CASCADE ;
-CREATE TABLE IF NOT EXISTS edi.transfer_944
-(
-	hub_groups_order_number varchar(30)  not null,
-	receipt_date varchar(10) not null,
-	customer_order_id varchar(30) not null,
-	customers_bol_number varchar(100) null, 
-	hub_groups_warehousename  varchar(100) null, 
-	hub_groups_customers_warehouse_id  varchar(100) null, 
-	destination_address_information  varchar(100) null, 
-	destination_city  varchar(100) null, 
-	destination_state  varchar(100) null, 
-	destination_zipcode  varchar(100) null, 
-	origin_company_name  varchar(100) null, 
-	shipper_company_id  varchar(100) null, 
-	origin_address_information  varchar(100) null, 
-	origin_city  varchar(100) null, 
-	origin_state  varchar(100) null, 
-	origin_zipcode  varchar(100) null, 
-	scheduled_delivery_date  varchar(100) null, 
-	transportation_method_type_code  varchar(100) null, 
-	standard_carrier_alpha_code  varchar(100) null, 
-	quantity_received  int null, 
-	number_of_units_shipped  int null, 
-	quantity_damaged_on_hold  int null, 
-	memo varchar(500) NULL,
-	file_name varchar(300) null,
---
-	created_by varchar(30) not null,
-	created_on timestamp not null default current_timestamp,
-	last_update_by varchar(30) null,
-	last_update_on timestamp null,
---
-	primary key(hub_groups_order_number)
-);
 
-DROP TABLE IF EXISTS edi.transfer_944_dtl CASCADE ;
-CREATE TABLE IF NOT EXISTS edi.transfer_944_dtl
-(
-	hub_groups_order_number varchar(30)  not null,
-	assigned_number int not null,
-	receipt_date varchar(10) null,
-	stock_receipt_quantity_received  varchar(100) null,
-	stock_receipt_unit_of_measure_code   varchar(100) null,
-	stock_receipt_sku   varchar(100) null,
-	stock_receipt_lot_batch_code   varchar(100) null,
-	exception_quantity   varchar(100) null,
-	exception_unit_of_measure_code   varchar(100) null,
-	exception_receiving_condition_code   varchar(100) null,
-	exception_lot_batch_code   varchar(100) null,
-	exception_damage_condition   varchar(100) null,
-	primary key (hub_groups_order_number, assigned_number),
-	CONSTRAINT fk_transfer_944 FOREIGN KEY (hub_groups_order_number) 
-	    REFERENCES edi.transfer_944(hub_groups_order_number) ON DELETE CASCADE ON UPDATE CASCADE		
-);
 
---940
-DROP TABLE IF EXISTS edi.shipping_order_940 CASCADE ;
-CREATE TABLE IF NOT EXISTS edi.shipping_order_940
-(
-	order_id varchar(100) not null,
-	order_no varchar(100) null,
-	balsong_chasu int null,
-	buyer_po_number  varchar(100) null,
-	warehouse_info  varchar(100) null,
-	ship_to  varchar(100) null,
-	reference_identification  varchar(100) null,
-	requested_pickup_date  varchar(100) null,
-	requested_delivery_date  varchar(100) null,
-	cancel_after_date  varchar(100) null,
-	purchase_order_date  varchar(100) null,
-	warehouse_carrier_info  varchar(100) null,
-	order_group_id  varchar(100) null,
-	memo varchar(500) NULL,
---	
-	created_by varchar(30) not null,
-	created_on timestamp not null default current_timestamp,
-	last_update_by varchar(30) null,
-	last_update_on timestamp null,
-
-	primary key(order_id)
-);
-
-DROP TABLE IF EXISTS edi.shipping_order_940_dtl CASCADE ;
-CREATE TABLE IF NOT EXISTS edi.shipping_order_940_dtl
-(
-	order_id varchar(100) not null,
-	seq int not null,
-	quantity_ordered int null,
-	unit_of_measure  varchar(100) null,
-	upc_code  varchar(100) null,
-	sku  varchar(100) null,
-	retailers_item_code  varchar(100) null,
-	lot_number  varchar(100) null,
-	scc14  varchar(100) null,
-	free_form_description  varchar(100) null,
-	retail_price  decimal(10,2) null,
-	cost_price  decimal(10,2) null,
-	misc1_number_of_pack  int null,
-	misc1_size_of_units  varchar(100) null,
-	misc1_size_unit  varchar(100) null,
-	misc1_color_description  varchar(100) null,
-	misc2_number_of_pack  int null,
-	misc2_size_of_units  varchar(100) null,
-	misc2_size_unit  varchar(100) null,
-	misc2_color_description  varchar(100) null,
-	misc3_number_of_pack  int null,
-	misc3_size_of_units  varchar(100) null,
-	misc3_size_unit  varchar(100) null,
-	misc3_color_description  varchar(100) null,
-	
-	primary key(order_id, seq),
-	CONSTRAINT fk_shipping_order_940_dtl FOREIGN KEY (order_id) 
-	    REFERENCES edi.shipping_order_940(order_id) ON DELETE CASCADE ON UPDATE CASCADE		
-);
 
 
 -- 846
@@ -414,4 +211,212 @@ CREATE TABLE IF NOT EXISTS edi.inquiry_846_dtl
 	    REFERENCES edi.inquiry_846(hub_group_document_number) ON DELETE CASCADE ON UPDATE CASCADE		
 );
 
+--940
+DROP TABLE IF EXISTS edi.shipping_order_940 CASCADE ;
+CREATE TABLE IF NOT EXISTS edi.shipping_order_940
+(
+	order_id varchar(100) not null,
+	order_no varchar(100) null,
+	balsong_chasu int null,
+	buyer_po_number  varchar(100) null,
+	warehouse_info  varchar(100) null,
+	ship_to  varchar(100) null,
+	reference_identification  varchar(100) null,
+	requested_pickup_date  varchar(100) null,
+	requested_delivery_date  varchar(100) null,
+	cancel_after_date  varchar(100) null,
+	purchase_order_date  varchar(100) null,
+	warehouse_carrier_info  varchar(100) null,
+	order_group_id  varchar(100) null,
+	memo varchar(500) NULL,
+	file_name varchar(300) null,
+--	
+	created_by varchar(30) not null,
+	created_on timestamp not null default current_timestamp,
+	last_update_by varchar(30) null,
+	last_update_on timestamp null,
+
+	primary key(order_id)
+);
+
+DROP TABLE IF EXISTS edi.shipping_order_940_dtl CASCADE ;
+CREATE TABLE IF NOT EXISTS edi.shipping_order_940_dtl
+(
+	order_id varchar(100) not null,
+	seq int not null,
+	quantity_ordered int null,
+	unit_of_measure  varchar(100) null,
+	upc_code  varchar(100) null,
+	sku  varchar(100) null,
+	retailers_item_code  varchar(100) null,
+	lot_number  varchar(100) null,
+	scc14  varchar(100) null,
+	free_form_description  varchar(100) null,
+	retail_price  decimal(10,2) null,
+	cost_price  decimal(10,2) null,
+	misc1_number_of_pack  int null,
+	misc1_size_of_units  varchar(100) null,
+	misc1_size_unit  varchar(100) null,
+	misc1_color_description  varchar(100) null,
+	misc2_number_of_pack  int null,
+	misc2_size_of_units  varchar(100) null,
+	misc2_size_unit  varchar(100) null,
+	misc2_color_description  varchar(100) null,
+	misc3_number_of_pack  int null,
+	misc3_size_of_units  varchar(100) null,
+	misc3_size_unit  varchar(100) null,
+	misc3_color_description  varchar(100) null,
+	
+	primary key(order_id, seq),
+	CONSTRAINT fk_shipping_order_940_dtl FOREIGN KEY (order_id) 
+	    REFERENCES edi.shipping_order_940(order_id) ON DELETE CASCADE ON UPDATE CASCADE		
+);
+
+
+--944
+DROP TABLE IF EXISTS edi.transfer_944 CASCADE ;
+CREATE TABLE IF NOT EXISTS edi.transfer_944
+(
+	hub_groups_order_number varchar(30)  not null,
+	receipt_date varchar(10) not null,
+	customer_order_id varchar(30) not null,
+	customers_bol_number varchar(100) null, 
+	hub_groups_warehousename  varchar(100) null, 
+	hub_groups_customers_warehouse_id  varchar(100) null, 
+	destination_address_information  varchar(100) null, 
+	destination_city  varchar(100) null, 
+	destination_state  varchar(100) null, 
+	destination_zipcode  varchar(100) null, 
+	origin_company_name  varchar(100) null, 
+	shipper_company_id  varchar(100) null, 
+	origin_address_information  varchar(100) null, 
+	origin_city  varchar(100) null, 
+	origin_state  varchar(100) null, 
+	origin_zipcode  varchar(100) null, 
+	scheduled_delivery_date  varchar(100) null, 
+	transportation_method_type_code  varchar(100) null, 
+	standard_carrier_alpha_code  varchar(100) null, 
+	quantity_received  int null, 
+	number_of_units_shipped  int null, 
+	quantity_damaged_on_hold  int null, 
+	memo varchar(500) NULL,
+	file_name varchar(300) null,
+--
+	created_by varchar(30) not null,
+	created_on timestamp not null default current_timestamp,
+	last_update_by varchar(30) null,
+	last_update_on timestamp null,
+--
+	primary key(hub_groups_order_number)
+);
+
+DROP TABLE IF EXISTS edi.transfer_944_dtl CASCADE ;
+CREATE TABLE IF NOT EXISTS edi.transfer_944_dtl
+(
+	hub_groups_order_number varchar(30)  not null,
+	assigned_number int not null,
+	receipt_date varchar(10) null,
+	stock_receipt_quantity_received  int null,
+	stock_receipt_unit_of_measure_code   varchar(100) null,
+	stock_receipt_sku   varchar(100) null,
+	stock_receipt_lot_batch_code   varchar(100) null,
+	exception_quantity   varchar(100) null,
+	exception_unit_of_measure_code   varchar(100) null,
+	exception_receiving_condition_code   varchar(100) null,
+	exception_lot_batch_code   varchar(100) null,
+	exception_damage_condition   varchar(100) null,
+	primary key (hub_groups_order_number, assigned_number),
+	CONSTRAINT fk_transfer_944 FOREIGN KEY (hub_groups_order_number) 
+	    REFERENCES edi.transfer_944(hub_groups_order_number) ON DELETE CASCADE ON UPDATE CASCADE		
+);
+
+-- warehouse shipping order 945
+drop table if exists edi.shipping_945 cascade ;
+create table if not exists edi.shipping_945
+(
+	customer_order_id varchar(50) not null,
+	actual_pickup_date varchar(10) null,
+	vics_bol varchar(30) null,
+	hub_groups_order_number varchar(30) null,
+	purchase_order_number varchar(30) null,
+	mater_vics_bol varchar(100) null,
+	link_sequence_number varchar(100) null,
+	sf_company_name varchar(100) null,
+	sf_seller_buyer varchar(100) null,
+	sf_location_id_code varchar(100) null,
+	sf_address_info varchar(100) null,
+	sf_city varchar(100) null,
+	sf_state varchar(100) null,
+	sf_zipcode varchar(10) null,
+	sf_country_code varchar(10) null,
+	st_company_name varchar(100) null,
+	st_seller_buyer varchar(100) null,
+	st_location_id_code varchar(100) null,
+	st_address_info varchar(100) null,
+	st_city varchar(100) null,
+	st_state varchar(100) null,
+	st_zipcode varchar(10) null,
+	st_country_code varchar(10) null,
+	mf_company_name varchar(100) null,
+	mf_seller_buyer varchar(100) null,
+	mf_location_id_code varchar(100) null,
+	mf_address_info varchar(100) null,
+	mf_city varchar(100) null,
+	mf_state varchar(100) null,
+	mf_zipcode varchar(10) null,
+	mf_country_code varchar(10) null,
+	bt_company_name varchar(100) null,
+	bt_seller_buyer varchar(100) null,
+	bt_location_id_code varchar(100) null,
+	bt_address_info varchar(100) null,
+	bt_city varchar(100) null,
+	bt_state varchar(100) null,
+	bt_zipcode varchar(100) null,
+	bt_country_code varchar(100) null,
+	pro_number varchar(100) null,
+	master_bol_number varchar(100) null,
+	service_level varchar(100) null,
+	delivery_appointment_number varchar(100) null,
+	purchase_order_date varchar(100) null,
+	transportation_mode varchar(10) null,
+	carriers_scac_code varchar(20) null,
+	carriers_name varchar(100) null,
+	payment_method varchar(10) null,
+	allowance_or_charge_total_amount varchar(100) null,
+	total_units_shipped int null,
+	total_weight_shipped decimal(10,2) null,
+	lading_quantity int null,
+	unit_or_basis_for_measurement_code varchar(100) null,
+	created_by varchar(30) not null,
+	created_on timestamp not null default current_timestamp,
+	last_update_by varchar(30) null,
+	last_update_on timestamp null,
+	memo varchar(500) NULL,
+	file_name varchar(300) null,
+	primary key(customer_order_id)
+);  
+drop table if exists edi.shipping_945_dtl cascade ;
+create table if not exists edi.shipping_945_dtl
+(
+	customer_order_id varchar(100) not null,
+	assigned_number int not null,
+	pallet_id varchar(100) null,
+	carrier_tracking_number  varchar(100) null,
+	shipment_status  varchar(100) null,
+	requested_quantity  int null,
+	actual_quantity_shipped  int null,
+	difference_between_actual_and_requested  int null,
+	unit_or_basis_measurement_code  varchar(100) null,
+	upc_code  varchar(100) null,
+	sku_no  varchar(100) null,
+	lot_batch_code  varchar(100) null,
+	total_weight_for_item_line decimal(10,2) null,
+	retailers_item_number  varchar(100) null,
+	line_number  varchar(100) null,
+	expiration_date  varchar(100) null,
+	memo varchar(500) NULL,
+	primary key(customer_order_id, assigned_number),
+	CONSTRAINT fk_customer_order_id_945 FOREIGN KEY (customer_order_id) 
+	    REFERENCES edi.shipping_945(customer_order_id) ON DELETE CASCADE ON UPDATE CASCADE	
+);
 

@@ -65,9 +65,9 @@ namespace FBH.EDI.Common.Model
 
         public string AllowanceOrChargeTotalAmount { get; set; }
 
-        public string TotalUnitsShipped { get; set; }
-        public string TotalWeightShipped { get; set; }
-        public string LadingQuantity { get; set; }
+        public int? TotalUnitsShipped { get; set; }
+        public decimal? TotalWeightShipped { get; set; }
+        public int? LadingQuantity { get; set; }
         public string UnitOrBasisForMeasurementCode { get; set; }
 
         public List<ShippingAdvice945Detail> Details { get; set; }

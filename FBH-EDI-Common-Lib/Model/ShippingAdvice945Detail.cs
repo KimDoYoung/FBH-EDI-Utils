@@ -13,14 +13,14 @@ namespace FBH.EDI.Common.Model
         public string PalletId { get; set; }
         public string CarrierTrackingNumber { get; set; }
         public string ShipmentStatus { get; set; }
-        public string RequestedQuantity { get; set; }
-        public string ActualQuantityShipped { get; set; }
-        public string DifferenceBetweenActualAndRequested { get; set; }
+        public int? RequestedQuantity { get; set; }
+        public int? ActualQuantityShipped { get; set; }
+        public int? DifferenceBetweenActualAndRequested { get; set; }
         public string UnitOrBasisMeasurementCode { get; set; }
         public string UpcCode { get; set; }
         public string SkuNo { get; set; }
         public string LotBatchCode { get; set; }
-        public string TotalWeightForItemLine { get; set; }
+        public decimal? TotalWeightForItemLine { get; set; }
         public string RetailersItemNumber { get; set; }
         public string LineNumber { get; set; }
         public string ExpirationDate { get; set; }

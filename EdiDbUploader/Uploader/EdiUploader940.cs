@@ -10,13 +10,14 @@ namespace EdiDbUploader.Uploader
 {
     internal class EdiUploader940 : EdiUploader
     {
+        private NpgsqlCommand cmd = null;
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
-            List<String> logList = new List<string>();
-            NpgsqlCommand cmd = null;
+            var logList = new List<string>();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
-                NpgsqlTransaction tran = BeginTransaction();
+                cmd = new NpgsqlCommand();
+                NpgsqlTransaction tran = null;
                 var item = ediDoc as ShippingOrder940;
                 try
                 {
@@ -25,13 +26,19 @@ namespace EdiDbUploader.Uploader
                     if (count > 0)
                     {
                         logList.Add($"NK: {item.OrderId} is alread exist in table");
-                        tran.Commit();
                         continue;
                     }
-
-                    cmd = NewSqCommand940(item);
+                    tran = BeginTransaction();
                     cmd.Transaction = tran;
+                    cmd = SqCommand940(item);
                     cmd.ExecuteNonQuery();
+                    //detail insert
+                    foreach (ShippingOrder940Detail detail in item.Details)
+                    {
+                        cmd = SqlCommand940Detail(detail);
+                        cmd.Transaction = tran;
+                        cmd.ExecuteNonQuery();
+                    }
 
                     tran.Commit();
                     logList.Add($"OK: {item.OrderId}");
@@ -45,14 +52,14 @@ namespace EdiDbUploader.Uploader
                 {
                     tran?.Dispose();
                     cmd?.Connection?.Close();
+                    cmd?.Dispose();
                 }
             }
             return logList;
         }
 
-        private NpgsqlCommand NewSqlCommand940Detail(ShippingOrder940Detail detail)
+        private NpgsqlCommand SqlCommand940Detail(ShippingOrder940Detail detail)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.shipping_order_940_dtl("
                     + "order_id, seq, quantity_ordered, unit_of_measure, upc_code, sku, retailers_item_code, lot_number,"
@@ -65,6 +72,7 @@ namespace EdiDbUploader.Uploader
                     + "@misc1_size_unit, @misc1_color_description, @misc2_number_of_pack, @misc2_size_of_units, @misc2_size_unit,"
                     + "@misc2_color_description, @misc3_number_of_pack, @misc3_size_of_units, @misc3_size_unit, @misc3_color_description"
                     + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@order_id", detail.OrderId));
             cmd.Parameters.Add(NewSafeParameter("@seq", detail.Seq));
             cmd.Parameters.Add(NewSafeParameter("@quantity_ordered", detail.QuantityOrdered));
@@ -92,9 +100,8 @@ namespace EdiDbUploader.Uploader
             return cmd;
         }
 
-        private NpgsqlCommand NewSqCommand940(ShippingOrder940 so940)
+        private NpgsqlCommand SqCommand940(ShippingOrder940 so940)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.shipping_order_940("
                 + "order_id, order_no, balsong_chasu, buyer_po_number, warehouse_info, ship_to, "
@@ -105,8 +112,9 @@ namespace EdiDbUploader.Uploader
                 + "@order_id, @order_no,@balsong_chasu, @buyer_po_number, @warehouse_info, @ship_to, "
                 + "@reference_identification, @requested_pickup_date, @requested_delivery_date,"
                 + "@cancel_after_date, @purchase_order_date, @warehouse_carrier_info, @order_group_id, @memo, @file_name,"
-                + "@@created_by"
+                + "@created_by"
                 + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@order_id", so940.OrderId));
             cmd.Parameters.Add(NewSafeParameter("@order_no", so940.OrderNo));
             cmd.Parameters.Add(NewSafeParameter("@balsong_chasu", so940.BalsongChasu));

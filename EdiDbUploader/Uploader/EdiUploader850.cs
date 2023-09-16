@@ -10,10 +10,11 @@ namespace EdiDbUploader
 {
     internal class EdiUploader850 : EdiUploader
     {
+        private NpgsqlCommand cmd = null;
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
-            List<String> logList = new List<string>();
-            NpgsqlCommand cmd = null;
+            var logList = new List<string>();
+            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
                 NpgsqlTransaction tran = BeginTransaction();
@@ -29,10 +30,22 @@ namespace EdiDbUploader
                         continue;
                     }
 
-                    cmd = NewSqCommand850(item);
+                    cmd = SqCommand850(item);
                     cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
 
+                    foreach (PurchaseOrder850Detail detail in item.Details)
+                    {
+                        cmd = SqlCommand850Detail(detail);
+                        cmd.Transaction = tran;
+                        cmd.ExecuteNonQuery();
+                    }
+                    foreach(PurchaseOrder850Allowance allowance in item.Allowences)
+                    {
+                        cmd = SqlCommand850Allowance(allowance);
+                        cmd.Transaction = tran;
+                        cmd.ExecuteNonQuery();
+                    }
                     tran.Commit();
                     logList.Add($"OK: {item.PoNo}");
                 }
@@ -45,20 +58,22 @@ namespace EdiDbUploader
                 {
                     tran?.Dispose();
                     cmd?.Connection?.Close();
+                    cmd?.Dispose();
                 }
             }
             return logList;
         }
 
-        private NpgsqlCommand NewSqlCommand850Allowance(PurchaseOrder850Allowance allowance)
+        private NpgsqlCommand SqlCommand850Allowance(PurchaseOrder850Allowance allowance)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
+
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.po_850_allowance("
                     + "po_no, seq, charge, desc_cd, amount, handling_cd, percent"
                     + ")values("
                     + "@po_no, @seq, @charge, @desc_cd, @amount, @handling_cd, @percent"
                     + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@po_no", allowance.PoNo));
             cmd.Parameters.Add(NewSafeParameter("@seq", allowance.Seq));
             cmd.Parameters.Add(NewSafeParameter("@charge", allowance.Charge));
@@ -70,15 +85,15 @@ namespace EdiDbUploader
 
         }
 
-        private NpgsqlCommand NewSqlCommand850Detail(PurchaseOrder850Detail detail)
+        private NpgsqlCommand SqlCommand850Detail(PurchaseOrder850Detail detail)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.po_850_dtl("
                     + "po_no, line, company_id, msrmnt, unit_price, gtin13, retailer_item_no, vendor_item_no, description, extended_cost"
                     + ")values("
                     + "@po_no, @line,(SELECT company_id FROM edi.stocks s WHERE retail_item_no = @retailer_item_no), @msrmnt, @unit_price, @gtin13, @retailer_item_no, @vendor_item_no, @description, @extended_cost"
                     + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@po_no", detail.PoNo));
             cmd.Parameters.Add(NewSafeParameter("@line", detail.Line));
             //cmd.Parameters.Add(NewSafeParameter("@company_id", detail.CompanyId));
@@ -92,9 +107,8 @@ namespace EdiDbUploader
             return cmd;
         }
 
-        private NpgsqlCommand NewSqCommand850(PurchaseOrder850 po850)
+        private NpgsqlCommand SqCommand850(PurchaseOrder850 po850)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.po_850("
                + "po_no, po_dt, promotion_deal_no, department_no, vendor_no, order_type, net_day, "
@@ -113,6 +127,7 @@ namespace EdiDbUploader
                + "@company_name, @week_of_year, @memo, @file_name,"
                + "@created_by"
                + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@po_no", po850.PoNo));
             cmd.Parameters.Add(NewSafeParameter("@po_dt", po850.PoDt));
             cmd.Parameters.Add(NewSafeParameter("@promotion_deal_no", po850.PromotionDealNo));

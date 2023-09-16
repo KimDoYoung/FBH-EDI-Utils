@@ -8,10 +8,11 @@ namespace EdiDbUploader
 {
     public class EdiUploader210 : EdiUploader
     {
+        private NpgsqlCommand cmd = null;
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
-            List<String> logList = new List<string>();
-            NpgsqlCommand cmd = null;
+            var logList = new List<string>();
+            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
                 NpgsqlTransaction tran = BeginTransaction();
@@ -38,6 +39,7 @@ namespace EdiDbUploader
                 {
                     tran?.Rollback();
                     logList.Add("NK:" + ex.Message);
+                    cmd?.Dispose();
                 }
                 finally
                 {
@@ -49,7 +51,6 @@ namespace EdiDbUploader
         }
         private NpgsqlCommand NewSqCommand210(FreightInvoice210 freight210)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.freight_210("
                 + "invoice_no, ship_id_no, ship_method_of_payment, invoice_dt, amount_to_be_paid, po_number, vics_bol_no,"
@@ -62,6 +63,7 @@ namespace EdiDbUploader
                 + "@total_weight, @total_weight_unit, @weight_qualifier, @amount_charged, @bol_qty_in_cases, @dc_no, @memo, "
                 + "@file_name, @created_by"
                 + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@invoice_no", freight210.InvoiceNo));
             cmd.Parameters.Add(NewSafeParameter("@ship_id_no", freight210.ShipIdNo));
             cmd.Parameters.Add(NewSafeParameter("@ship_method_of_payment", freight210.ShipMethodOfPayment));

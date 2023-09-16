@@ -9,10 +9,10 @@ namespace EdiDbUploader
 {
     public class EdiUploader810 : EdiUploader
     {
+        private NpgsqlCommand cmd = null;
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
-            List<String> logList = new List<string>();
-            NpgsqlCommand cmd = null;
+            var logList = new List<string>();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
                 NpgsqlTransaction tran = BeginTransaction();
@@ -28,9 +28,16 @@ namespace EdiDbUploader
                         continue;
                     }
 
-                    cmd = NewSqCommand810(item);
+                    cmd = SqCommand810(item);
                     cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
+
+                    foreach (Invoice810Detail detail in item.Details)
+                    {
+                        cmd = SqlCommand810Detail(detail);
+                        cmd.Transaction = tran;
+                        cmd.ExecuteNonQuery();
+                    }
 
                     tran.Commit();
                     logList.Add($"OK: {item.InvoiceNo}");
@@ -49,15 +56,15 @@ namespace EdiDbUploader
             return logList;
         }
 
-        private NpgsqlCommand NewSqlCommand810Detail(Invoice810Detail detail)
+        private NpgsqlCommand SqlCommand810Detail(Invoice810Detail detail)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.invoice_810_dtl("
                     + "invoice_no,	seq, 	po_no,	qty,	 msrmnt, unit_price,	gtin13,	line_ttl"
                     + ")values("
                     + "@invoice_no,	@seq,	@po_no,	@qty,	@msrmnt,	 @unit_price,	@gtin13, 	@line_ttl"
                     + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@invoice_no", detail.InvoiceNo));
             cmd.Parameters.Add(NewSafeParameter("@seq", detail.Seq));
             cmd.Parameters.Add(NewSafeParameter("@po_no", detail.PoNo));
@@ -69,9 +76,8 @@ namespace EdiDbUploader
             return cmd;
         }
 
-        private NpgsqlCommand NewSqCommand810(Invoice810 invoice810)
+        private NpgsqlCommand SqCommand810(Invoice810 invoice810)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.invoice_810("
                 + "invoice_no, po_no,"
@@ -86,6 +92,7 @@ namespace EdiDbUploader
                 + "@ship_to_nm, @ship_to_gln, @ship_to_addr, @ttl_amt, @memo, @file_name,"
                 + "@created_by"
                 + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@invoice_no", invoice810.InvoiceNo));
             cmd.Parameters.Add(NewSafeParameter("@po_no", invoice810.PoNo));
             cmd.Parameters.Add(NewSafeParameter("@supplier_nm", invoice810.SupplierNm));

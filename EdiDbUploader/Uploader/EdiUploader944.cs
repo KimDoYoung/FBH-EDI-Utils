@@ -10,31 +10,38 @@ namespace EdiDbUploader.Uploader
 {
     internal class EdiUploader944 : EdiUploader
     {
+        private NpgsqlCommand cmd = null;
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
             List<String> logList = new List<string>();
-            NpgsqlCommand cmd = null;
+            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
                 NpgsqlTransaction tran = BeginTransaction();
                 var item = ediDoc as Transfer944;
                 try
                 {
-                    var where = $"hub_groups_order_number='{item.HubGroupsOrderNumber}'"
-                                + $" and receipt_date={item.ReceiptDate}"
-                                + $" and customer_order_id={item.CustomerOrderId}";
-                    object alreadyCount = ExecuteScalar($"select count(*) as count from edi.transfer_944 where 1=1 {where}'");
+                    var where = $" and hub_groups_order_number='{item.HubGroupsOrderNumber}'";
+                    var alreadyCount = ExecuteScalar($"select count(*) as count from edi.transfer_944 where 1=1 {where}");
                     int count = Convert.ToInt32(alreadyCount);
                     if (count > 0)
                     {
-                        logList.Add($"NK: {item.HubGroupsOrderNumber} is alread exist in table");
+                        logList.Add($"NK: {item.HubGroupsOrderNumber} 이미 존재합니다.");
                         tran.Commit();
                         continue;
                     }
 
-                    cmd = NewSqCommand944(item);
+                    cmd = SqCommand944(item);
                     cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
+
+                    //detail insert
+                    foreach (Transfer944Detail detail in item.Details)
+                    {
+                        cmd = SqlCommand944Detail(detail);
+                        cmd.Transaction = tran;
+                        cmd.ExecuteNonQuery();
+                    }
 
                     tran.Commit();
                     logList.Add($"OK: {item.HubGroupsOrderNumber}");
@@ -48,15 +55,16 @@ namespace EdiDbUploader.Uploader
                 {
                     tran?.Dispose();
                     cmd?.Connection?.Close();
+                    cmd?.Dispose();
                 }
             }
             return logList;
         }
       
 
-        private NpgsqlCommand NewSqlCommand944Detail(Transfer944Detail detail)
+        private NpgsqlCommand SqlCommand944Detail(Transfer944Detail detail)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
+            //NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.transfer_944_dtl("
                     + "hub_groups_order_number, assigned_number, receipt_date, stock_receipt_quantity_received, "
@@ -67,6 +75,7 @@ namespace EdiDbUploader.Uploader
                     + "@stock_receipt_unit_of_measure_code, @stock_receipt_sku, @stock_receipt_lot_batch_code, @exception_quantity,"
                     + "@exception_unit_of_measure_code, @exception_receiving_condition_code, @exception_lot_batch_code, @exception_damage_condition"
                     + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@hub_groups_order_number", detail.HubGroupsOrderNumber));
             cmd.Parameters.Add(NewSafeParameter("@assigned_number", detail.AssignedNumber));
             cmd.Parameters.Add(NewSafeParameter("@receipt_date", detail.ReceiptDate));
@@ -82,25 +91,26 @@ namespace EdiDbUploader.Uploader
             return cmd;
         }
 
-        private NpgsqlCommand NewSqCommand944(Transfer944 tr944)
+        private NpgsqlCommand SqCommand944(Transfer944 tr944)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
+            //NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.transfer_944("
                 + "hub_groups_order_number, receipt_date, customer_order_id, customers_bol_number, hub_groups_warehousename, "
                 +"hub_groups_customers_warehouse_id, destination_address_information, destination_city, destination_state, "
                 +"destination_zipcode, origin_company_name, shipper_company_id, origin_address_information, origin_city, "
-                +"origin_state, origin_zipcode, scheduled_delivery_date, transportation_method_type_code, standard_carriervalpha_code, "
+                +"origin_state, origin_zipcode, scheduled_delivery_date, transportation_method_type_code, standard_carrier_alpha_code, "
                 +"quantity_received, number_of_units_shipped, quantity_damaged_on_hold, memo, file_name," 
                 +"created_by"
                 + ")values("
                 + "@hub_groups_order_number, @receipt_date, @customer_order_id, @customers_bol_number, @hub_groups_warehousename, "
                 + "@hub_groups_customers_warehouse_id, @destination_address_information, @destination_city, @destination_state, "
                 + "@destination_zipcode, @origin_company_name, @shipper_company_id, @origin_address_information, @origin_city, "
-                + "@origin_state, @origin_zipcode, @scheduled_delivery_date, @transportation_method_type_code, @standard_carriervalpha_code, "
+                + "@origin_state, @origin_zipcode, @scheduled_delivery_date, @transportation_method_type_code, @standard_carrier_alpha_code, "
                 + "@quantity_received, @number_of_units_shipped, @quantity_damaged_on_hold, @memo, @file_name,"
                 + "@created_by"
                 + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@hub_groups_order_number", tr944.HubGroupsOrderNumber));
             cmd.Parameters.Add(NewSafeParameter("@receipt_date", tr944.ReceiptDate));
             cmd.Parameters.Add(NewSafeParameter("@customer_order_id", tr944.CustomerOrderId));
@@ -119,7 +129,7 @@ namespace EdiDbUploader.Uploader
             cmd.Parameters.Add(NewSafeParameter("@origin_zipcode", tr944.OriginZipcode));
             cmd.Parameters.Add(NewSafeParameter("@scheduled_delivery_date", tr944.ScheduledDeliveryDate));
             cmd.Parameters.Add(NewSafeParameter("@transportation_method_type_code", tr944.TransportationMethodTypeCode));
-            cmd.Parameters.Add(NewSafeParameter("@standard_carriervalpha_code", tr944.StandardCarrierAlphaCode));
+            cmd.Parameters.Add(NewSafeParameter("@standard_carrier_alpha_code", tr944.StandardCarrierAlphaCode));
             cmd.Parameters.Add(NewSafeParameter("@quantity_received", tr944.QuantityReceived));
             cmd.Parameters.Add(NewSafeParameter("@number_of_units_shipped", tr944.NumberOfUnitsShipped));
             cmd.Parameters.Add(NewSafeParameter("@quantity_damaged_on_hold", tr944.QuantityDamagedOnHold));

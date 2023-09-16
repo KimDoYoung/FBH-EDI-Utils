@@ -8,10 +8,11 @@ namespace EdiDbUploader.Uploader
    
     internal class EdiUploader945 : EdiUploader
     {
+        private NpgsqlCommand cmd = new NpgsqlCommand();
         public override List<string> Insert(List<EdiDocument> ediDocumentList)
         {
             List<String> logList = new List<string>();
-            NpgsqlCommand cmd = null;
+
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
                 NpgsqlTransaction tran = BeginTransaction();
@@ -26,10 +27,18 @@ namespace EdiDbUploader.Uploader
                         tran.Commit();
                         continue;
                     }
-
-                    cmd = NewSqCommand945(item);
+                    //main insert
+                    cmd = SqCommand945(item);
                     cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
+                    
+                    //detail insert
+                    foreach (ShippingAdvice945Detail detail in item.Details)
+                    {
+                        cmd = SqlCommand945Detail(detail);
+                        cmd.Transaction = tran;
+                        cmd.ExecuteNonQuery();
+                    }
 
                     tran.Commit();
                     logList.Add($"OK: {item.CustomerOrderId}");
@@ -43,15 +52,15 @@ namespace EdiDbUploader.Uploader
                 {
                     tran?.Dispose();
                     cmd?.Connection?.Close();
+                    cmd?.Dispose();
                 }
             }
             return logList;
         }
         
 
-        private NpgsqlCommand NewSqlCommand945Detail(ShippingAdvice945Detail detail)
+        private NpgsqlCommand SqlCommand945Detail(ShippingAdvice945Detail detail)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.shipping_945_dtl("
                         +"customer_order_id, assigned_number, pallet_id, carrier_tracking_number, shipment_status, "
@@ -64,6 +73,7 @@ namespace EdiDbUploader.Uploader
                         + "@unit_or_basis_measurement_code, @upc_code, @sku_no, @lot_batch_code, @total_weight_for_item_line, "
                         + "@retailers_item_number, @line_number, @expiration_date"
                     + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@customer_order_id", detail.CustomerOrderId));
             cmd.Parameters.Add(NewSafeParameter("@assigned_number", detail.AssignedNumber));
             cmd.Parameters.Add(NewSafeParameter("@pallet_id", detail.PalletId));
@@ -83,9 +93,8 @@ namespace EdiDbUploader.Uploader
             return cmd;
         }
 
-        private NpgsqlCommand NewSqCommand945(ShippingAdvice945 sa945)
+        private NpgsqlCommand SqCommand945(ShippingAdvice945 sa945)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.shipping_945("
                 + "customer_order_id, actual_pickup_date, vics_bol, hub_groups_order_number, purchase_order_number, "
@@ -110,6 +119,7 @@ namespace EdiDbUploader.Uploader
                 + "@total_weight_shipped, @lading_quantity, @unit_or_basis_for_measurement_code, @memo, @file_name,"
                 + "@created_by"
                 + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@customer_order_id", sa945.CustomerOrderId));
             cmd.Parameters.Add(NewSafeParameter("@actual_pickup_date", sa945.ActualPickupDate));
             cmd.Parameters.Add(NewSafeParameter("@vics_bol", sa945.VicsBOL));

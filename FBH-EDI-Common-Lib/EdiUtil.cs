@@ -12,65 +12,6 @@ namespace FBH.EDI.Common
 {
     public class EdiUtil
     {
-        public static EdiDocument EdiDocumentFromFile(string ediFile)
-        {
-            if (ediFile.EndsWith("xlsx"))
-            {
-                Excel.Application app = new Excel.Application();
-                Excel.Workbook workbook = app.Workbooks.Open(ediFile);
-                Excel.Worksheet worksheet = workbook.Worksheets[1];
-                try
-                {
-                    var o = worksheet.GetCell("A1");
-                    var a1 = o.ToString().Trim().ToUpper();
-                    o = worksheet.GetCell("C2");
-                    var c2 = o.ToString().Trim().ToUpper();
-                    if (a1.Contains("FREIGHT"))
-                    {
-                        return Create210(worksheet);
-                    }
-                    else if (a1.Contains("INQUIRY"))
-                    {
-                        return Create846(worksheet);
-                    }
-                    else if (a1.Contains("PURCHASE"))
-                    {
-                        return Create850(worksheet);
-                    }
-                    else if (a1.Contains("WAREHOUSE"))
-                    {
-                        return Create945(worksheet);
-                    }
-                    else if (a1.Contains("INVOICE"))
-                    {
-                        return Create810(worksheet);
-                    }
-                    else if (c2.Contains("ORDERNO"))
-                    {
-                        //return Create940List(worksheet);
-                    }
-                    else
-                    {
-                        throw new EdiException($"알려지지 않은 EDI 문서 타입입니다.{ediFile}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new EdiException(ex.Message);
-                }
-                finally
-                {
-                    workbook.Close(false);
-                    app.Quit();
-
-                    ReleaseExcelObject(worksheet);
-                    ReleaseExcelObject(workbook);
-                    ReleaseExcelObject(app);
-                }
-            }
-            
-            return null;
-        }
 
         public static ParsingResult EdiDocumentParsing(string ediFile)
         {
@@ -105,7 +46,7 @@ namespace FBH.EDI.Common
         private static ParsingResult ParsingExcel(string ediFile)
         {
             ParsingResult parsingResult = new ParsingResult();
-
+            
             Excel.Application app = new Excel.Application();
             Excel.Workbook workbook = app.Workbooks.Open(ediFile);
             Excel.Worksheet worksheet = workbook.Worksheets[1];
@@ -119,12 +60,14 @@ namespace FBH.EDI.Common
                 {
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Freight_Invoice_210;
                     EdiDocument doc = Create210(worksheet);
+                    doc.FileName = Path.GetFileName(ediFile);
                     parsingResult.Add(doc);
                 }
                 else if (a1.Contains("INVOICE"))
                 {
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Invoice_810;
                     EdiDocument doc = Create810(worksheet);
+                    doc.FileName = Path.GetFileName(ediFile);
                     parsingResult.Add(doc);
 
                 }
@@ -132,12 +75,14 @@ namespace FBH.EDI.Common
                 {
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Inventory_Inquiry_Advice_846;
                     EdiDocument doc = Create846(worksheet);
+                    doc.FileName = Path.GetFileName(ediFile);
                     parsingResult.Add(doc);
                 }
                 else if (a1.Contains("PURCHASE"))
                 {
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Purchase_Order_850;
                     EdiDocument doc = Create850(worksheet);
+                    doc.FileName = Path.GetFileName(ediFile);
                     parsingResult.Add(doc);
                 }
                 else if (c2.Contains("ORDERNO"))
@@ -145,28 +90,32 @@ namespace FBH.EDI.Common
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Warehouse_Shipping_Order_940;
 
                     ShippingOrder940[] array = Create940List(worksheet);
-                    foreach (EdiDocument item in array)
+                    foreach (EdiDocument doc in array)
                     {
-                        parsingResult.Add(item);
+                        doc.FileName = Path.GetFileName(ediFile);
+                        parsingResult.Add(doc);
                     }
                 }
-                else if (c2.Contains("STOCK TRANSFER"))
+                else if (a1.Contains("STOCK TRANSFER"))
                 {
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Warehouse_Stock_Transfer_Receipt_Advice_944;
 
                     Transfer944 tr944 = Create944(worksheet);
+                    tr944.FileName = Path.GetFileName(ediFile);
                     parsingResult.Add(tr944);
                 }
                 else if (a1.Contains("WAREHOUSE"))
                 {
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Warehouse_Shipping_Advice_945;
                     EdiDocument doc = Create945(worksheet);
+                    doc.FileName = Path.GetFileName(ediFile);
                     parsingResult.Add(doc);
                 }
                 else
                 {
                     throw new EdiException($"알려지지 않은 EDI 문서 타입입니다.{ediFile}");
                 }
+                
                 return parsingResult;
             }
             catch (Exception ex)
@@ -201,25 +150,28 @@ namespace FBH.EDI.Common
             wso945.SfSellerBuyer = worksheet.GetString("D5");
             wso945.SfLocationIdCode = worksheet.GetString("D6");
             wso945.SfAddressInfo = worksheet.GetString("D7");
-            wso945.SfCity = worksheet.GetString("D8");
-            wso945.SfZipcode = worksheet.GetString("D9");
-            wso945.SfCountryCode = worksheet.GetString("D10");
+            wso945.SfState= worksheet.GetString("D8");
+            wso945.SfCity = worksheet.GetString("D9");
+            wso945.SfZipcode = worksheet.GetString("D10");
+            wso945.SfCountryCode = worksheet.GetString("D11");
 
             wso945.StCompanyName = worksheet.GetString("F4");
             wso945.StSellerBuyer = worksheet.GetString("F5");
             wso945.StLocationIdCode = worksheet.GetString("F6");
             wso945.StAddressInfo = worksheet.GetString("F7");
-            wso945.StCity = worksheet.GetString("F8");
-            wso945.StZipcode = worksheet.GetString("F9");
-            wso945.StCountryCode = worksheet.GetString("F10");
+            wso945.StState= worksheet.GetString("F8");
+            wso945.StCity = worksheet.GetString("F9");
+            wso945.StZipcode = worksheet.GetString("F10");
+            wso945.StCountryCode = worksheet.GetString("F11");
 
             wso945.MfCompanyName = worksheet.GetString("H4");
             wso945.MfSellerBuyer = worksheet.GetString("H5");
             wso945.MfLocationIdCode = worksheet.GetString("H6");
             wso945.MfAddressInfo = worksheet.GetString("H7");
-            wso945.MfCity = worksheet.GetString("H8");
-            wso945.MfZipcode = worksheet.GetString("H9");
-            wso945.MfCountryCode = worksheet.GetString("H10");
+            wso945.MfState= worksheet.GetString("H8");
+            wso945.MfCity = worksheet.GetString("H9");
+            wso945.MfZipcode = worksheet.GetString("H10");
+            wso945.MfCountryCode = worksheet.GetString("H11");
 
             wso945.BtCompanyName = worksheet.GetString("J4");
             wso945.BtSellerBuyer = worksheet.GetString("J5");
@@ -240,9 +192,9 @@ namespace FBH.EDI.Common
             wso945.CarriersName = worksheet.GetString("D16");
             wso945.PaymentMethod = worksheet.GetString("D17");
 
-            wso945.TotalUnitsShipped = worksheet.GetString("B21");
-            wso945.TotalWeightShipped = worksheet.GetString("B22");
-            wso945.LadingQuantity = worksheet.GetString("B23");
+            wso945.TotalUnitsShipped = CommonUtil.ToIntOrNull( worksheet.GetString("B21"));
+            wso945.TotalWeightShipped = CommonUtil.ToDecimalOrNull(worksheet.GetString("B22"));
+            wso945.LadingQuantity = CommonUtil.ToIntOrNull(worksheet.GetString("B23"));
             wso945.UnitOrBasisForMeasurementCode = worksheet.GetString("B24");
 
             //details
@@ -259,14 +211,14 @@ namespace FBH.EDI.Common
                 detail945.PalletId = worksheet.GetString(row, "B");
                 detail945.CarrierTrackingNumber = worksheet.GetString(row, "C");
                 detail945.ShipmentStatus = worksheet.GetString(row, "D");
-                detail945.RequestedQuantity = worksheet.GetString(row, "E");
-                detail945.ActualQuantityShipped = worksheet.GetString(row, "F");
-                detail945.DifferenceBetweenActualAndRequested = worksheet.GetString(row, "G");
+                detail945.RequestedQuantity = CommonUtil.ToIntOrNull(worksheet.GetString(row, "E"));
+                detail945.ActualQuantityShipped = CommonUtil.ToIntOrNull(worksheet.GetString(row, "F"));
+                detail945.DifferenceBetweenActualAndRequested = CommonUtil.ToIntOrNull(worksheet.GetString(row, "G"));
                 detail945.UnitOrBasisMeasurementCode = worksheet.GetString(row, "H");
                 detail945.UpcCode = worksheet.GetString(row, "I");
                 detail945.SkuNo = worksheet.GetString(row, "J");
                 detail945.LotBatchCode = worksheet.GetString(row, "K");
-                detail945.TotalWeightForItemLine = worksheet.GetString(row, "L");
+                detail945.TotalWeightForItemLine = CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "L"));
                 detail945.RetailersItemNumber = worksheet.GetString(row, "M");
                 detail945.LineNumber = worksheet.GetString(row, "N");
                 detail945.ExpirationDate = worksheet.GetString(row, "O");
@@ -322,7 +274,7 @@ namespace FBH.EDI.Common
 
                 var value = worksheet.GetString(row, "A");
                 if (CommonUtil.IsValidCellValue(value) == false) break;
-
+                detail.HubGroupsOrderNumber = tr944.HubGroupsOrderNumber;
                 detail.AssignedNumber = CommonUtil.ToIntOrNull( worksheet.GetString(row, "A") );
                 detail.StockReceiptQuantityReceived = CommonUtil.ToIntOrNull( worksheet.GetString(row, "B") );
                 detail.StockReceiptUnitOfMeasureCode = worksheet.GetString(row, "C");
@@ -367,7 +319,7 @@ namespace FBH.EDI.Common
                 list.Add(so940);
                 var orderId = so940.OrderId;
                 var seq = 1;
-                if(orderId == worksheet.GetString(row, "A"))
+                while(orderId == worksheet.GetString(row, "A"))
                 {
                     ShippingOrder940Detail detail = new ShippingOrder940Detail();
                     detail.OrderId = orderId;
@@ -399,10 +351,8 @@ namespace FBH.EDI.Common
                     detail.Misc1ColorDescription = worksheet.GetString(row, "AG");
 
                     so940.Details.Add(detail);
-                    row++;
+                    row++; seq++;
                 }
-                list.Add(so940);
-                row--;
             }
             return list.ToArray();
         }

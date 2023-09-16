@@ -12,10 +12,11 @@ namespace EdiDbUploader.Uploader
 {
     internal class EdiUploader846 : EdiUploader
     {
+        private NpgsqlCommand cmd = null;
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
-            List<String> logList = new List<string>();
-            NpgsqlCommand cmd = null;
+            var logList = new List<string>();
+            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
                 NpgsqlTransaction tran = BeginTransaction();
@@ -31,9 +32,16 @@ namespace EdiDbUploader.Uploader
                         continue;
                     }
 
-                    cmd = NewSqCommand846(item);
+                    cmd = SqCommand846(item);
                     cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
+
+                    foreach (Inquiry846Detail detail in item.Details)
+                    {
+                        cmd = SqlCommand846Detail(detail);
+                        cmd.Transaction = tran;
+                        cmd.ExecuteNonQuery();
+                    }
 
                     tran.Commit();
                     logList.Add($"OK: {item.HubGroupDocumentNumber}");
@@ -47,14 +55,14 @@ namespace EdiDbUploader.Uploader
                 {
                     tran?.Dispose();
                     cmd?.Connection?.Close();
+                    cmd?.Dispose();
                 }
             }
             return logList;
         }
        
-        private NpgsqlCommand NewSqlCommand846Detail(Inquiry846Detail detail)
+        private NpgsqlCommand SqlCommand846Detail(Inquiry846Detail detail)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.inquiry_846_dtl("
                     + "hub_group_document_number, assgnd_no, sku, "
@@ -67,6 +75,7 @@ namespace EdiDbUploader.Uploader
                     + "@inbound_pending, @outbound_pending, @damaged_quantity, @onhold_quantity, "
                     + "@available_quantity, @total_inventory"
                     + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@hub_group_document_number", detail.HubGroupDocumentNumber));
             cmd.Parameters.Add(NewSafeParameter("@assgnd_no", detail.AssgndNo));
             cmd.Parameters.Add(NewSafeParameter("@sku", detail.Sku));
@@ -83,15 +92,15 @@ namespace EdiDbUploader.Uploader
             return cmd;
         }
 
-        private NpgsqlCommand NewSqCommand846(Inquiry846 inquiry846)
+        private NpgsqlCommand SqCommand846(Inquiry846 inquiry846)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.inquiry_846("
                     + "hub_group_document_number, date_expresses, date_time_qualifier, date, warehouse_name, warehouse_id, address_information, city, state, zipcode, created_by"
                     + ")values("
                     + "@hub_group_document_number, @date_expresses, @date_time_qualifier, @date, @warehouse_name, @warehouse_id, @address_information, @city, @state, @zipcode, @created_by"
                     + ")";
+            cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@hub_group_document_number", inquiry846.HubGroupDocumentNumber));
             cmd.Parameters.Add(NewSafeParameter("@date_expresses", inquiry846.DateExpresses));
             cmd.Parameters.Add(NewSafeParameter("@date_time_qualifier", inquiry846.DateTimeQualifier));
