@@ -216,6 +216,7 @@ namespace EdiDbUploader
             {
                 var ediDbUploader = new FbhEdiDbUploader(url);
                 int countOK = 0;
+                int countHK = 0;
                 int countNK = 0;
                 var idx = 0;
                 foreach (var ediFile in list)
@@ -226,6 +227,11 @@ namespace EdiDbUploader
                         if (result.StartsWith("OK"))
                         {
                             countOK++;
+                            lvEdiExcels.Items[idx].BackColor = System.Drawing.Color.SkyBlue;
+                        }
+                        else if (result.StartsWith("HK"))
+                        {
+                            countHK++;
                             lvEdiExcels.Items[idx].BackColor = System.Drawing.Color.GreenYellow;
                         }
                         else if (result.StartsWith("NK"))
@@ -239,7 +245,7 @@ namespace EdiDbUploader
                 }
                 logBox.Write("");
                 logBox.Write("---------------------------------------------------------");
-                logBox.Write($"총파일갯수: {lvEdiExcels.Items.Count}, 성공갯수: {countOK}, 실패갯수 : {countNK}");
+                logBox.Write($"총파일갯수: {lvEdiExcels.Items.Count}, 성공갯수: {countOK}, 이미존재: {countHK}, 실패갯수 : {countNK}");
                 logBox.Write("---------------------------------------------------------");
             }
             catch (Exception ex)

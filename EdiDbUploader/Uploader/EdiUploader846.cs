@@ -27,7 +27,7 @@ namespace EdiDbUploader.Uploader
                     int count = Convert.ToInt32(alreadyCount);
                     if (count > 0)
                     {
-                        logList.Add($"NK: {item.HubGroupDocumentNumber} is alread exist in table");
+                        logList.Add($"HK: {item.HubGroupDocumentNumber} is alread exist in table");
                         tran.Commit();
                         continue;
                     }

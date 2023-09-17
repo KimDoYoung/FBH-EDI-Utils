@@ -23,7 +23,7 @@ namespace EdiDbUploader.Uploader
                     int count = Convert.ToInt32(alreadyCount);
                     if (count > 0)
                     {
-                        logList.Add($"NK: {item.CustomerOrderId} is alread exist in table");
+                        logList.Add($"HK: {item.CustomerOrderId} is alread exist in table");
                         tran.Commit();
                         continue;
                     }

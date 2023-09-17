@@ -26,7 +26,7 @@ namespace EdiDbUploader.Uploader
                     int count = Convert.ToInt32(alreadyCount);
                     if (count > 0)
                     {
-                        logList.Add($"NK: {item.HubGroupsOrderNumber} 이미 존재합니다.");
+                        logList.Add($"HK: {item.HubGroupsOrderNumber} 이미 존재합니다.");
                         tran.Commit();
                         continue;
                     }
