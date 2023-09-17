@@ -217,23 +217,25 @@ namespace EdiDbUploader
                 var ediDbUploader = new FbhEdiDbUploader(url);
                 int countOK = 0;
                 int countNK = 0;
+                var idx = 0;
                 foreach (var ediFile in list)
                 {
                     var results = ediDbUploader.Insert(ediFile);
-                    var no = 1;
                     foreach (var result in results)
                     {
                         if (result.StartsWith("OK"))
                         {
                             countOK++;
+                            lvEdiExcels.Items[idx].BackColor = System.Drawing.Color.GreenYellow;
                         }
                         else if (result.StartsWith("NK"))
                         {
                             countNK++;
+                            lvEdiExcels.Items[idx].BackColor = System.Drawing.Color.Crimson;
                         }
-                        logBox.Write(no + " " +result);
+                        logBox.Write((idx+1) + " " +result);
                     }
-                    no++;
+                    idx++;
                 }
                 logBox.Write("");
                 logBox.Write("---------------------------------------------------------");

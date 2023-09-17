@@ -13,6 +13,7 @@ namespace EdiDbUploader
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
             var logList = new List<string>();
+            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
                 NpgsqlTransaction tran = BeginTransaction();
