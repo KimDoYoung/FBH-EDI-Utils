@@ -9,6 +9,7 @@ namespace FBH.EDI.Common.Model
     public class PurchaseOrder850Detail
     {
         public string PoNo { get; set; }
+        public int? Seq { get; set; }
         public string Line { get; set; }
         public int? Qty { get; set; }
         public string Msrmnt { get; set; }

@@ -177,6 +177,7 @@ DROP TABLE IF EXISTS edi.po_850_dtl CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.po_850_dtl
 (
 	po_no varchar(30) not null,
+	seq int not null,
 	line varchar(10) not null,
 	company_id int NOT NULL, 
 	msrmnt varchar(100) null,
@@ -186,7 +187,7 @@ CREATE TABLE IF NOT EXISTS edi.po_850_dtl
 	Vendor_Item_No varchar(100) null,
 	Description varchar(100) null,
 	Extended_Cost  decimal(10,2),
-	primary key(po_no, line),
+	primary key(po_no, seq),
 	CONSTRAINT fk_po_no_dtl FOREIGN KEY (po_no) 
 	    REFERENCES edi.po_850(po_no) ON DELETE CASCADE ON UPDATE CASCADE
 );

@@ -398,7 +398,7 @@ namespace FBH.EDI.Common
             po.Note = worksheet.GetString("A16");
 
             //detail
-            int row = 19;
+            int row = 19; int seq = 1;
             while (row < 5000)
             {
                 PurchaseOrder850Detail poDetail = new PurchaseOrder850Detail();
@@ -407,6 +407,7 @@ namespace FBH.EDI.Common
                 if (CommonUtil.IsValidCellValue(value) == false) break;
 
                 poDetail.PoNo = po.PoNo;
+                poDetail.Seq = seq;
                 poDetail.Line = worksheet.GetString(row, "B");
                 poDetail.Qty = CommonUtil.ToIntOrNull(worksheet.GetString(row, "C"));
                 poDetail.Msrmnt = worksheet.GetString(row, "D");
@@ -418,11 +419,11 @@ namespace FBH.EDI.Common
                 poDetail.ExtendedCost = CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "J"));
 
                 po.Details.Add(poDetail);
-                row++;
+                row++;seq++;
             }
             //allowences
             row = 4;
-            int seq = 1;
+            seq = 1;
             while (row < 5000)
             {
                 PurchaseOrder850Allowance allowence = new PurchaseOrder850Allowance();
