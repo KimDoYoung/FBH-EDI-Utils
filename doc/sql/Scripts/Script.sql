@@ -50,3 +50,8 @@ select * from edi.transfer_944 t ;
 select * from edi.transfer_944_dtl td ;
 select * from edi.shipping_order_940 so ;
 select * from edi.shipping_order_940_dtl sod ;
+
+
+SELECT company_id FROM edi.stocks s WHERE retail_item_no = '0282079';
+select * from edi.stocks s  where hub_group  = 'Kroger';
+update edi.stocks set retail_item_no  = concat('0',retail_item_no) where hub_group  = 'Kroger';
