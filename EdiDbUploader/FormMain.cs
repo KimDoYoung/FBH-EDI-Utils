@@ -14,6 +14,11 @@ namespace EdiDbUploader
         public FormMain()
         {
             InitializeComponent();
+            //Version
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            this.Text = this.Text + " - " + version;
 
             //Drag and Drop
             this.AllowDrop = true;
@@ -215,12 +220,20 @@ namespace EdiDbUploader
                 foreach (var ediFile in list)
                 {
                     var results = ediDbUploader.Insert(ediFile);
+                    var no = 1;
                     foreach (var result in results)
                     {
-                        if (result.StartsWith("OK")) countOK++;
-                        else if (result.StartsWith("NK")) countNK++;
-                        logBox.Write(result);
+                        if (result.StartsWith("OK"))
+                        {
+                            countOK++;
+                        }
+                        else if (result.StartsWith("NK"))
+                        {
+                            countNK++;
+                        }
+                        logBox.Write(no + " " +result);
                     }
+                    no++;
                 }
                 logBox.Write("");
                 logBox.Write("---------------------------------------------------------");

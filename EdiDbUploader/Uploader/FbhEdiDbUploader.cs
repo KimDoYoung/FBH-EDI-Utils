@@ -23,7 +23,8 @@ namespace EdiDbUploader
 
         internal List<string> Insert(string ediFile)
         {
-            MessageEventHandler?.Invoke(null, new MessageEventArgs($"{ediFile} upload start "));
+            var fileNameOnly= Path.GetFileName(ediFile);
+            MessageEventHandler?.Invoke(null, new MessageEventArgs($"{fileNameOnly} start "));
             ParsingResult parsingResult = EdiUtil.EdiDocumentParsing(ediFile);
 
             EdiUploader uploader = EdiFactory.GetUploader(parsingResult.EdiDocumentNumber);

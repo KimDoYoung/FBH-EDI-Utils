@@ -474,8 +474,8 @@ namespace FBH.EDI.Common
                 //마지막 라인 체크
                 var value = worksheet.GetString(row, "A");
                 if (string.IsNullOrEmpty(value)) break;
-
-                detail.AssgndNo = worksheet.GetString(row, "A");
+                detail.HubGroupDocumentNumber = inquiry846.HubGroupDocumentNumber;
+                detail.AssgndNo = CommonUtil.ToIntOrNull(worksheet.GetString(row, "A"));
                 detail.Sku= worksheet.GetString(row, "B");
                 detail.LotCode = worksheet.GetString(row, "C");
                 detail.NonCommittedIn= CommonUtil.ToIntOrNull( worksheet.GetString(row, "D"));

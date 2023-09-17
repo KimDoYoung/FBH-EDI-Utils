@@ -9,7 +9,7 @@ namespace FBH.EDI.Common.Model
     public class Inquiry846Detail
     {
         public string HubGroupDocumentNumber { get; set; }
-        public string AssgndNo { get; set; }
+        public int? AssgndNo { get; set; }
         public string Sku { get; set; }
         public string LotCode { get; set; }
         public int? NonCommittedIn { get; set; }

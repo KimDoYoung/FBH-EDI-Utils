@@ -39,6 +39,11 @@ delete from edi.shipping_945 ;
 delete from edi.shipping_945_dtl;
 --
 select * from edi.freight_210 f ;
+select * from edi.inquiry_846 i ;
+select * from edi.inquiry_846_dtl id ;
+select * from edi.po_850 p ;
+select * from edi.po_850_dtl pd ;
+select * from edi.po_850_allowance pa ;
 select * from edi.shipping_945 s ;
 select * from edi.shipping_945_dtl sd ;
 select * from edi.transfer_944 t ; 

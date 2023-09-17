@@ -1,6 +1,45 @@
 --
 -- EDI Documents Tables
 --
+--
+-- freight invoice 210
+-- 1. detail 제거
+-- 2. address 통합
+--
+DROP TABLE IF EXISTS edi.freight_210 CASCADE ;
+CREATE TABLE IF NOT EXISTS edi.freight_210
+(
+	invoice_no  varchar(30) not null,
+	invoice_dt  varchar(8) null,
+	ship_id_no  varchar(100) null,
+	ship_method_of_payment  varchar(100) null,
+	amount_to_be_paid  decimal(10,2) null,
+	po_number  varchar(100) null,
+	vics_bol_no  varchar(100) null,
+	dc_no varchar(10) NULL,
+	--
+	warehouse_name varchar(100) null,
+	warehouse_address varchar(200) null,
+	consignee_name varchar(100) null,	
+	consignee_address varchar(200) null,
+	bill_to_name varchar(100) null,
+	bill_to_address varchar(200) null,
+	--
+	total_weight decimal(10,2) null,
+	total_weight_unit varchar(10) null,
+	weight_qualifier  varchar(10) null,
+	amount_charged  decimal(10,2) null,
+	qty int,
+	memo varchar(500) NULL,
+	--
+	created_by varchar(30) not null,
+	created_on timestamp not null default CURRENT_TIMESTAMP,
+	last_update_by varchar(30) null,
+	last_update_on timestamp null,
+	file_name varchar(300) NULL,
+	primary key(invoice_no)
+);
+
 
 DROP TABLE IF EXISTS edi.invoice_810 CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.invoice_810 
@@ -46,6 +85,48 @@ CREATE TABLE IF NOT EXISTS edi.invoice_810_dtl
 	primary key(invoice_no, seq),
 	CONSTRAINT fk_invoice_no FOREIGN KEY (invoice_no) 
 	    REFERENCES edi.invoice_810(invoice_no) ON DELETE CASCADE ON UPDATE CASCADE
+);
+-- 846
+DROP TABLE IF EXISTS edi.inquiry_846 CASCADE ;
+CREATE TABLE IF NOT EXISTS edi.inquiry_846
+(
+	hub_group_document_number varchar(100) not null,
+	date_expresses  varchar(100) null,
+	date_time_qualifier  varchar(100) null,
+	date  varchar(100) null,
+	warehouse_name  varchar(100) null,
+	warehouse_id  varchar(100) null,
+	address_information  varchar(100) null,
+	city  varchar(100) null,
+	state  varchar(100) null,
+	zipcode  varchar(100) null,
+	memo varchar(500) NULL,
+--
+	created_by varchar(30) not null,
+	created_on timestamp not null default current_timestamp,
+	last_update_by varchar(30) null,
+	last_update_on timestamp null,
+	primary key(hub_group_document_number)
+);
+DROP TABLE IF EXISTS edi.inquiry_846_dtl CASCADE ;
+CREATE TABLE IF NOT EXISTS edi.inquiry_846_dtl
+(
+	hub_group_document_number  varchar(100) not null,
+	assgnd_no int not null,
+	sku varchar(100) null,
+	lot_code  varchar(100) null,
+	non_committed_in int null,
+	non_committed_out int null,
+	on_hand_quantity int null,
+	inbound_pending int null,
+	outbound_pending int null,
+	damaged_quantity int null,
+	onhold_quantity int null,
+	available_quantity int null,
+	total_inventory int null,
+	primary key( hub_group_document_number , assgnd_no ),
+	CONSTRAINT fk_inquiry_846_dtl FOREIGN KEY (hub_group_document_number) 
+	    REFERENCES edi.inquiry_846(hub_group_document_number) ON DELETE CASCADE ON UPDATE CASCADE		
 );
 
 -- purchase order 850
@@ -122,93 +203,6 @@ CREATE TABLE IF NOT EXISTS edi.po_850_allowance
 	primary key (po_no, seq),
 	CONSTRAINT fk_po_no_allowance FOREIGN KEY (po_no) 
 	    REFERENCES edi.po_850(po_no) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
---
--- freight invoice 210
--- 1. detail 제거
--- 2. address 통합
---
-DROP TABLE IF EXISTS edi.freight_210 CASCADE ;
-CREATE TABLE IF NOT EXISTS edi.freight_210
-(
-	invoice_no  varchar(30) not null,
-	invoice_dt  varchar(8) null,
-	ship_id_no  varchar(100) null,
-	ship_method_of_payment  varchar(100) null,
-	amount_to_be_paid  decimal(10,2) null,
-	po_number  varchar(100) null,
-	vics_bol_no  varchar(100) null,
-	dc_no varchar(10) NULL,
-	--
-	warehouse_name varchar(100) null,
-	warehouse_address varchar(200) null,
-	consignee_name varchar(100) null,	
-	consignee_address varchar(200) null,
-	bill_to_name varchar(100) null,
-	bill_to_address varchar(200) null,
-	--
-	total_weight decimal(10,2) null,
-	total_weight_unit varchar(10) null,
-	weight_qualifier  varchar(10) null,
-	amount_charged  decimal(10,2) null,
-	qty int,
-	memo varchar(500) NULL,
-	--
-	created_by varchar(30) not null,
-	created_on timestamp not null default CURRENT_TIMESTAMP,
-	last_update_by varchar(30) null,
-	last_update_on timestamp null,
-	file_name varchar(300) NULL,
-	primary key(invoice_no)
-);
-
-
-
-
-
-
--- 846
-DROP TABLE IF EXISTS edi.inquiry_846 CASCADE ;
-CREATE TABLE IF NOT EXISTS edi.inquiry_846
-(
-	hub_group_document_number varchar(100) not null,
-	date_expresses  varchar(100) null,
-	date_time_qualifier  varchar(100) null,
-	date  varchar(100) null,
-	warehouse_name  varchar(100) null,
-	warehouse_id  varchar(100) null,
-	address_information  varchar(100) null,
-	city  varchar(100) null,
-	state  varchar(100) null,
-	zipcode  varchar(100) null,
-	memo varchar(500) NULL,
---
-	created_by varchar(30) not null,
-	created_on timestamp not null default current_timestamp,
-	last_update_by varchar(30) null,
-	last_update_on timestamp null,
-	primary key(hub_group_document_number)
-);
-DROP TABLE IF EXISTS edi.inquiry_846_dtl CASCADE ;
-CREATE TABLE IF NOT EXISTS edi.inquiry_846_dtl
-(
-	hub_group_document_number  varchar(100) not null,
-	assgnd_no int not null,
-	sku varchar(100) null,
-	lot_code  varchar(100) null,
-	non_committed_in int null,
-	non_committed_out int null,
-	on_hand_quantity int null,
-	inbound_pending int null,
-	outbound_pending int null,
-	damaged_quantity int null,
-	onhold_quantity int null,
-	available_quantity int null,
-	total_inventory int null,
-	primary key( hub_group_document_number , assgnd_no ),
-	CONSTRAINT fk_inquiry_846_dtl FOREIGN KEY (hub_group_document_number) 
-	    REFERENCES edi.inquiry_846(hub_group_document_number) ON DELETE CASCADE ON UPDATE CASCADE		
 );
 
 --940
