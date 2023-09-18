@@ -1,3 +1,8 @@
+-- edi.stocks
+-- edi.company
+-- ship_to_addr
+-- edi.week_of_year
+
 --
 -- warehouse stock no
 --
@@ -12,7 +17,8 @@ CREATE TABLE IF NOT EXISTS edi.stocks
  retail_item_no varchar(15) null,
  retail_item_name varchar(100) null,
  company_id int NULL,
- primary key(warehouse_stock_no)
+ use_yn char(1) NOT NULL DEFAULT 'Y',
+ CONSTRAINT pk_stocks primary key(warehouse_stock_no)
 );
 
 insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Walmart','8809729360523','18809729360520','P60523','60523','658517851','Sunkist Fruit Cups Pineapple 4oz*4');
@@ -29,6 +35,11 @@ insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail
 insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Walmart.com','8809729361230','18809729361237 (N/A)','M61230','61230','663454270','Sunkist Fruit Cups Mandarin Orange 4oz??24counts');
 insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Walmart.com','8809729361247','18809729361244 (N/A)','P61247','61247','','Sunkist Fruit Cups Peach 4oz??24counts');
 
+--
+UPDATE edi.stocks SET company_id = 1 WHERE hub_group  = 'Walmart';
+UPDATE edi.stocks SET company_id = 3 WHERE hub_group  = 'Walmart.com';
+UPDATE edi.stocks SET company_id = 3 WHERE hub_group  = 'Kroger';
+
 -- company
 DROP TABLE IF EXISTS edi.company CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.company
@@ -37,7 +48,7 @@ CREATE TABLE IF NOT EXISTS edi.company
 	nm varchar(100) not null,
 	abbr varchar(10) null,
 	sort_order int null,
-	primary key(id)
+	CONSTRAINT pk_company primary key(id)
 );
 insert into edi.company(id, nm, abbr, sort_order) values(1, 'WalMart','WM',1);
 insert into edi.company(id, nm, abbr, sort_order) values(2, 'WalMart.COM','WM.COM',2);
@@ -57,7 +68,7 @@ CREATE TABLE IF NOT EXISTS edi.ship_to_addr
 	des_state varchar(10) null,
 	des_zip varchar(10) null,
 	country_cd varchar(20) null,
-	primary key(company_id, st_id)
+	CONSTRAINT pk_ship_to_addr primary key(company_id, st_id)
 );
 
 insert into edi.ship_to_addr(company_id,st_id, dc_nm,ucc_ean_loc_cd,	des_addr_info,des_city,des_state,des_zip)values(1,'ST-1','WAL-MART DC 6006A-ASM DIS','0078742028286','2200B 7TH AVENUE SOUTHWEST','CULLMAN','AL','35055');
@@ -115,13 +126,7 @@ insert into edi.ship_to_addr(company_id,st_id, dc_nm,ucc_ean_loc_cd, cd_qualifer
 insert into edi.ship_to_addr(company_id,st_id, dc_nm,ucc_ean_loc_cd, cd_qualifer,	des_addr_info,des_city,des_state,des_zip)values(2,'ST-6','REGIONAL DISTRIBUTION CENTER 7853','0078742085470','UL','5100 N RIDGE TRL','DAVENPORT','FL','33897');
 insert into edi.ship_to_addr(company_id,st_id, dc_nm,ucc_ean_loc_cd, cd_qualifer,	des_addr_info,des_city,des_state,des_zip)values(2,'ST-7','CHINO COMBO WHSE 8103','0078742080604','UL','6750 KIMBALL AVENUE','CHINO','CA','91708');
 
---
-UPDATE edi.stocks SET company_id = 1 WHERE hub_group  = 'Walmart';
-UPDATE edi.stocks SET company_id = 3 WHERE hub_group  = 'Walmart.com';
-UPDATE edi.stocks SET company_id = 3 WHERE hub_group  = 'Kroger';
 
---SELECT company_id FROM edi.stocks s WHERE retail_item_no ='658517851';
---select * from edi.ship_to_addr;
 
 -- ship_to_addr
 DROP TABLE IF EXISTS edi.week_of_year CASCADE ;
@@ -130,7 +135,7 @@ CREATE TABLE IF NOT EXISTS edi.week_of_year
 	company_id int not null,
 	start_day varchar(8) not null,
 	woy int not null,
-	primary key(company_id, start_day)
+	CONSTRAINT pk_week_of_year primary key(company_id, start_day)
 );
 
 insert into edi.week_of_year values(3, '20230101',49);

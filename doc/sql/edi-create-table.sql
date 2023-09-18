@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS edi.freight_210
 	last_update_by varchar(30) null,
 	last_update_on timestamp null,
 	file_name varchar(300) NULL,
-	primary key(invoice_no)
+	CONSTRAINT pk_210 primary key(invoice_no)
 );
 
 
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS edi.invoice_810
 	last_update_by varchar(30) null,
 	last_update_on timestamp NULL,
 	--
-	PRIMARY key(invoice_no )
+	CONSTRAINT pk_810  PRIMARY key(invoice_no)
 );
 
 DROP TABLE IF EXISTS edi.invoice_810_dtl CASCADE ;
@@ -82,11 +82,13 @@ CREATE TABLE IF NOT EXISTS edi.invoice_810_dtl
 	unit_price decimal(10,2) null,
 	gtin13 varchar(100) null,
 	line_ttl decimal(10,2) null,
-	primary key(invoice_no, seq),
-	CONSTRAINT fk_invoice_no FOREIGN KEY (invoice_no) 
+	CONSTRAINT pk_810_dtl primary key(invoice_no, seq),
+	CONSTRAINT fk_810_invoice_no FOREIGN KEY (invoice_no) 
 	    REFERENCES edi.invoice_810(invoice_no) ON DELETE CASCADE ON UPDATE CASCADE
 );
+-- ----------------------------------------------------
 -- 846
+-- ----------------------------------------------------
 DROP TABLE IF EXISTS edi.inquiry_846 CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.inquiry_846
 (
@@ -106,7 +108,7 @@ CREATE TABLE IF NOT EXISTS edi.inquiry_846
 	created_on timestamp not null default current_timestamp,
 	last_update_by varchar(30) null,
 	last_update_on timestamp null,
-	primary key(hub_group_document_number)
+	CONSTRAINT pk_846 primary key(hub_group_document_number)
 );
 DROP TABLE IF EXISTS edi.inquiry_846_dtl CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.inquiry_846_dtl
@@ -124,12 +126,13 @@ CREATE TABLE IF NOT EXISTS edi.inquiry_846_dtl
 	onhold_quantity int null,
 	available_quantity int null,
 	total_inventory int null,
-	primary key( hub_group_document_number , assgnd_no ),
-	CONSTRAINT fk_inquiry_846_dtl FOREIGN KEY (hub_group_document_number) 
+	CONSTRAINT pk_846_dtl primary key( hub_group_document_number , assgnd_no ),
+	CONSTRAINT fk_846_inquiry_dtl FOREIGN KEY (hub_group_document_number) 
 	    REFERENCES edi.inquiry_846(hub_group_document_number) ON DELETE CASCADE ON UPDATE CASCADE		
 );
-
+-- -------------------------------------------------------
 -- purchase order 850
+-- -------------------------------------------------------
 DROP TABLE IF EXISTS edi.po_850 CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.po_850 
 (
@@ -171,7 +174,7 @@ CREATE TABLE IF NOT EXISTS edi.po_850
 	last_update_on timestamp null,
 	memo varchar(500) NULL,
 	file_name varchar(300) NULL,
-	primary key( po_no)
+	CONSTRAINT pk_850 primary key( po_no)
  );
 DROP TABLE IF EXISTS edi.po_850_dtl CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.po_850_dtl
@@ -187,8 +190,8 @@ CREATE TABLE IF NOT EXISTS edi.po_850_dtl
 	Vendor_Item_No varchar(100) null,
 	Description varchar(100) null,
 	Extended_Cost  decimal(10,2),
-	primary key(po_no, seq),
-	CONSTRAINT fk_po_no_dtl FOREIGN KEY (po_no) 
+	CONSTRAINT pk_850_dtl primary key(po_no, seq),
+	CONSTRAINT fk_850_po_no FOREIGN KEY (po_no) 
 	    REFERENCES edi.po_850(po_no) ON DELETE CASCADE ON UPDATE CASCADE
 );
 DROP TABLE IF EXISTS edi.po_850_allowance CASCADE ;
@@ -201,12 +204,13 @@ CREATE TABLE IF NOT EXISTS edi.po_850_allowance
 	amount int null,
 	handling_cd varchar(100) null,
 	percent decimal(8,2) null,
-	primary key (po_no, seq),
-	CONSTRAINT fk_po_no_allowance FOREIGN KEY (po_no) 
+	CONSTRAINT pk_850_allowance primary key (po_no, seq),
+	CONSTRAINT fk_850_po_no_allowance FOREIGN KEY (po_no) 
 	    REFERENCES edi.po_850(po_no) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
---940
+-- -------------------------------------------------------
+-- 940
+-- -------------------------------------------------------
 DROP TABLE IF EXISTS edi.shipping_order_940 CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.shipping_order_940
 (
@@ -231,7 +235,7 @@ CREATE TABLE IF NOT EXISTS edi.shipping_order_940
 	last_update_by varchar(30) null,
 	last_update_on timestamp null,
 
-	primary key(order_id)
+	CONSTRAINT pk_940 primary key(order_id)
 );
 
 DROP TABLE IF EXISTS edi.shipping_order_940_dtl CASCADE ;
@@ -262,13 +266,14 @@ CREATE TABLE IF NOT EXISTS edi.shipping_order_940_dtl
 	misc3_size_unit  varchar(100) null,
 	misc3_color_description  varchar(100) null,
 	
-	primary key(order_id, seq),
-	CONSTRAINT fk_shipping_order_940_dtl FOREIGN KEY (order_id) 
+	CONSTRAINT pk_940_dtl primary key(order_id, seq),
+	CONSTRAINT fk_940_shipping_order FOREIGN KEY (order_id) 
 	    REFERENCES edi.shipping_order_940(order_id) ON DELETE CASCADE ON UPDATE CASCADE		
 );
 
-
---944
+-- --------------------------------------------------------
+-- 944
+-- --------------------------------------------------------
 DROP TABLE IF EXISTS edi.transfer_944 CASCADE ;
 CREATE TABLE IF NOT EXISTS edi.transfer_944
 (
@@ -302,7 +307,7 @@ CREATE TABLE IF NOT EXISTS edi.transfer_944
 	last_update_by varchar(30) null,
 	last_update_on timestamp null,
 --
-	primary key(hub_groups_order_number)
+	CONSTRAINT pk_944 primary key(hub_groups_order_number)
 );
 
 DROP TABLE IF EXISTS edi.transfer_944_dtl CASCADE ;
@@ -320,12 +325,14 @@ CREATE TABLE IF NOT EXISTS edi.transfer_944_dtl
 	exception_receiving_condition_code   varchar(100) null,
 	exception_lot_batch_code   varchar(100) null,
 	exception_damage_condition   varchar(100) null,
-	primary key (hub_groups_order_number, assigned_number),
-	CONSTRAINT fk_transfer_944 FOREIGN KEY (hub_groups_order_number) 
+	CONSTRAINT pk_944_dtl primary key (hub_groups_order_number, assigned_number),
+	CONSTRAINT fk_944_hub_groups_order_number FOREIGN KEY (hub_groups_order_number) 
 	    REFERENCES edi.transfer_944(hub_groups_order_number) ON DELETE CASCADE ON UPDATE CASCADE		
 );
 
+-- --------------------------------------------------------
 -- warehouse shipping order 945
+-- --------------------------------------------------------
 drop table if exists edi.shipping_945 cascade ;
 create table if not exists edi.shipping_945
 (
@@ -388,7 +395,7 @@ create table if not exists edi.shipping_945
 	last_update_on timestamp null,
 	memo varchar(500) NULL,
 	file_name varchar(300) null,
-	primary key(customer_order_id)
+	CONSTRAINT pk_945 primary key(customer_order_id)
 );  
 drop table if exists edi.shipping_945_dtl cascade ;
 create table if not exists edi.shipping_945_dtl
@@ -410,8 +417,8 @@ create table if not exists edi.shipping_945_dtl
 	line_number  varchar(100) null,
 	expiration_date  varchar(100) null,
 	memo varchar(500) NULL,
-	primary key(customer_order_id, assigned_number),
-	CONSTRAINT fk_customer_order_id_945 FOREIGN KEY (customer_order_id) 
+	CONSTRAINT pk_945_dtl primary key(customer_order_id, assigned_number),
+	CONSTRAINT fk_945_customer_order_id FOREIGN KEY (customer_order_id) 
 	    REFERENCES edi.shipping_945(customer_order_id) ON DELETE CASCADE ON UPDATE CASCADE	
 );
 
