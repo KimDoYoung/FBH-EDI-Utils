@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace EdiDbUploader
 {
@@ -107,6 +106,8 @@ namespace EdiDbUploader
                     {
 
                         string[] files = Directory.GetFiles(fbd.SelectedPath, "*.xlsx", SearchOption.AllDirectories);
+                        AddFilesToListView(files);
+                        files = Directory.GetFiles(fbd.SelectedPath, "*.pdf", SearchOption.AllDirectories);
                         AddFilesToListView(files);
                     }
                 }
@@ -241,6 +242,7 @@ namespace EdiDbUploader
                         }
                         logBox.Write((idx+1) + " " +result);
                     }
+                    lvEdiExcels.Items[idx].EnsureVisible();
                     idx++;
                 }
                 logBox.Write("");

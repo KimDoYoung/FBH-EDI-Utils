@@ -4,7 +4,7 @@
 		"postgres-jdbc-18a9642c3b1-3701fba59d3333ec": {
 			"provider": "postgresql",
 			"driver": "postgres-jdbc",
-			"name": "fbhdb",
+			"name": "JSKN-fbhdb",
 			"save-password": true,
 			"configuration": {
 				"host": "jskn.iptime.org",
@@ -15,6 +15,38 @@
 				"home": "postgresql-x64-12",
 				"type": "dev",
 				"provider-properties": {},
+				"auth-model": "native"
+			}
+		},
+		"postgres-jdbc-18aa6fdaeeb-4ed75b80ad9d4340": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "FBH-fbhdb",
+			"save-password": true,
+			"configuration": {
+				"host": "fbh.iptime.org",
+				"port": "5432",
+				"database": "fbhdb",
+				"url": "jdbc:postgresql://fbh.iptime.org:5432/fbhdb",
+				"configurationType": "MANUAL",
+				"home": "postgresql-x64-12",
+				"type": "dev",
+				"properties": {
+					"connectTimeout": "20",
+					"loginTimeout": "20",
+					"escapeSyntaxCallMode": "callIfNoReturn"
+				},
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"show-database-statistics": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"read-keys-with-columns": "false",
+					"@dbeaver-use-prepared-statements-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false"
+				},
 				"auth-model": "native"
 			}
 		}

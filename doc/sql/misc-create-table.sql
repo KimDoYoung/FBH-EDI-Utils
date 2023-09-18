@@ -18,23 +18,22 @@ CREATE TABLE IF NOT EXISTS edi.stocks
  retail_item_name varchar(100) null,
  company_id int NULL,
  use_yn char(1) NOT NULL DEFAULT 'Y',
+ CONSTRAINT uq_stock_retail_item_no UNIQUE (retail_item_no),
  CONSTRAINT pk_stocks primary key(warehouse_stock_no)
 );
-
 insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Walmart','8809729360523','18809729360520','P60523','60523','658517851','Sunkist Fruit Cups Pineapple 4oz*4');
 insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Walmart','8809729360516','18809729360513','M60516','60516','658517853','Sunkist Fruit Cups Mango 4oz*4');
 insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Walmart','8809729360851','18809729360858','M60851','60851','658517852','Sunkist Fruit cup Mandarin Orange 4oz*4');
-insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Kroger','8809729360523','18809729360520','P60520','60520','285957','Sunkist Fruit Cups Pineapple 4oz*4');
-insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Kroger','8809729360516','18809729360513','M60513','60513','282079','Sunkist Fruit Cups Mango 4oz*4');
-insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Kroger','8809729360851','18809729360858','M60858','60858','285908','Sunkist Fruit cup Mandarin Orange 4oz*4');
-insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Target','8809729360523','18809729360520','P60525','60525','','Sunkist Fruit Cups Pineapple 4oz*4');
-insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Target','8809729360516','18809729360513','M60512','60512','','Sunkist Fruit Cups Mango 4oz*4');
-insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Target','8809729360851','18809729360858','M60853','60853','','Sunkist Fruit cup Mandarin Orange 4oz*4');
+insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Kroger','8809729360523','18809729360520','P60520','60520','0285957','Sunkist Fruit Cups Pineapple 4oz*4');
+insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Kroger','8809729360516','18809729360513','M60513','60513','0282079','Sunkist Fruit Cups Mango 4oz*4');
+insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Kroger','8809729360851','18809729360858','M60858','60858','0285908','Sunkist Fruit cup Mandarin Orange 4oz*4');
+insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Target','8809729360523','18809729360520','P60525','60525',null,'Sunkist Fruit Cups Pineapple 4oz*4');
+insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Target','8809729360516','18809729360513','M60512','60512',null,'Sunkist Fruit Cups Mango 4oz*4');
+insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Target','8809729360851','18809729360858','M60853','60853',null,'Sunkist Fruit cup Mandarin Orange 4oz*4');
 insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Walmart.com','8809729361223','18809729361220 (N/A)','P61223','61223','663454269','Sunkist Fruit Cups Pineapple 4oz?24counts');
 insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Walmart.com','8809729361216','18809729361213 (N/A)','M61216','61216','663454272','Sunkist Fruit Cups Mango 4oz??24counts');
 insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Walmart.com','8809729361230','18809729361237 (N/A)','M61230','61230','663454270','Sunkist Fruit Cups Mandarin Orange 4oz??24counts');
 insert into edi.stocks (hub_group, upc, gtin, stk_no, warehouse_stock_no, retail_item_no, retail_item_name) values('Walmart.com','8809729361247','18809729361244 (N/A)','P61247','61247','','Sunkist Fruit Cups Peach 4oz??24counts');
-
 --
 UPDATE edi.stocks SET company_id = 1 WHERE hub_group  = 'Walmart';
 UPDATE edi.stocks SET company_id = 3 WHERE hub_group  = 'Walmart.com';
@@ -48,6 +47,7 @@ CREATE TABLE IF NOT EXISTS edi.company
 	nm varchar(100) not null,
 	abbr varchar(10) null,
 	sort_order int null,
+	use_yn char(1) NOT NULL DEFAULT 'Y',
 	CONSTRAINT pk_company primary key(id)
 );
 insert into edi.company(id, nm, abbr, sort_order) values(1, 'WalMart','WM',1);
