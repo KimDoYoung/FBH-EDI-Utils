@@ -218,3 +218,79 @@ CREATE TABLE IF NOT EXISTS codes.edi_code
    CONSTRAINT pk_edi_code PRIMARY key(cd1,cd2,cd )
 );
 
+DROP TABLE IF EXISTS codes.warehouse_info CASCADE ;
+CREATE TABLE IF NOT EXISTS codes.warehouse_info
+(
+ 	id varchar(10) NOT NULL,
+ 	origin_warehouse_name varchar(50) NOT NULL,
+ 	hub_group_customers_warehouse_id varchar(10) NOT NULL,
+ 	CONSTRAINT pk_warehouse_info PRIMARY key(id)
+);
+INSERT INTO codes.warehouse_info(id, origin_warehouse_name, hub_group_customers_warehouse_id) values('WH-1', 'Casestack Lancaster', '88');
+
+DROP TABLE IF EXISTS codes.warehouse_carrier_info CASCADE ;
+CREATE TABLE IF NOT EXISTS codes.warehouse_carrier_info
+(
+ 	id varchar(10) NOT NULL,
+ 	shipment_method_payment varchar(10) NOT NULL,
+ 	transportation_method_code varchar(10) NOT NULL,
+ 	standard_carrier_alpha_code varchar(10) NULL,
+ 	CONSTRAINT pk_warehouse_carrier_info PRIMARY key(id)
+);
+INSERT INTO codes.warehouse_carrier_info (id, shipment_method_payment, transportation_method_code) values('WC-1','PP','M');
+
+DROP TABLE IF EXISTS codes.reference_identification CASCADE ;
+CREATE TABLE IF NOT EXISTS codes.reference_identification
+(
+	id varchar(10) NOT NULL,
+	destination_distribution_center varchar(10) NOT NULL,
+	retailer_name varchar(50) NOT NULL,
+	purchase_order_type varchar(10) NOT NULL,
+	department_no varchar(10) NOT NULL,
+	vendor_number varchar(30) NOT NULL,
+	vendor_name varchar(50) NOT NULL,
+	CONSTRAINT pk_reference_identification PRIMARY KEY (id)
+);
+
+INSERT INTO codes.reference_identification values('RI-1','6006','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-2','6009','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-3','6010','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-4','6011','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-5','6012','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-6','6016','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-7','6017','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-8','6018','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-9','6019','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-10','6020','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-11','6021','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-12','6023','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-13','6024','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-14','6025','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-15','6026','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-16','6027','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-17','6030','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-18','6031','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-19','6035','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-20','6036','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-21','6037','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-22','6038','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-23','6039','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-24','6040','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-25','6043','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-26','6048','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-27','6054','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-28','6066','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-29','6068','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-30','6069','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-31','6070','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-32','6080','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-33','6092','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-34','6094','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-35','7026','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-36','7033','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-37','7034','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-38','7035','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-39','7036','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-40','7038','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-41','7039','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
+INSERT INTO codes.reference_identification values('RI-42','7045','WALMART','0033','00095','426179950','FB HOLDINGS INC.');
