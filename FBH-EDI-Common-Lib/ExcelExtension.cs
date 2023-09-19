@@ -129,5 +129,13 @@ namespace FBH.EDI.Common
             workSheet.SetColor(cellName,cellName, charColor, backColor);
         }
 
+        public static Range GetRange(this Excel.Worksheet workSheet, string startCellName, string endCellName)
+        {
+            return workSheet.Range[startCellName, endCellName];
+        }
+        public static Range GetRange(this Excel.Worksheet workSheet, string cellName)
+        {
+            return workSheet.Range[cellName, cellName];
+        }
     }
 }
