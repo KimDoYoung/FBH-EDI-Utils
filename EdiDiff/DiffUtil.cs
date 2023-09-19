@@ -107,11 +107,7 @@ namespace EdiDiff
             worksheet.SetCell(1, "I", "DC#");
             worksheet.SetCell(1, "J", "ADDRESS");
 
-            //worksheet.SetCell(1, "B", "PICK-UP DATE");
-            //worksheet.SetCell(1, "C", "PAYMENT DUE");
-            //worksheet.SetCell(1, "J", "HUB BOL #");
-            //worksheet.SetCell(1, "L", "route");
-            //worksheet.SetCell(1, "M", "Status");
+
             int row = 3;
             MessageEventHandler?.Invoke(null, new MessageEventArgs($"합친 excel파일을 만드는 중......"));
             foreach (Hub210Item item in merged)
@@ -128,26 +124,6 @@ namespace EdiDiff
                 worksheet.SetCell(row, "I", item.DcNo,"@");
                 worksheet.SetCell(row, "J", item.Address);
 
-                //worksheet.SetCell(row, "B", CommonUtil.YmdFormat(item.PickUpDate), "@");
-                //worksheet.SetCell(row, "C", item.Product);
-                //worksheet.SetCell(row, "J", item.HubBolNo, "@");
-                //worksheet.SetCell(row, "L", $"Route{item.SrcRouteNo}", "@");
-                //if ( intersct.Contains( CommonUtil.OnlyNum(item.InvoiceDate) +  item.InvoiceNo + string.Format("{0:0}", item.Qty) + string.Format("{0:0.00}", item.Amount)) )
-                //{
-                //    Hub210Item item1 = FindHub201ItemInList(item, excelList);
-                //    Hub210Item item2 = FindHub201ItemInList(item, pdfList);
-                //    if (item1 == null || item2 == null) throw new EdiException($"{item.InvoiceDate} , {item.InvoiceNo} 는 excel, pdf 에 모두 존재해야하는데, 존재하지 않음");
-                //    if (item1.PoNo.Length > item2.PoNo.Length)
-                //    {
-                //        //worksheet.SetCell(row, "A", item1.PoNo, "@");
-                //    }
-                //    else
-                //    {
-                //        //worksheet.SetCell(row, "A", item2.PoNo, "@");
-                //    }
-
-                //    //worksheet.SetCell(row, "M", "중복", "@");
-                //}
                 row++;
             }
             worksheet.Range["G2"].Formula = $"=SUM(G3:G{row-1})"; //qty sum
