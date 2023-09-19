@@ -1,4 +1,6 @@
--- --------------------------- delete all
+-- -----------------------------------------
+-- delete edi tables
+-- -----------------------------------------
 delete from edi.freight_210 ;
 
 delete from edi.invoice_810 ;
