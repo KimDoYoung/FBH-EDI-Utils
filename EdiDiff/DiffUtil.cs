@@ -95,66 +95,71 @@ namespace EdiDiff
 
         private static void CreateMergeSheet(Worksheet worksheet, List<Hub210Item> merged, IEnumerable<String> intersct, List<Hub210Item> excelList, List<Hub210Item> pdfList)
         {
-            worksheet.SetCell(1, "A", "PO#");
-            worksheet.SetCell(1, "B", "PICK-UP DATE");
-            worksheet.SetCell(1, "C", "PAYMENT DUE");
-            worksheet.SetCell(1, "D", "QTY");
-            worksheet.SetCell(1, "E", "AMOUNT(USD)");
-            worksheet.SetCell(1, "F", "DC#");
-            worksheet.SetCell(1, "G", "INVOICE DATE");
-            worksheet.SetCell(1, "H", "INVOICE #");
-            worksheet.SetCell(1, "I", "PAYMENT DATE");
-            worksheet.SetCell(1, "J", "HUB BOL #");
-            worksheet.SetCell(1, "K", "ADDRESS");
-            worksheet.SetCell(1, "L", "route");
-            worksheet.SetCell(1, "M", "Status");
+            //worksheet.SetCell(1, "A", "PO#");
+            worksheet.SetCell(1, "A", "PAYMENT DATE");
+            worksheet.SetCell(1, "B", "AMOUNT");
+            worksheet.SetCell(1, "C", "INVOICE DATE");
+            worksheet.SetCell(1, "D", "PAYMENT DUE");
+            worksheet.SetCell(1, "E", "INVOICE #");
+            worksheet.SetCell(1, "F", "PO#");
+            worksheet.SetCell(1, "G", "QTY");
+            worksheet.SetCell(1, "H", "AMOUNT(USD)");
+            worksheet.SetCell(1, "I", "DC#");
+            worksheet.SetCell(1, "J", "ADDRESS");
+
+            //worksheet.SetCell(1, "B", "PICK-UP DATE");
+            //worksheet.SetCell(1, "C", "PAYMENT DUE");
+            //worksheet.SetCell(1, "J", "HUB BOL #");
+            //worksheet.SetCell(1, "L", "route");
+            //worksheet.SetCell(1, "M", "Status");
             int row = 3;
             MessageEventHandler?.Invoke(null, new MessageEventArgs($"합친 excel파일을 만드는 중......"));
             foreach (Hub210Item item in merged)
             {
                 //MessageEventHandler?.Invoke(null, new MessageEventArgs($"{item.PoNo} {item.Status} {item.SrcRouteNo}"));
-                worksheet.SetCell(row, "A", item.PoNo,"@");
-                worksheet.SetCell(row, "B", CommonUtil.YmdFormat(item.PickUpDate), "@");
-                //worksheet.SetCell(row, "C", item.Product);
-                worksheet.SetCell(row, "C", CommonUtil.YmdFormat(item.PaymentDue), "@");
-                worksheet.SetCell(row, "D", item.Qty,"#,##0");
-                worksheet.SetCell(row, "E", item.Amount);
-                worksheet.SetCell(row, "F", item.DcNo,"@");
-                worksheet.SetCell(row, "G", CommonUtil.YmdFormat(item.InvoiceDate), "@");
-                worksheet.SetCell(row, "H", item.InvoiceNo, "@");
-                worksheet.SetCell(row, "I", CommonUtil.YmdFormat(item.PaymentDate), "@");
-                worksheet.SetCell(row, "J", item.HubBolNo, "@");
-                worksheet.SetCell(row, "K", item.Address);
-                worksheet.SetCell(row, "L", $"Route{item.SrcRouteNo}", "@");
-                if ( intersct.Contains( CommonUtil.OnlyNum(item.InvoiceDate) +  item.InvoiceNo + string.Format("{0:0}", item.Qty) + string.Format("{0:0.00}", item.Amount)) )
-                {
-                    Hub210Item item1 = FindHub201ItemInList(item, excelList);
-                    Hub210Item item2 = FindHub201ItemInList(item, pdfList);
-                    if (item1 == null || item2 == null) throw new EdiException($"{item.InvoiceDate} , {item.InvoiceNo} 는 excel, pdf 에 모두 존재해야하는데, 존재하지 않음");
-                    if (item1.PoNo.Length > item2.PoNo.Length)
-                    {
-                        worksheet.SetCell(row, "A", item1.PoNo, "@");
-                    }
-                    else
-                    {
-                        worksheet.SetCell(row, "A", item2.PoNo, "@");
-                    }
+                worksheet.SetCell(row, "A", CommonUtil.YmdFormat(item.PaymentDate), "@");
+                worksheet.SetCell(row, "B", "");
+                worksheet.SetCell(row, "C", CommonUtil.YmdFormat(item.InvoiceDate), "@");
+                worksheet.SetCell(row, "D", CommonUtil.YmdFormat(item.PaymentDue), "@");
+                worksheet.SetCell(row, "E", item.InvoiceNo, "@");
+                worksheet.SetCell(row, "F", item.PoNo,"@");
+                worksheet.SetCell(row, "G", item.Qty,"#,##0");
+                worksheet.SetCell(row, "H", item.Amount);
+                worksheet.SetCell(row, "I", item.DcNo,"@");
+                worksheet.SetCell(row, "J", item.Address);
 
-                    worksheet.SetCell(row, "M", "중복", "@");
-                }
+                //worksheet.SetCell(row, "B", CommonUtil.YmdFormat(item.PickUpDate), "@");
+                //worksheet.SetCell(row, "C", item.Product);
+                //worksheet.SetCell(row, "J", item.HubBolNo, "@");
+                //worksheet.SetCell(row, "L", $"Route{item.SrcRouteNo}", "@");
+                //if ( intersct.Contains( CommonUtil.OnlyNum(item.InvoiceDate) +  item.InvoiceNo + string.Format("{0:0}", item.Qty) + string.Format("{0:0.00}", item.Amount)) )
+                //{
+                //    Hub210Item item1 = FindHub201ItemInList(item, excelList);
+                //    Hub210Item item2 = FindHub201ItemInList(item, pdfList);
+                //    if (item1 == null || item2 == null) throw new EdiException($"{item.InvoiceDate} , {item.InvoiceNo} 는 excel, pdf 에 모두 존재해야하는데, 존재하지 않음");
+                //    if (item1.PoNo.Length > item2.PoNo.Length)
+                //    {
+                //        //worksheet.SetCell(row, "A", item1.PoNo, "@");
+                //    }
+                //    else
+                //    {
+                //        //worksheet.SetCell(row, "A", item2.PoNo, "@");
+                //    }
+
+                //    //worksheet.SetCell(row, "M", "중복", "@");
+                //}
                 row++;
             }
-            worksheet.Range["D2"].Formula = $"=SUM(D3:D{row})"; //qty sum
-            worksheet.Range["E2"].Formula = $"=SUM(E3:E{row})"; //amount sum
-            worksheet.Range["D2"].NumberFormat = "#,###,##0";
-            worksheet.Range["E2"].NumberFormat = "#,###,##0.00";
-            worksheet.SetColor("D2", Color.Black, Color.Yellow);
-            worksheet.SetColor("E2", Color.Black, Color.Yellow);
+            worksheet.Range["G2"].Formula = $"=SUM(G3:G{row})"; //qty sum
+            worksheet.Range["H2"].Formula = $"=SUM(H3:H{row})"; //amount sum
+            worksheet.Range["G2"].NumberFormat = "#,###,##0";
+            worksheet.Range["H2"].NumberFormat = "#,###,##0.00";
+            worksheet.SetColor("G2", Color.Black, Color.Yellow);
+            worksheet.SetColor("H2", Color.Black, Color.Yellow);
 
-            foreach (var value in "ABCDEFGHIJKLM".ToList())
-            {
-                worksheet.SetColor($"{value}1", Color.Black, Color.Salmon);
-            }
+            worksheet.SetAlign("A1", "J1", XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter);
+            worksheet.SetColor("A1", "J1", Color.Black, Color.LightPink);
+            worksheet.Range["A1", "J1"].Font.Bold = true;
         }
 
         private static Hub210Item FindHub201ItemInList(Hub210Item item, List<Hub210Item> list)
@@ -221,7 +226,7 @@ namespace EdiDiff
         private static List<Hub210Item> GetListFromHub210Route1(Excel.Worksheet workSheet, int excelOrPdf)
         {
             List<Hub210Item> list = new List<Hub210Item>();
-            int row = 4;
+            int row = 3;
             while (true)
             {
                 var po = workSheet.GetString(row, "F");
