@@ -1,4 +1,6 @@
+-- ------------------------------------------------------
 -- member
+-- ------------------------------------------------------
 DROP TABLE IF EXISTS public.edi_user CASCADE ;
 CREATE TABLE IF NOT EXISTS public.edi_user
 (

@@ -4,9 +4,9 @@
 -- codes.week_of_year
 --CREATE SCHEMA codes;
 
---
+-- ---------------------------------------------------------
 -- warehouse stock no
---
+-- ---------------------------------------------------------
 DROP TABLE IF EXISTS codes.stocks CASCADE ;
 CREATE TABLE IF NOT EXISTS codes.stocks
 (
@@ -40,7 +40,9 @@ UPDATE codes.stocks SET company_id = 1 WHERE hub_group  = 'Walmart';
 UPDATE codes.stocks SET company_id = 3 WHERE hub_group  = 'Walmart.com';
 UPDATE codes.stocks SET company_id = 3 WHERE hub_group  = 'Kroger';
 
+-- ---------------------------------------------------------
 -- company
+-- ---------------------------------------------------------
 DROP TABLE IF EXISTS codes.company CASCADE ;
 CREATE TABLE IF NOT EXISTS codes.company
 (
@@ -55,7 +57,9 @@ insert into codes.company(id, nm, abbr, sort_order) values(1, 'WalMart','WM',1);
 insert into codes.company(id, nm, abbr, sort_order) values(2, 'WalMart.COM','WM.COM',2);
 insert into codes.company(id, nm, abbr, sort_order) values(3, 'Kroger','KG',3);
 
+-- ---------------------------------------------------------
 -- ship_to_addr
+-- ---------------------------------------------------------
 DROP TABLE IF EXISTS codes.ship_to_addr CASCADE ;
 CREATE TABLE IF NOT EXISTS codes.ship_to_addr 
 (
@@ -128,8 +132,9 @@ insert into codes.ship_to_addr(company_id,st_id, dc_nm,ucc_ean_loc_cd, cd_qualif
 insert into codes.ship_to_addr(company_id,st_id, dc_nm,ucc_ean_loc_cd, cd_qualifer,	des_addr_info,des_city,des_state,des_zip)values(2,'ST-7','CHINO COMBO WHSE 8103','0078742080604','UL','6750 KIMBALL AVENUE','CHINO','CA','91708');
 
 
-
--- ship_to_addr
+-- ---------------------------------------------------------
+-- week_of_year of kroger
+-- ---------------------------------------------------------
 DROP TABLE IF EXISTS codes.week_of_year CASCADE ;
 CREATE TABLE IF NOT EXISTS codes.week_of_year 
 (
@@ -197,7 +202,9 @@ insert into codes.week_of_year values(3, '20240114',51);
 insert into codes.week_of_year values(3, '20240121',52);
 insert into codes.week_of_year values(3, '20240128',53);
 
-
+-- ---------------------------------------------------------
+-- warehouse_info
+-- ---------------------------------------------------------
 DROP TABLE IF EXISTS codes.warehouse_info CASCADE ;
 CREATE TABLE IF NOT EXISTS codes.warehouse_info
 (
@@ -208,6 +215,9 @@ CREATE TABLE IF NOT EXISTS codes.warehouse_info
 );
 INSERT INTO codes.warehouse_info(id, origin_warehouse_name, hub_group_customers_warehouse_id) values('WH-1', 'Casestack Lancaster', '88');
 
+-- ---------------------------------------------------------
+-- warehouse_carrier_info
+-- ---------------------------------------------------------
 DROP TABLE IF EXISTS codes.warehouse_carrier_info CASCADE ;
 CREATE TABLE IF NOT EXISTS codes.warehouse_carrier_info
 (
@@ -220,7 +230,9 @@ CREATE TABLE IF NOT EXISTS codes.warehouse_carrier_info
 INSERT INTO codes.warehouse_carrier_info (id, shipment_method_payment, transportation_method_code) values('WC-1','PP','M');
 
 
-
+-- ---------------------------------------------------------
+-- reference_identification
+-- ---------------------------------------------------------
 DROP TABLE IF EXISTS codes.reference_identification CASCADE ;
 CREATE TABLE IF NOT EXISTS codes.reference_identification
 (
@@ -279,7 +291,7 @@ INSERT INTO codes.reference_identification values('RI-42','7045','WALMART','0033
 
 
 -- ----------------------------------------------------------
--- code
+-- edi_code
 -- ----------------------------------------------------------
 DROP TABLE IF EXISTS codes.edi_code CASCADE ;
 CREATE TABLE IF NOT EXISTS codes.edi_code
@@ -342,8 +354,6 @@ INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('ide','rc
 INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('ide','rcc','03','Item Detail Exception','Receiving Condition Code','Over', '944');
 INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('ide','rcc','07','Item Detail Exception','Receiving Condition Code','OK', '944');
 
-
-
 INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('ide','dc','DL','Item Detail Exception','Damage Condition','Damage Loading,', '944');
 INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('ide','dc','IL','Item Detail Exception','Damage Condition','Improper Loading,', '944');
 INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('ide','dc','LS','Item Detail Exception','Damage Condition','Load Shift,', '944');
@@ -351,10 +361,6 @@ INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('ide','dc
 INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('ide','dc','TE','Item Detail Exception','Damage Condition','Temperature Exposure,', '944');
 INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('ide','dc','UE','Item Detail Exception','Damage Condition','Unsuitable Equipment,', '944');
 INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('ide','dc','WC','Item Detail Exception','Damage Condition','Wet or Stained (Shipping Containers or Secondary Packaging)', '944');
-
-
-
-
 
 INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('po','dc','A010','Purchase Order','Description Code','Absolute Minimum Charge', '850');
 INSERT INTO codes.edi_code (cd1, cd2, cd, nm1, nm2, nm, edino) VALUES ('po','dc','A020','Purchase Order','Description Code','Access Charge - Federal', '850');

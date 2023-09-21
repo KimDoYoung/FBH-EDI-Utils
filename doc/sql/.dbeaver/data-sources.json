@@ -14,7 +14,6 @@
 				"configurationType": "MANUAL",
 				"home": "postgresql-x64-12",
 				"type": "dev",
-				"provider-properties": {},
 				"auth-model": "native"
 			}
 		},
@@ -47,6 +46,22 @@
 					"postgresql.dd.plain.string": "false",
 					"postgresql.dd.tag.string": "false"
 				},
+				"auth-model": "native"
+			}
+		},
+		"mariaDB-18ab0ee0e4d-3bc470ba1a6da2a1": {
+			"provider": "mysql",
+			"driver": "mariaDB",
+			"name": "kalpadb",
+			"save-password": true,
+			"configuration": {
+				"host": "jskn.iptime.org",
+				"port": "3306",
+				"database": "kalpadb",
+				"url": "jdbc:mariadb://jskn.iptime.org:3306/kalpadb",
+				"configurationType": "MANUAL",
+				"home": "mysql_client",
+				"type": "dev",
 				"auth-model": "native"
 			}
 		}
