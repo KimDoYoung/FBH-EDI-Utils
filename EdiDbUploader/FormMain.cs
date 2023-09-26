@@ -222,6 +222,11 @@ namespace EdiDbUploader
                 var idx = 0;
                 foreach (var ediFile in list)
                 {
+                    //var changedFile = ediFile;
+                    //if( Convert.ToBoolean(config.Get("rename", "true") ))
+                    //{
+                    //    ediFile =  
+                    //}
                     var results = ediDbUploader.Insert(ediFile);
                     foreach (var result in results)
                     {

@@ -18,8 +18,15 @@ Package Manager는 콘솔창과 비슷한 방식으로 명령을 실행할 수 있는데, .NET을 위한 
 - https://www.nuget.org/packages/Npgsql/ 최신버젼확인
 - Install-Package Npgsql -Version 7.0.4 
 
+## rename기능 넣기.
+
+- 인스피언에서 다운받은 파일의 이름은 UUID로 되어 있는데, 그것의 이름을 여기서 바꾼다.
+- 먼저 DB에 올리고 이름을 변경
+- 이름바꾼것초기폴더 문서/edi
 
 ## history
 
+- 2023-09-18 : 1..0.0.0 배포
+- 
 
 
