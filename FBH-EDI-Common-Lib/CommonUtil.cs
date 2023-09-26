@@ -97,6 +97,16 @@ namespace FBH.EDI.Common
                 throw new EdiException("잘못된 문자를 숫자로 변환하려고 합니다. " + e.Message);
             }
         }
+
+        public static string IfEmpty(string s, string dftValue)
+        {
+            if(s == null || s.Trim().Length == 0)
+            {
+                return dftValue;
+            }
+            return s;
+        }
+
         /// <summary>
         /// 주차(週次) 구하기
         /// </summary>
