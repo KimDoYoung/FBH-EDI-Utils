@@ -60,17 +60,23 @@ namespace EdiDiff
                 var merge = new HashSet<Hub210Item>(list1, new Hub210ItemCompare());
                 merge.UnionWith(list2);
                 var merged = merge.ToList();
-                var sorted = merged.OrderBy( item => ( CommonUtil.OnlyNum(item.InvoiceDate)+item.InvoiceNo) ).ToList() ;
+                var sorted = merged.OrderBy(item => (CommonUtil.OnlyNum(item.InvoiceDate) + item.InvoiceNo)).ToList();
+
                 //새로운 sheet추가
                 worksheet = workbook.Sheets.Add(After: workbook.Sheets[workbook.Sheets.Count]);
                 worksheet.Name = "중복배제합침";
-                
-
                 //새로운 sheet에 merged list를 가지고 sheet를 만든다.
                 CreateMergeSheet(worksheet, sorted, intersectList, list1, list2);
                 worksheet.Columns.AutoFit();
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"중복배제합칩 sheet 만들어짐......"));
 
-                MessageEventHandler?.Invoke(null, new MessageEventArgs($"save output file......"));
+                //DC별 sheet 추가
+                worksheet = workbook.Sheets.Add(After: workbook.Sheets[workbook.Sheets.Count]);
+                worksheet.Name = "DC별";
+                var sortedByDc = merged.OrderBy(item => (CommonUtil.IfEmpty(item.DcNo, "    ") + CommonUtil.OnlyNum(item.InvoiceDate))).ToList();
+                CreateMergeSheetByDcNo(worksheet, sortedByDc);
+                worksheet.Columns.AutoFit();
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"dc별 sheet 만들어짐......"));
 
                 var dir = Path.GetDirectoryName(path);
                 var time = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
@@ -91,6 +97,67 @@ namespace EdiDiff
                 ReleaseExcelObject(workbook);
                 ReleaseExcelObject(app);
             }
+        }
+
+        private static void CreateMergeSheetByDcNo(Worksheet worksheet, List<Hub210Item> sortedByDc)
+        {
+            //DC#	INVOICE #	PO#	QTY	TOTAL(USD)	AVERAGE(USD)	INVOICE DATE	PAYMENT DUE	ADDRESS
+
+            worksheet.SetCell(1, "A", "DC#");
+            worksheet.SetCell(1, "B", "INVOICE #");
+            worksheet.SetCell(1, "C", "PO#");
+            worksheet.SetCell(1, "D", "QTY");
+            worksheet.SetCell(1, "E", "TOTAL(USD)");
+            worksheet.SetCell(1, "F", "AVERAGE(USD)");
+            worksheet.SetCell(1, "G", "INVOICE DATE");
+            worksheet.SetCell(1, "H", "PAYMENT DUE");
+            worksheet.SetCell(1, "I", "ADDRESS");
+
+            int row = 2;
+            MessageEventHandler?.Invoke(null, new MessageEventArgs($"DC별 excel파일을 만드는 중......"));
+            var prevDcNo = "XXXX";
+            foreach (Hub210Item item in sortedByDc)
+            {
+                worksheet.SetCell(row, "A", item.DcNo, "@");
+                worksheet.SetCell(row, "B", item.InvoiceNo, "@");
+                worksheet.SetCell(row, "C", item.PoNo, "@");
+                worksheet.SetCell(row, "D", item.Qty, "#,##0");
+                worksheet.SetCell(row, "E", item.Amount);
+                worksheet.SetCell(row, "F", item.Amount/item.Qty);
+                worksheet.SetCell(row, "G", CommonUtil.YmdFormat(item.InvoiceDate), "@");
+                worksheet.SetCell(row, "H", CommonUtil.YmdFormat(item.PaymentDue), "@");
+                worksheet.SetCell(row, "I", item.Address);
+                if(prevDcNo == "XXXX")
+                {
+                    prevDcNo = item.DcNo;
+                }else
+                {
+                    if(prevDcNo != item.DcNo)
+                    {
+                        var start = $"A{row - 1}";
+                        var end = $"I{row - 1}";
+                        worksheet.Range[start, end].Borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
+                        worksheet.Range[start, end].Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThick;
+                        worksheet.Range[start, end].Borders[Excel.XlBordersIndex.xlEdgeBottom].Color = Color.DarkSalmon;
+                    }
+                }
+                prevDcNo = item.DcNo;
+                row++;
+            }
+
+            worksheet.Range["F2", $"F{row-1}" ].NumberFormat = "#,###,##0.00";
+            //타이틀 중앙정렬 컬러
+            worksheet.SetAlign("A1", "I1", XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter);
+            worksheet.SetColor("A1", "I1", Color.Black, Color.LightPink);
+            worksheet.GetRange("A1", "I1").Font.Bold = true;
+
+            //마지막 줄 라인 
+            var start1 = $"A{row - 1}";
+            var end1 = $"I{row - 1}";
+            worksheet.Range[start1, end1].Borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
+            worksheet.Range[start1, end1].Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThick;
+            worksheet.Range[start1, end1].Borders[Excel.XlBordersIndex.xlEdgeBottom].Color = Color.DarkSalmon;
+
         }
 
         private static void CreateMergeSheet(Worksheet worksheet, List<Hub210Item> merged, IEnumerable<String> intersct, List<Hub210Item> excelList, List<Hub210Item> pdfList)
