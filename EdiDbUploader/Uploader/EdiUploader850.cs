@@ -91,7 +91,7 @@ namespace EdiDbUploader
             cmd.CommandText = "insert into edi.po_850_dtl("
                     + "po_no, seq, line, company_id, msrmnt, unit_price, gtin13, retailer_item_no, vendor_item_no, description, extended_cost"
                     + ")values("
-                    + "@po_no, @seq, @line,(SELECT company_id FROM edi.stocks s WHERE retail_item_no = @retailer_item_no), @msrmnt, @unit_price, @gtin13, @retailer_item_no, @vendor_item_no, @description, @extended_cost"
+                    + "@po_no, @seq, @line,(SELECT company_id FROM codes.stocks s WHERE retail_item_no = @retailer_item_no), @msrmnt, @unit_price, @gtin13, @retailer_item_no, @vendor_item_no, @description, @extended_cost"
                     + ")";
             cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@po_no", detail.PoNo));
