@@ -372,6 +372,10 @@ namespace FBH.EDI.Common
 
             po.BtGln = worksheet.GetString("F4");
             po.BtNm = worksheet.GetString("F5");
+            
+            //DcNo를 구한다
+            po.DcNo = BizRule.ExtractDc(po.BtNm);
+
             po.BtAddr = worksheet.GetString("F6");
             po.BtCity = worksheet.GetString("F7");
             po.BtState = worksheet.GetString("F8");

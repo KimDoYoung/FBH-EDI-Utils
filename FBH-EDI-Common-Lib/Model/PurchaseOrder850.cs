@@ -25,6 +25,7 @@ namespace FBH.EDI.Common.Model
         public string Description { get; set; }
         public string Note { get; set; }
         public string BtGln { get; set; }
+        public string DcNo { get; set; }
         public string BtNm { get; set; }
         public string BtAddr { get; set; }
         public string BtCity { get; set; }

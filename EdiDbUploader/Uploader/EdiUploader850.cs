@@ -89,14 +89,15 @@ namespace EdiDbUploader
         {
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.po_850_dtl("
-                    + "po_no, seq, line, company_id, msrmnt, unit_price, gtin13, retailer_item_no, vendor_item_no, description, extended_cost"
+                    + "po_no, seq, line, qty, company_id, msrmnt, unit_price, gtin13, retailer_item_no, vendor_item_no, description, extended_cost"
                     + ")values("
-                    + "@po_no, @seq, @line,(SELECT company_id FROM codes.stocks s WHERE retail_item_no = @retailer_item_no), @msrmnt, @unit_price, @gtin13, @retailer_item_no, @vendor_item_no, @description, @extended_cost"
+                    + "@po_no, @seq, @line, @qty,(SELECT company_id FROM codes.stocks s WHERE retail_item_no = @retailer_item_no), @msrmnt, @unit_price, @gtin13, @retailer_item_no, @vendor_item_no, @description, @extended_cost"
                     + ")";
             cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@po_no", detail.PoNo));
             cmd.Parameters.Add(NewSafeParameter("@seq", detail.Seq));
             cmd.Parameters.Add(NewSafeParameter("@line", detail.Line));
+            cmd.Parameters.Add(NewSafeParameter("@qty", detail.Qty));
             //cmd.Parameters.Add(NewSafeParameter("@company_id", detail.CompanyId));
             cmd.Parameters.Add(NewSafeParameter("@msrmnt", detail.Msrmnt));
             cmd.Parameters.Add(NewSafeParameter("@unit_price", detail.UnitPrice));
@@ -115,7 +116,7 @@ namespace EdiDbUploader
                + "po_no, po_dt, promotion_deal_no, department_no, vendor_no, order_type, net_day, "
                + "delivery_ref_no, ship_not_before, ship_no_later, must_arrive_by, carrier_detail, "
                + "location, ship_payment, description, note, "
-               + "bt_gln, bt_nm, bt_addr, bt_city, bt_state, bt_zip, bt_country, "
+               + "bt_gln, dc_no, bt_nm, bt_addr, bt_city, bt_state, bt_zip, bt_country, "
                + "st_gln, st_nm, st_addr, st_city, st_state, st_zip, st_country, "
                + "company_name, week_of_year, memo, file_name, "
                + "created_by"
@@ -123,7 +124,7 @@ namespace EdiDbUploader
                + "@po_no, @po_dt, @promotion_deal_no, @department_no, @vendor_no, @order_type, @net_day, "
                + "@delivery_ref_no, @ship_not_before, @ship_no_later, @must_arrive_by, @carrier_detail, "
                + "@location, @ship_payment, @description, @note, "
-               + "@bt_gln, @bt_nm, @bt_addr, @bt_city, @bt_state, @bt_zip, @bt_country, "
+               + "@bt_gln, @dc_no, @bt_nm, @bt_addr, @bt_city, @bt_state, @bt_zip, @bt_country, "
                + "@st_gln, @st_nm, @st_addr, @st_city, @st_state, @st_zip, @st_country, "
                + "@company_name, @week_of_year, @memo, @file_name,"
                + "@created_by"
@@ -146,6 +147,7 @@ namespace EdiDbUploader
             cmd.Parameters.Add(NewSafeParameter("@description", po850.Description));
             cmd.Parameters.Add(NewSafeParameter("@note", po850.Note));
             cmd.Parameters.Add(NewSafeParameter("@bt_gln", po850.BtGln));
+            cmd.Parameters.Add(NewSafeParameter("@dc_no", po850.DcNo));
             cmd.Parameters.Add(NewSafeParameter("@bt_nm", po850.BtNm));
             cmd.Parameters.Add(NewSafeParameter("@bt_addr", po850.BtAddr));
             cmd.Parameters.Add(NewSafeParameter("@bt_city", po850.BtCity));
