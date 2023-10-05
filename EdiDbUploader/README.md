@@ -26,7 +26,7 @@ Package Manager는 콘솔창과 비슷한 방식으로 명령을 실행할 수 있는데, .NET을 위한 
 
 ## history
 
-- 2023-09-18 : 1..0.0.0 배포
-- 
+- 2023-09-18 : 1.0.0.0 배포
+- 2023-10-05 : 1.3.0.0 Delivery Appointments와 Walmart810Payment 2개의 테이블
 
 
