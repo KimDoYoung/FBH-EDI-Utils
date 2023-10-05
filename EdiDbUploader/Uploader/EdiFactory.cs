@@ -35,6 +35,13 @@ namespace EdiDbUploader
                 case EdiDocumentNo.Warehouse_Shipping_Advice_945:
                     uploader = new EdiUploader945();
                     break;
+                case EdiDocumentNo.WALMART_810_PAYMENT:
+                    uploader = new EdiUploaderWalmart810Payment();
+                    break;
+                case EdiDocumentNo.Delivery_Appointment:
+                    uploader = new EdiUploaderDeliveryAppointments();
+                    break;
+
                 default:
                     break;
             }

@@ -15,7 +15,7 @@ namespace FBH.EDI.Common
 
         public static ParsingResult EdiDocumentParsing(string ediFile)
         {
-            if (ediFile.EndsWith("xlsx"))
+            if (ediFile.EndsWith("xlsx") || ediFile.EndsWith("xls"))
             {
                 return ParsingExcel(ediFile);
             }else
@@ -111,6 +111,30 @@ namespace FBH.EDI.Common
                     doc.FileName = Path.GetFileName(ediFile);
                     parsingResult.Add(doc);
                 }
+                else if (a1.Contains("PO NUMBER"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.WALMART_810_PAYMENT;
+
+                    List<Walmart810Payment> list = CreateWalmart810PaymentList(worksheet);
+
+                    foreach (Walmart810Payment item in list)
+                    {
+                        item.FileName = Path.GetFileName(ediFile);
+                        parsingResult.Add(item);
+                    }
+                }
+                else if (a1.Contains("BOL #"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Delivery_Appointment;
+
+                    List<DeliveryAppointments> list = CreateDeliveryAppointmentsList(worksheet);
+
+                    foreach (DeliveryAppointments item in list)
+                    {
+                        item.FileName = Path.GetFileName(ediFile);
+                        parsingResult.Add(item);
+                    }
+                }
                 else
                 {
                     throw new EdiException($"알려지지 않은 EDI 문서 타입입니다.{ediFile}");
@@ -133,6 +157,84 @@ namespace FBH.EDI.Common
             }
         }
 
+        private static List<DeliveryAppointments> CreateDeliveryAppointmentsList(Worksheet worksheet)
+        {
+            var list = new List<DeliveryAppointments>();
+            int row = 2;
+            while (true)
+            {
+                var item = new DeliveryAppointments();
+                //마지막 라인 체크
+                var value = worksheet.GetString(row, "A");
+                if (CommonUtil.IsValidCellValue(value) == false) break;
+                item.BolNo = worksheet.GetString(row, "A");
+                item.PoNumber= worksheet.GetString(row, "B");
+                
+                item.PoNoOnly  = BizRule.ExtractPoNo(item.PoNumber);
+                
+                    
+                item.ActShipDt= CommonUtil.MdyToYmd( worksheet.GetString(row, "C") );
+                item.ReqDelivery = CommonUtil.MdyToYmd(worksheet.GetString(row, "D"));
+                item.ActDeliviery = CommonUtil.MdyToYmd(worksheet.GetString(row, "E"));
+                item.DeliveryAppt = CommonUtil.MdyToYmd(worksheet.GetString(row, "F"));
+                item.Comments = worksheet.GetString(row, "G");
+
+                list.Add(item);
+
+                row++;
+                if (row > 5000)
+                {
+                    throw new EdiException("parsing fail 5000 row over");
+                }
+
+            }
+
+            return list;
+        }
+
+
+        /// <summary>
+        /// walmart 810 -> PO에 대해서 그 상태 주문, 배송, 입금의 상태를 확인하기 위해서
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <returns></returns>
+        /// <exception cref="EdiException"></exception>        
+        private static List<Walmart810Payment> CreateWalmart810PaymentList(Worksheet worksheet)
+        {
+
+            var list = new List<Walmart810Payment>();
+            int row = 2;
+            while (true)
+            {
+                var item= new Walmart810Payment();
+                //마지막 라인 체크
+                var value = worksheet.GetString(row, "A");
+                if (CommonUtil.IsValidCellValue(value) == false) break;
+                item.PoNumber = worksheet.GetString(row, "A");
+                item.InvoiceNo = worksheet.GetString(row, "B");
+                item.DcNo = worksheet.GetString(row, "C");
+                item.StoreNo = worksheet.GetString(row, "D");
+                item.Division= worksheet.GetString(row, "E");
+                item.MicrofilmNo= worksheet.GetString(row, "F");
+                item.InvoiceDt= CommonUtil.MdyToYmd(worksheet.GetString(row, "G"));
+                item.InvoiceAmount= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "H"));
+                item.DatePaid= CommonUtil.MdyToYmd(worksheet.GetString(row, "I"));
+                item.DiscountUsd = CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "J"));
+                item.AmountPaidUsd= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "K"));
+                item.DeductionCode= worksheet.GetString(row, "L");
+
+                list.Add(item);
+
+                row++;
+                if (row > 5000)
+                {
+                    throw new EdiException("parsing fail 5000 row over");
+                }
+
+            }
+
+            return list;
+        }
 
         private static ShippingAdvice945 Create945(Worksheet worksheet)
         {

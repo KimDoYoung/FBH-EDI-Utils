@@ -107,6 +107,10 @@ namespace EdiDbUploader
 
                         string[] files = Directory.GetFiles(fbd.SelectedPath, "*.xlsx", SearchOption.AllDirectories);
                         AddFilesToListView(files);
+
+                        files = Directory.GetFiles(fbd.SelectedPath, "*.xls", SearchOption.AllDirectories);
+                        AddFilesToListView(files);
+
                         files = Directory.GetFiles(fbd.SelectedPath, "*.pdf", SearchOption.AllDirectories);
                         AddFilesToListView(files);
                     }
@@ -120,7 +124,7 @@ namespace EdiDbUploader
                     fd.Title = "Browse Excel Files";
                     fd.CheckFileExists = fd.CheckPathExists = true;
 
-                    fd.Filter = "excel files (*.xlsx)|*.xlsx|pdf files (*.pdf)|*.pdf|all files (*.*)|*.*";
+                    fd.Filter = "excel files (*.xlsx)|*.xlsx|old excel files (*.xls)|*.xls|pdf files (*.pdf)|*.pdf|all files (*.*)|*.*";
                     fd.FilterIndex = 0;
                     fd.RestoreDirectory = true;
 
@@ -161,7 +165,7 @@ namespace EdiDbUploader
                 }
                 //Hidden파일이 아니고 파일이 존재해야하고 파일의 확장자가 xlsx또는 pdf여야한다
                 bool isHidden = File.GetAttributes(file).HasFlag(FileAttributes.Hidden);
-                bool isValid = (file.EndsWith(".xlsx") || file.EndsWith(".pdf")) && !file.StartsWith("~") && isHidden == false;
+                bool isValid = (file.EndsWith(".xlsx") || file.EndsWith(".xls") || file.EndsWith(".pdf")) && !file.StartsWith("~") && isHidden == false;
                 isValid = isValid && File.Exists(file);
                 
                 if (isValid)

@@ -48,5 +48,25 @@ namespace FBH.EDI.Common
             var resultString = Regex.Match(s, @"\d{3,4}").Value;
             return resultString;
         }
+        /// <summary>
+        /// 230817WMW29127 PO 9534187325 이런 문자열에서 95...를 뽑아낸다.
+        /// </summary>
+        /// <param name="poNumber"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        internal static string ExtractPoNo(string poNumber)
+        {
+            if (string.IsNullOrEmpty(poNumber)) return "";
+            if (CommonUtil.IsOnlyNum(poNumber.Trim()))
+            {
+                return poNumber.Trim();
+            }
+            int i = poNumber.IndexOf("PO");
+            if(i >= 0)
+            {
+                return poNumber.Substring(i + 2).Trim();
+            }
+            return poNumber.Trim();
+        }
     }
 }

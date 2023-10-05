@@ -160,11 +160,19 @@ namespace FBH.EDI.Common
         /// <exception cref="NotImplementedException"></exception>
         public static string MdyToYmd(string mdy)
         {
+            if (string.IsNullOrEmpty(mdy)) return "";
+
             string[] mdyArray = mdy.Split('/');
             if(mdyArray.Length == 3) {
                 int m = Convert.ToInt16(mdyArray[0]);
                 int d = Convert.ToInt16(mdyArray[1]);
-                int y = Convert.ToInt16(mdyArray[2]);
+                var year = mdyArray[2]; //시간까지 있을 수 있다.
+                if (mdyArray[2].Length > 4)
+                {
+                    year = mdyArray[2].Substring(0, 4);
+                }
+                int y = Convert.ToInt16(year);
+                
                 var dt  = new DateTime(y, m, d, 0, 0,0);
                 return dt.ToString("yyyy-MM-dd");
             }
@@ -218,6 +226,16 @@ namespace FBH.EDI.Common
         {
             if (string.IsNullOrEmpty(s)) return s;
             return Regex.Replace(s, @"\D","");
+        }
+        /// <summary>
+        /// string s가 숫자문자열로만 되어 있는지 판단한다.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsOnlyNum(string s)
+        {
+            Regex regex = new Regex(@"^\d+$");
+            return regex.IsMatch(s);
         }
     }
 }

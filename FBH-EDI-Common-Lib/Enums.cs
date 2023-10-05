@@ -16,5 +16,7 @@ namespace FBH.EDI.Common
         Warehouse_Shipping_Order_940 = 940,
         Warehouse_Stock_Transfer_Receipt_Advice_944 = 944,
         Warehouse_Shipping_Advice_945 = 945,
+        WALMART_810_PAYMENT = 999,
+        Delivery_Appointment = 998,
     }
 }

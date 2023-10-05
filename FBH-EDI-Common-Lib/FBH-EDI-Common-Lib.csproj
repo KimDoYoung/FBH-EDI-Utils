@@ -127,6 +127,8 @@
     <Compile Include="Model\Transfer944Detail.cs" />
     <Compile Include="Model\ShippingAdvice945.cs" />
     <Compile Include="Model\ShippingAdvice945Detail.cs" />
+    <Compile Include="Model\DeliveryAppointments.cs" />
+    <Compile Include="Model\Walmart810Payment.cs" />
     <Compile Include="MsgBox.cs" />
     <Compile Include="ParsingResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
