@@ -610,6 +610,7 @@ namespace FBH.EDI.Common
             invoice810.Currency = worksheet.GetString("H3");
 
             invoice810.InvoiceNo = worksheet.GetString("B4");
+            invoice810.Woy = BizRule.ExtractWoy(invoice810.InvoiceNo);
             invoice810.VendorNo = worksheet.GetString("E4");
             invoice810.NetDay = worksheet.GetString("H4");
 

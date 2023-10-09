@@ -10,6 +10,7 @@ namespace FBH.EDI.Common.Model
     {
         public string PoNo { get; set; }
         public string InvoiceNo { get; set; }
+        public int? Woy { get; set; }
         public string SupplierNm { get; set; }
         public string SupplierCity { get; set; }
         public string SupplierState { get; set; }
@@ -25,6 +26,7 @@ namespace FBH.EDI.Common.Model
         public string ShipToGln { get; set; }
         public string ShipToAddr { get; set; }
         public decimal TtlAmt { get; set; }
+        
 
         public List<Invoice810Detail> Details;
 

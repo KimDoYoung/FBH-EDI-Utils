@@ -68,5 +68,20 @@ namespace FBH.EDI.Common
             }
             return poNumber.Trim();
         }
+        /// <summary>
+        /// 2929626049WM270809 에서 27을 뽑아서 리턴, 실패시 null리턴
+        /// </summary>
+        /// <param name="invoiceNo"></param>
+        /// <returns></returns>
+        internal static int? ExtractWoy(string invoiceNo)
+        {
+            int p = invoiceNo.IndexOf("WM");
+            if(p > -1)
+            {
+                string woy = invoiceNo.Substring(p+2, 2);
+                return Convert.ToInt32(woy);
+            }
+            return null;
+        }
     }
 }

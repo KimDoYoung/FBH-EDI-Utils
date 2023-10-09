@@ -81,13 +81,13 @@ namespace EdiDbUploader
         {
             cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.invoice_810("
-                + "invoice_no, po_no,"
+                + "invoice_no, woy, po_no,"
                 + "supplier_nm, supplier_city, supplier_state, supplier_zip, supplier_country,"
                 + "department_no, currency, vendor_no, net_day, mcd_type, fob,"
                 + "ship_to_nm, ship_to_gln, ship_to_addr, ttl_amt, memo, file_name,"
                 + "created_by"
                 + ")values("
-                + "@invoice_no, @po_no,"
+                + "@invoice_no, @woy, @po_no,"
                 + "@supplier_nm, @supplier_city, @supplier_state, @supplier_zip, @supplier_country,"
                 + "@department_no, @currency, @vendor_no, @net_day, @mcd_type, @fob,"
                 + "@ship_to_nm, @ship_to_gln, @ship_to_addr, @ttl_amt, @memo, @file_name,"
@@ -95,6 +95,7 @@ namespace EdiDbUploader
                 + ")";
             cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@invoice_no", invoice810.InvoiceNo));
+            cmd.Parameters.Add(NewSafeParameter("@woy", invoice810.Woy));
             cmd.Parameters.Add(NewSafeParameter("@po_no", invoice810.PoNo));
             cmd.Parameters.Add(NewSafeParameter("@supplier_nm", invoice810.SupplierNm));
             cmd.Parameters.Add(NewSafeParameter("@supplier_city", invoice810.SupplierCity));
