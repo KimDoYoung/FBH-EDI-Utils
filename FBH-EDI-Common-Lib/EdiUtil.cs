@@ -137,7 +137,18 @@ namespace FBH.EDI.Common
                 }
                 else
                 {
-                    throw new EdiException($"알려지지 않은 EDI 문서 타입입니다.{ediFile}");
+                    //aging
+                    if (workbook.Worksheets.Count > 1)
+                    {
+                        string  a11 = workbook.Worksheets[2].GetString("A1");
+                        if(a11.Trim().ToUpper().Contains("BILL"))
+                        {
+                            //TODO 할것
+                        }else
+                        {
+                            throw new EdiException($"알려지지 않은 EDI 문서 타입입니다.{ediFile}");
+                        }
+                    }
                 }
                 
                 return parsingResult;

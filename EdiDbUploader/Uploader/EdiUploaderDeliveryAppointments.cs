@@ -12,10 +12,12 @@ namespace EdiDbUploader
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
             var logList = new List<string>();
-            cmd = new NpgsqlCommand();
+            
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
-                NpgsqlTransaction tran = BeginTransaction();
+                cmd = new NpgsqlCommand();
+                cmd.Connection = OpenConnection();
+                cmd.Transaction = BeginTransaction();
                 var item = ediDoc as DeliveryAppointments;
 #if DEBUG
                 CommonUtil.Console("bol_no of item : " + item.BolNo);
@@ -27,29 +29,27 @@ namespace EdiDbUploader
                     if (count > 0)
                     {
                         cmd = UpdateSqCommandDeliveryAppointments(item);
-                        cmd.Transaction = tran;
                         cmd.ExecuteNonQuery();
                     }
                     else
                     {
                         cmd = InsertSqCommandDeliveryAppointments(item);
-                        cmd.Transaction = tran;
                         cmd.ExecuteNonQuery();
                     }
 
-                    tran.Commit();
+                    cmd.Transaction.Commit();
                     logList.Add($"OK: {item.BolNo}");
                 }
                 catch (NpgsqlException ex)
                 {
-                    tran?.Rollback();
+                    cmd?.Transaction?.Rollback();
                     logList.Add("NK:" + ex.Message);
-                    cmd?.Dispose();
                 }
                 finally
                 {
-                    tran?.Dispose();
+                    cmd.Transaction?.Dispose();
                     cmd?.Connection?.Close();
+                    cmd?.Dispose();
                 }
             }
             return logList;
@@ -57,7 +57,6 @@ namespace EdiDbUploader
 
         private NpgsqlCommand InsertSqCommandDeliveryAppointments(DeliveryAppointments item)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.delivery_appointments("
                 + "bol_no,po_number,po_no_only,act_ship_dt,req_delivery,act_deliviery,delivery_appt,comments,memo,"
                 + "file_name, created_by"
@@ -83,7 +82,6 @@ namespace EdiDbUploader
 
         private NpgsqlCommand UpdateSqCommandDeliveryAppointments(DeliveryAppointments item)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "UPDATE edi.delivery_appointments SET "
                             + "po_number = @po_number,"
                             + "po_no_only = @po_no_only,"
