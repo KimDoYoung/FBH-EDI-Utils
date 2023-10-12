@@ -11,41 +11,47 @@ namespace EdiDbUploader
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
             var logList = new List<string>();
-            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
-                NpgsqlTransaction tran = BeginTransaction();
+                cmd = new NpgsqlCommand();
+                cmd.Connection = OpenConnection();
+                cmd.Transaction = BeginTransaction();
                 var item = ediDoc as Walmart810Payment;
                 try
                 {
-                    object alreadyCount = ExecuteScalar($"SELECT count(*) FROM edi.walmart_810_payment WHERE po_number  = '{item.PoNumber}'");
+                    object alreadyCount = ExecuteScalar($"SELECT count(*) FROM edi.walmart_810_payment " +
+                            $"WHERE 1=1 " 
+                        +   $"and po_number  = '{item.PoNumber}'" 
+                        +   $"and dc_no = '{item.DcNo}'"
+                        +   $"and store_no = '{item.StoreNo}'"
+                        +   $"and division = '{item.Division}'"
+                        +   $"and microfilm_no = '{item.MicrofilmNo}'"
+                        );
                     int count = Convert.ToInt32(alreadyCount);
                     if (count > 0)
                     {
-                        cmd = UpdateSqCommandWalmart810Payments(item);
-                        cmd.Transaction = tran;
-                        cmd.ExecuteNonQuery();
+                        logList.Add($"HK: PO:{item.PoNumber} Microfile No:{item.MicrofilmNo} is alread exist in table");
+                        cmd.Transaction.Commit();
+                        continue;
                     }
                     else
                     {
                         cmd = InsertSqCommandWalmart810Payments(item);
-                        cmd.Transaction = tran;
                         cmd.ExecuteNonQuery();
                     }
-
-                    tran.Commit();
-                    logList.Add($"OK: {item.PoNumber}");
+                    cmd.Transaction.Commit();
+                    logList.Add($"OK: PO:{item.PoNumber}  Microfile No:{item.MicrofilmNo}");
                 }
                 catch (NpgsqlException ex)
                 {
-                    tran?.Rollback();
-                    cmd?.Dispose();
+                    cmd?.Transaction.Rollback();
                     logList.Add("NK:" + ex.Message);
                 }
                 finally
                 {
-                    tran?.Dispose();
+                    cmd?.Transaction?.Dispose();
                     cmd?.Connection?.Close();
+                    cmd?.Dispose();
                 }
             }
             return logList;
@@ -53,7 +59,7 @@ namespace EdiDbUploader
 
         private NpgsqlCommand UpdateSqCommandWalmart810Payments(Walmart810Payment item)
         {
-            cmd.Connection = OpenConnection();
+            //cmd.Connection = OpenConnection();
             cmd.CommandText = "UPDATE edi.walmart_810_payment SET"
                 + " invoice_no = @invoice_no, "
                 + " dc_no = @dc_no, "
@@ -94,7 +100,7 @@ namespace EdiDbUploader
 
         private NpgsqlCommand InsertSqCommandWalmart810Payments(Walmart810Payment item)
         {
-            cmd.Connection = OpenConnection();
+            //cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.walmart_810_payment("
                 + "po_number,invoice_no,dc_no,store_no,division,microfilm_no,invoice_dt,invoice_amount,date_paid,discount_usd,amount_paid_usd,deduction_code,memo,"
                 + "file_name, created_by"
