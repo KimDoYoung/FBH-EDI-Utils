@@ -15,7 +15,7 @@ x64/
 [Oo]bj/
 .vs/
 #
-doc/sql/.dbeaver
+doc/sql/
 #
 # MSTest test Results
 [Tt]est[Rr]esult*/
