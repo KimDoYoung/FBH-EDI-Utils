@@ -137,14 +137,24 @@ namespace FBH.EDI.Common
                 }
                 else
                 {
-                    //aging
+                    //aging check
                     if (workbook.Worksheets.Count > 1)
                     {
-                        string  a11 = workbook.Worksheets[2].GetString("A1");
+                        worksheet = workbook.Worksheets[2];
+                        string  a11 = worksheet.GetString("A1");
                         if(a11.Trim().ToUpper().Contains("BILL"))
                         {
-                            //TODO 할것
-                        }else
+                            parsingResult.EdiDocumentNumber = EdiDocumentNo.Aging_Origin;
+                            List<AgingOrigin> list = CreateAgingOriginList(worksheet);
+
+                            foreach (AgingOrigin item in list)
+                            {
+                                item.FileName = Path.GetFileName(ediFile);
+                                parsingResult.Add(item);
+                            }
+
+                        }
+                        else
                         {
                             throw new EdiException($"알려지지 않은 EDI 문서 타입입니다.{ediFile}");
                         }
@@ -166,6 +176,73 @@ namespace FBH.EDI.Common
                 ReleaseExcelObject(workbook);
                 ReleaseExcelObject(app);
             }
+        }
+
+        /// <summary>
+        /// Aging Origin excel sheet를 해석해서 AgingOrigin Model을 채운다.
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <returns></returns>
+        /// <exception cref="EdiException"></exception>
+        private static List<AgingOrigin> CreateAgingOriginList(Worksheet worksheet)
+        {
+            var list = new List<AgingOrigin>();
+            int row = 2;
+            while (true)
+            {
+                var item = new AgingOrigin();
+                //마지막 라인 체크
+                var value = worksheet.GetString(row, "A");
+                if (CommonUtil.IsValidCellValue(value) == false) break;
+                item.BillToCustomer = worksheet.GetString(row, "A");
+                item.BillToSite = worksheet.GetString(row, "B");
+                item.CustomerAccountNumber= worksheet.GetString(row, "C");
+                item.TransactionNumber= worksheet.GetString(row, "D");
+                item.TransactionDate= CommonUtil.MmddyyyyToYmd(worksheet.GetString(row, "E"));
+                item.TransactionType= worksheet.GetString(row, "F");
+                item.DueDate= CommonUtil.MmddyyyyToYmd(worksheet.GetString(row, "G"));
+                item.AgingDays= CommonUtil.ToIntOrNull(worksheet.GetString(row, "H"));
+                item.DpdBucket= worksheet.GetString(row, "I");
+                item.CurrentAmount= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "J"));
+
+                item.OriginalAmount= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "K"));
+                item.LineHaul= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "L"));
+                item.Fuel= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "M"));
+                item.Discount= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "N"));
+                item.Accessorial_XXX= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "O"));
+
+                item.ReceiptNumber= worksheet.GetString(row, "P");
+                item.ShipDate= worksheet.GetString(row, "Q");
+                item.Origin= worksheet.GetString(row, "R");
+                item.Destination= worksheet.GetString(row, "S");
+                item.PoNumber= worksheet.GetString(row, "T");
+
+                item.SalesOrderNumber= worksheet.GetString(row, "U");
+                item.ShippingReference= worksheet.GetString(row, "V");
+                item.SourceSystemInvoiceNumber= worksheet.GetString(row, "W");
+                item.Ref1Ref2Ref3= worksheet.GetString(row, "X");
+                item.InvoiceNotes= worksheet.GetString(row, "Y");
+
+                item.ManifestId= worksheet.GetString(row, "Z");
+                item.ShipReference= worksheet.GetString(row, "AA");
+                item.Shipped= worksheet.GetString(row, "AB");
+                item.UnitNoEquipContainerSizeSeal= worksheet.GetString(row, "AC");
+                item.WeightClassCommodityPieces= worksheet.GetString(row, "AD");
+                item.ErpEdiPegasus= worksheet.GetString(row, "AE");
+                item.CustomerEmailId= worksheet.GetString(row, "AF");
+
+                list.Add(item);
+
+                row++;
+                if (row > 5000)
+                {
+                    throw new EdiException("parsing fail 5000 row over");
+                }
+
+            }
+
+            return list;
+
         }
 
         private static List<DeliveryAppointments> CreateDeliveryAppointmentsList(Worksheet worksheet)

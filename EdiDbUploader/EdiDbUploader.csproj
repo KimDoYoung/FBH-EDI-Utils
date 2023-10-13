@@ -131,6 +131,7 @@
     <Compile Include="Uploader\EdiUploader944.cs" />
     <Compile Include="Uploader\EdiUploader945.cs" />
     <Compile Include="Uploader\EdiUploaderDeliveryAppointments.cs" />
+    <Compile Include="Uploader\EdiUploaderAgingOrigin.cs" />
     <Compile Include="Uploader\EdiUploaderWalmart810Payment.cs" />
     <Compile Include="Uploader\FbhEdiDbUploader.cs" />
     <Compile Include="FormMain.cs">

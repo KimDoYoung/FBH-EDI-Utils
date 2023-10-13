@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FBH.EDI.Common.Model
 {
-    class AgingOrigin : EdiDocument
+    public class AgingOrigin : EdiDocument
     {
         public String BillToCustomer { get; set; }
         public String BillToSite { get; set; }
@@ -15,14 +15,14 @@ namespace FBH.EDI.Common.Model
         public String TransactionDate { get; set; }
         public String TransactionType { get; set; }
         public String DueDate { get; set; }
-        public String AgingDays { get; set; }
+        public int? AgingDays { get; set; }
         public String DpdBucket { get; set; }
-        public String CurrentAmount { get; set; }
-        public String OriginalAmount { get; set; }
-        public String LineHaul { get; set; }
-        public String Fuel { get; set; }
-        public String Discount { get; set; }
-        public String Accessorial_XXX { get; set; }
+        public decimal? CurrentAmount { get; set; }
+        public decimal? OriginalAmount { get; set; }
+        public decimal? LineHaul { get; set; }
+        public decimal? Fuel { get; set; }
+        public decimal? Discount { get; set; }
+        public decimal? Accessorial_XXX { get; set; }
         public String ReceiptNumber { get; set; }
         public String ShipDate { get; set; }
         public String Origin { get; set; }
@@ -38,7 +38,7 @@ namespace FBH.EDI.Common.Model
         public String Shipped { get; set; }
         public String UnitNoEquipContainerSizeSeal { get; set; }
         public String WeightClassCommodityPieces { get; set; }
-        public String ErpEdPegasus { get; set; }
+        public String ErpEdiPegasus { get; set; }
         public String CustomerEmailId { get; set; }
     }
 }

@@ -41,7 +41,9 @@ namespace EdiDbUploader
                 case EdiDocumentNo.Delivery_Appointment:
                     uploader = new EdiUploaderDeliveryAppointments();
                     break;
-
+                case EdiDocumentNo.Aging_Origin:
+                    uploader = new EdiUploaderAgingOrigin();
+                    break;
                 default:
                     break;
             }

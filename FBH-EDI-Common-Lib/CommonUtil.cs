@@ -5,6 +5,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -236,6 +237,23 @@ namespace FBH.EDI.Common
         {
             Regex regex = new Regex(@"^\d+$");
             return regex.IsMatch(s);
+        }
+
+        /// <summary>
+        /// 06-08-2023 형태의 날짜를 20230608 로 리턴함.
+        /// </summary>
+        /// <param name="s">MM-dd-YYYY형태의 문자열</param>
+        /// <returns>yyyy</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static string MmddyyyyToYmd(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return "";
+            string[] tmp = s.Split('-');
+            if (tmp.Length == 3)
+            {
+                return tmp[2] + tmp[0] + tmp[1];
+            }
+            return s;
         }
     }
 }

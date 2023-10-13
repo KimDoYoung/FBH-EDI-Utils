@@ -224,6 +224,7 @@ namespace EdiDbUploader
                 int countHK = 0;
                 int countNK = 0;
                 var idx = 0;
+                Cursor.Current = Cursors.WaitCursor;
                 foreach (var ediFile in list)
                 {
                     var results = ediDbUploader.Insert(ediFile);
@@ -249,6 +250,7 @@ namespace EdiDbUploader
                     lvEdiExcels.Items[idx].EnsureVisible();
                     idx++;
                 }
+                Cursor.Current = Cursors.Default;
                 logBox.Write("");
                 logBox.Write("---------------------------------------------------------");
                 logBox.Write($"총파일갯수: {lvEdiExcels.Items.Count}, 성공갯수: {countOK}, 이미존재: {countHK}, 실패갯수 : {countNK}");
@@ -256,6 +258,7 @@ namespace EdiDbUploader
             }
             catch (Exception ex)
             {
+                Cursor.Current = Cursors.Default;
                 logBox.Write(ex.ToString());
                 MsgBox.Error(ex.Message); 
             }

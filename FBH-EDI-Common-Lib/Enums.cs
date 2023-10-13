@@ -18,5 +18,6 @@ namespace FBH.EDI.Common
         Warehouse_Shipping_Advice_945 = 945,
         WALMART_810_PAYMENT = 999,
         Delivery_Appointment = 998,
+        Aging_Origin = 1000,
     }
 }
