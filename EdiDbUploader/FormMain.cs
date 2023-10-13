@@ -216,6 +216,10 @@ namespace EdiDbUploader
             var Username= config.Get("Username");
             var Password= config.Get("Password");
             var url = $"Host={Host};Port={Port};Database={Database};User ID={Username};Password={Password}";
+            if ( MsgBox.Confirm($"서버 : {Host}, 데이터베이스 :{Database} 를 확인합니다.") != DialogResult.Yes)
+            {
+                return;
+            }
             logBox.Write("db url:" + url);
             try
             {

@@ -31,15 +31,34 @@ namespace FBH.EDI.Common
         private static ParsingResult ParsingPdf(string ediFile)
         {
             ParsingResult parsingResult = new ParsingResult();
-            parsingResult.EdiDocumentNumber = EdiDocumentNo.Freight_Invoice_210;
 
-            List<FreightInvoice210> list = PdfUtil.Freight210ListFromPdf(ediFile);
-
-            foreach (FreightInvoice210 freightInvoice210 in list)
+            if (ediFile.Contains("PO."))
             {
-                freightInvoice210.FileName = Path.GetFileName(ediFile);
-                parsingResult.Add(freightInvoice210);
+                parsingResult.EdiDocumentNumber = EdiDocumentNo.Purchase_Order_850;
+
+                List<PurchaseOrder850> list = PdfUtil.PurchaseOrder850ListFromPdf(ediFile);
+
+                foreach (PurchaseOrder850 po850 in list)
+                {
+                    po850.FileName = Path.GetFileName(ediFile);
+                    parsingResult.Add(po850);
+                }
+
             }
+            else
+            {
+                parsingResult.EdiDocumentNumber = EdiDocumentNo.Freight_Invoice_210;
+
+                List<FreightInvoice210> list = PdfUtil.Freight210ListFromPdf(ediFile);
+
+                foreach (FreightInvoice210 freightInvoice210 in list)
+                {
+                    freightInvoice210.FileName = Path.GetFileName(ediFile);
+                    parsingResult.Add(freightInvoice210);
+                }
+
+            }
+
             return parsingResult;
         }
 

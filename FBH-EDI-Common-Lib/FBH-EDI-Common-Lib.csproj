@@ -104,6 +104,7 @@
     <Compile Include="EdiUtil.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="ExcelExtension.cs" />
+    <Compile Include="ExcelPdfUtils\AllowanceCodeTable.cs" />
     <Compile Include="Model\AgingOrigin.cs" />
     <Compile Include="Model\Base210.cs" />
     <Compile Include="Model\Hub210Item.cs" />

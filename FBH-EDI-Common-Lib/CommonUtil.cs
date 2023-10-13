@@ -255,5 +255,22 @@ namespace FBH.EDI.Common
             }
             return s;
         }
+
+        public static string SubstringFromLast(string s, int idxFromLast, int length)
+        {
+            char[] chArray = s.ToCharArray();
+            int endIdx = s.Length - 1 - idxFromLast;
+            int startIdx = endIdx - length + 1;
+            if(startIdx < 0)
+            {
+                startIdx = 0;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = startIdx; i <= endIdx; i++)
+            {
+                sb.Append(chArray[i]);
+            }
+            return sb.ToString();
+        }
     }
 }

@@ -1,11 +1,18 @@
 ﻿using FBH.EDI.Common.Model;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+using Microsoft.Office.Interop.Excel;
+using Org.BouncyCastle.Crypto.Engines;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.IO;
+using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.AxHost;
 
 namespace FBH.EDI.Common.ExcelPdfUtils
 {
@@ -68,7 +75,7 @@ namespace FBH.EDI.Common.ExcelPdfUtils
                     //ITextExtractionStrategy strategy =    new LocationTextExtractionStrategy();
                     string pageText = PdfTextExtractor.GetTextFromPage(reader, page, strategy);
                     result.Append(pageText);
-                    result.AppendLine(PAGE_END);
+                    result.AppendLine("\r\n"+PAGE_END);
                 }
             }
             return result.ToString();
@@ -329,6 +336,272 @@ namespace FBH.EDI.Common.ExcelPdfUtils
             return "";
         }
 
+        //----------------------------------------------------------------------------
+        // PO PDF
+        //----------------------------------------------------------------------------
+        /// <summary>
+        /// pdf로 된 PO 문서를 해석해서 리스트로 만들어 리턴한다.
+        /// </summary>
+        /// <param name="ediFile"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static List<PurchaseOrder850> PurchaseOrder850ListFromPdf(string pdfFileName)
+        {
+            var s = ExtractTextFromPDF(pdfFileName);
+#if DEBUG
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            File.WriteAllText(docPath + @"\po.txt", s);
+#endif            
+            List<string[]> pages = SplitPages(s);
+            List<PurchaseOrder850> list = new List<PurchaseOrder850>();
+            foreach (var pageLines in pages)
+            {
+                if (pageLines.Length < 10) continue;
+                PurchaseOrder850 item = Po850FromPageLines(pageLines);
+                MessageEventHandler?.Invoke(null, new MessageEventArgs($"PO # : {item.PoNo} parsing OK"));
+                item.ExcelFileName = pdfFileName;
+                list.Add(item);
+            }
+            return list;
+        }
+
+        private static PurchaseOrder850 Po850FromPageLines(string[] pageLines)
+        {
+            PurchaseOrder850 item = new PurchaseOrder850();
+            var s = "";
+            var addressList = new List<string>();
+            var IsShipTo = false;
+            var IsBillTo = false;
+            var IsNote = false;
+            var IsDetails = false;
+            var IsAllowance = false;
+            foreach (string line in pageLines)
+            {
+                if (line.StartsWith("Purchase Order Number"))
+                {
+                    item.PoNo = line.Substring("Purchase Order Number".Length).Trim();
+                }
+                else if (line.StartsWith("Purchase Order Date"))
+                {
+                    s = line.Substring("Purchase Order Date".Length).Trim();
+                    item.PoDt = CommonUtil.MdyToYmd(s).Replace("-", "");
+                }
+                else if (line.StartsWith("Delivery Reference Number"))
+                {
+                    s = line.Substring("Delivery Reference Number".Length);
+                    item.DeliveryRefNo = s.Trim();
+                }
+                else if (line.StartsWith("Ship Not Before"))
+                {
+                    s = line.Substring("Ship Not Before".Length);
+                    item.ShipNotBefore = CommonUtil.MdyToYmd(s).Replace("-", "");
+                }
+                else if (line.StartsWith("Ship No Later Than"))
+                {
+                    s = line.Substring("Ship No Later Than".Length);
+                    item.ShipNoLater = CommonUtil.MdyToYmd(s).Replace("-", "");
+                }
+                else if (line.StartsWith("Must Arrive By"))
+                {
+                    s = line.Substring("Must Arrive By".Length);
+                    item.MustArriveBy = CommonUtil.MdyToYmd(s).Replace("-", "");
+                }
+                else if (line.StartsWith("Order Type"))
+                {
+                    s = line.Substring("Order Type".Length);
+                    item.OrderType = s.Trim();
+                }
+                else if (line.StartsWith("Department"))
+                {
+                    s = line.Substring("Department".Length);
+                    item.DepartmentNo = s.Trim();
+                }
+                else if (line.StartsWith("Carrier"))
+                {
+                    s = line.Substring("Carrier".Length);
+                    item.CarrierDetail = s.Trim();
+                }
+                else if(line.StartsWith("Promotional Event"))
+                {
+                    s = line.Substring("Promotional Event".Length);
+                    item.PromotionDealNo = s.Trim();
+                }
+                else if (line.StartsWith("Ship To"))
+                {
+                    addressList.Clear();
+                    IsShipTo = true;
+                    continue;
+                }
+                else if(line.StartsWith("Payment Terms"))
+                {
+                    s = line.Substring("Promotional Event".Length);
+                    Regex pattern = new Regex(@"NET\s*(?<days>\d{1,2})");
+                    Match match = pattern.Match(s.Trim());
+                    item.NetDay =  CommonUtil.ToIntOrNull(match.Groups["days"].Value);
+                }
+                else if (line.StartsWith("Supplier Number"))
+                {
+                    s = line.Substring("Supplier Number".Length);
+                    item.VendorNo = s.Trim();
+                }
+                else if(line.StartsWith("F.O.B.") && line.Contains("Ship Point") == false)
+                {
+                    s = line.Substring("F.O.B.".Length);
+                    item.ShipPayment = s.Trim();
+                }
+                else if (line.StartsWith("Bill To"))
+                {
+                    IsShipTo = false;
+                    if (addressList.Count > 0) item.StNm = addressList[0].Trim();
+                    if (addressList.Count > 1) item.StAddr = addressList[1].Trim();
+                    if (addressList.Count > 2)
+                    {
+                        //String[] addrItem = Regex.Split(addressList[2].Trim(), @"[, ]+"); 
+                        string[] addrItem = addressList[2].Trim().Split(',');
+                        if (addrItem.Length > 0) item.StCity = addrItem[0];
+                        s = Regex.Replace(addressList[2].Trim(), @"[, ]+", "");
+                        item.StCountry = CommonUtil.SubstringFromLast(s, 0, 2);
+                        item.StZip = CommonUtil.SubstringFromLast(s, 2, 5);
+                        item.StState = CommonUtil.SubstringFromLast(s, 7, 2);
+                    }
+                    if (addressList.Count > 3)
+                    {
+                        if (addressList[3].Trim().StartsWith("GLN"))
+                        {
+                            s = addressList[3].Substring("GLN".Length).Trim();
+                            item.StGln = s;
+                        }
+                    }
+                    item.DcNo = BizRule.ExtractDc(item.StNm);
+                    addressList.Clear();
+                    IsBillTo = true;
+                    continue;
+                }
+                else if (line.StartsWith("Supplier") && line.Contains("Number") == false)
+                {
+                    IsBillTo = false;
+                    if (addressList.Count > 0) item.BtNm = addressList[0].Trim();
+                    if (addressList.Count > 1) item.BtAddr = addressList[1].Trim();
+                    if (addressList.Count > 2)
+                    {
+                        //String[] addrItem = Regex.Split(addressList[2].Trim(), @"[, ]+");
+                        string[] addrItem = addressList[2].Trim().Split(',');
+                        if(addrItem.Length > 0) item.BtCity = addrItem[0].Trim();
+                        s = Regex.Replace(addressList[2].Trim(), @"[, ]+", "");
+                        item.BtCountry = CommonUtil.SubstringFromLast(s, 0, 2);
+                        item.BtZip = CommonUtil.SubstringFromLast(s, 2, 5);
+                        item.BtState = CommonUtil.SubstringFromLast(s, 7, 2);
+
+                    }
+                    if (addressList.Count > 3)
+                    {
+                        if (addressList[3].Trim().StartsWith("GLN"))
+                        {
+                            s = addressList[3].Substring("GLN".Length).Trim();
+                            item.BtGln = s;
+                        }
+                    }
+                    addressList.Clear();
+                    continue;
+                }
+                else if (line.StartsWith("Order Instructions"))
+                {
+                    IsNote = true;
+                    addressList.Clear();
+                }
+                else if (line.StartsWith("Line Item GTIN"))
+                {
+                    IsNote = false;
+                    item.Note = String.Join("\n", addressList.ToArray());
+                    IsDetails = true;
+                    addressList.Clear();
+                    continue;
+                }
+                else if (line.StartsWith("Allowance / Charge")) //detail parsing
+                {
+                    IsDetails = false;
+                    int seq = 1;
+                    foreach (string detailLine in addressList)
+                    {
+                        //Line	QTY	Measurement	UnitPrice	GTIN-13	Retailer's Item Number	Vender's Item Number	Description	Extended Cost
+
+                        PurchaseOrder850Detail detail = new PurchaseOrder850Detail();
+                        item.Details.Add(detail);
+                        string[] tmp = detailLine.Split(' ');
+                        detail.PoNo = item.PoNo;
+                        detail.Seq = seq++;
+                        if (tmp.Length > 0) detail.Line = tmp[0].Trim();
+                        if (tmp.Length > 1) detail.RetailerItemNo = tmp[1].Trim();
+                        if (tmp.Length > 2) detail.Gtin13 = tmp[2].Trim();
+                        if (tmp.Length > 3) {; }
+                        if (tmp.Length > 4) detail.VendorItemNo = tmp[4].Trim();
+                        if (tmp.Length > 5) {; }
+                        if (tmp.Length > 6) {; }
+                        if (tmp.Length > 7) { detail.Qty = CommonUtil.ToIntOrNull(tmp[7].Trim()); }
+                        if (tmp.Length > 8) { detail.Msrmnt = tmp[8].Trim(); }
+                        if (tmp.Length > 9) {; }
+                        if (tmp.Length > 10) {; }
+                        if (tmp.Length > 11) {; }
+                        if (tmp.Length > 12) { detail.UnitPrice = CommonUtil.ToDecimalOrNull(tmp[12].Trim()); }
+                        if (tmp.Length > 13) { detail.ExtendedCost = CommonUtil.ToDecimalOrNull(tmp[13].Trim()); }
+
+                    }
+                    IsAllowance = true;
+                    addressList.Clear();
+                    continue;
+                }
+                else if (line.StartsWith("Total Order Amount"))
+                {
+                    IsAllowance = false;
+                    int seq = 1;
+                    foreach (string detailLine in addressList)
+                    {
+                        //Allowance/Charge	Description Code	Amount	Handing Code	Percent
+                        PurchaseOrder850Allowance allowance = new PurchaseOrder850Allowance();
+                        allowance.PoNo = item.PoNo;
+                        allowance.Seq = seq++;
+                        allowance.HandlingCd = "02"; // pdf에 없슴, 그냥 하드코딩
+                        string[] tmp = detailLine.Split(' ');
+                        if(tmp.Length > 0)
+                        {
+                            if (tmp[0] == "Allowance")
+                            {
+                                allowance.Charge = "A";
+                            }else
+                            {
+                                allowance.Charge = "C";
+                            }
+                        }
+                        if(tmp.Length> 2)
+                        {
+                            s = tmp[tmp.Length - 2].Replace("%", "");
+                            allowance.Percent = CommonUtil.ToDecimal(s);
+                        }
+                        //amount
+                        s = Regex.Replace(tmp[tmp.Length - 1], @"[()-\.]", "");
+                        allowance.Amount = CommonUtil.ToInteger(s);
+
+                        //code
+                        s = "";
+                        for(int i=1; i< tmp.Length - 2; i++)
+                        {
+                            s += tmp[i] + " ";
+                        }
+
+                        allowance.DescCd = AllowanceCodeTable.findCode(s);
+                        item.Allowences.Add(allowance);
+                    }
+                    continue;
+                }
+
+                if (IsShipTo || IsBillTo || IsNote || IsDetails || IsAllowance)
+                {
+                    addressList.Add(line.Trim());
+                    continue;
+                }
+            }
+            return item;
+        }
     }
 
 }
