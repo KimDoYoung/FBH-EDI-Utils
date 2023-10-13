@@ -8,14 +8,16 @@ namespace EdiDbUploader.Uploader
    
     internal class EdiUploader945 : EdiUploader
     {
-        private NpgsqlCommand cmd = new NpgsqlCommand();
+        private NpgsqlCommand cmd = null;
         public override List<string> Insert(List<EdiDocument> ediDocumentList)
         {
             List<String> logList = new List<string>();
 
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
-                NpgsqlTransaction tran = BeginTransaction();
+                cmd = new NpgsqlCommand();
+                cmd.Connection = OpenConnection();
+                cmd.Transaction = BeginTransaction();
                 var item = ediDoc as ShippingAdvice945;
                 try
                 {
@@ -24,33 +26,31 @@ namespace EdiDbUploader.Uploader
                     if (count > 0)
                     {
                         logList.Add($"HK: {item.CustomerOrderId} is alread exist in table");
-                        tran.Commit();
+                        cmd?.Transaction?.Commit();
                         continue;
                     }
                     //main insert
                     cmd = SqCommand945(item);
-                    cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
                     
                     //detail insert
                     foreach (ShippingAdvice945Detail detail in item.Details)
                     {
                         cmd = SqlCommand945Detail(detail);
-                        cmd.Transaction = tran;
                         cmd.ExecuteNonQuery();
                     }
 
-                    tran.Commit();
+                    cmd?.Transaction?.Commit();
                     logList.Add($"OK: {item.CustomerOrderId}");
                 }
                 catch (NpgsqlException ex)
                 {
-                    tran?.Rollback();
+                    cmd?.Transaction.Rollback();
                     logList.Add("NK:" + ex.Message);
                 }
                 finally
                 {
-                    tran?.Dispose();
+                    cmd?.Transaction?.Dispose();
                     cmd?.Connection?.Close();
                     cmd?.Dispose();
                 }
@@ -61,7 +61,6 @@ namespace EdiDbUploader.Uploader
 
         private NpgsqlCommand SqlCommand945Detail(ShippingAdvice945Detail detail)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.shipping_945_dtl("
                         +"customer_order_id, assigned_number, pallet_id, carrier_tracking_number, shipment_status, "
                         + "requested_quantity, actual_quantity_shipped, difference_between_actual_and_requested, "
@@ -95,7 +94,6 @@ namespace EdiDbUploader.Uploader
 
         private NpgsqlCommand SqCommand945(ShippingAdvice945 sa945)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.shipping_945("
                 + "customer_order_id, actual_pickup_date, vics_bol, hub_groups_order_number, purchase_order_number, "
                 + "mater_vics_bol, link_sequence_number, sf_company_name, sf_seller_buyer, sf_location_id_code, "

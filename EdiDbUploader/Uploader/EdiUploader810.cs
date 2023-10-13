@@ -13,10 +13,11 @@ namespace EdiDbUploader
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
             var logList = new List<string>();
-            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
-                NpgsqlTransaction tran = BeginTransaction();
+                cmd = new NpgsqlCommand();
+                cmd.Connection = OpenConnection();
+                cmd.Transaction = BeginTransaction();
                 var item = ediDoc as Invoice810;
                 try
                 {
@@ -25,33 +26,32 @@ namespace EdiDbUploader
                     if (count > 0)
                     {
                         logList.Add($"HK: {item.InvoiceNo} is alread exist in table");
-                        tran.Commit();
+                        cmd?.Transaction?.Commit();
                         continue;
                     }
 
                     cmd = SqCommand810(item);
-                    cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
 
                     foreach (Invoice810Detail detail in item.Details)
                     {
                         cmd = SqlCommand810Detail(detail);
-                        cmd.Transaction = tran;
                         cmd.ExecuteNonQuery();
                     }
 
-                    tran.Commit();
+                    cmd?.Transaction?.Commit();
                     logList.Add($"OK: {item.InvoiceNo}");
                 }
                 catch (NpgsqlException ex)
                 {
-                    tran?.Rollback();
+                    cmd?.Transaction?.Rollback();
                     logList.Add("NK:" + ex.Message);
                 }
                 finally
                 {
-                    tran?.Dispose();
+                    cmd?.Transaction?.Dispose();
                     cmd?.Connection?.Close();
+                    cmd?.Dispose();
                 }
             }
             return logList;
@@ -59,7 +59,6 @@ namespace EdiDbUploader
 
         private NpgsqlCommand SqlCommand810Detail(Invoice810Detail detail)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.invoice_810_dtl("
                     + "invoice_no,	seq, 	po_no,	qty,	 msrmnt, unit_price,	gtin13,	line_ttl"
                     + ")values("
@@ -79,7 +78,6 @@ namespace EdiDbUploader
 
         private NpgsqlCommand SqCommand810(Invoice810 invoice810)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.invoice_810("
                 + "invoice_no, woy, po_no,"
                 + "supplier_nm, supplier_city, supplier_state, supplier_zip, supplier_country,"

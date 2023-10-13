@@ -14,10 +14,10 @@ namespace EdiDbUploader
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
             var logList = new List<string>();
-            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
-                NpgsqlTransaction tran = BeginTransaction();
+                cmd = new NpgsqlCommand();
+                cmd.Connection = OpenConnection();
                 var item = ediDoc as PurchaseOrder850;
                 try
                 {
@@ -26,37 +26,34 @@ namespace EdiDbUploader
                     if (count > 0)
                     {
                         logList.Add($"HK: {item.PoNo} is alread exist in table");
-                        tran.Commit();
+                        cmd?.Transaction?.Commit();
                         continue;
                     }
 
                     cmd = SqCommand850(item);
-                    cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
 
                     foreach (PurchaseOrder850Detail detail in item.Details)
                     {
                         cmd = SqlCommand850Detail(detail);
-                        cmd.Transaction = tran;
                         cmd.ExecuteNonQuery();
                     }
                     foreach(PurchaseOrder850Allowance allowance in item.Allowences)
                     {
                         cmd = SqlCommand850Allowance(allowance);
-                        cmd.Transaction = tran;
                         cmd.ExecuteNonQuery();
                     }
-                    tran.Commit();
+                    cmd?.Transaction?.Commit();
                     logList.Add($"OK: {item.PoNo}");
                 }
                 catch (NpgsqlException ex)
                 {
-                    tran?.Rollback();
+                    cmd.Transaction.Rollback();
                     logList.Add("NK:" + ex.Message);
                 }
                 finally
                 {
-                    tran?.Dispose();
+                    cmd?.Transaction?.Dispose();
                     cmd?.Connection?.Close();
                     cmd?.Dispose();
                 }
@@ -67,7 +64,6 @@ namespace EdiDbUploader
         private NpgsqlCommand SqlCommand850Allowance(PurchaseOrder850Allowance allowance)
         {
 
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.po_850_allowance("
                     + "po_no, seq, charge, desc_cd, amount, handling_cd, percent"
                     + ")values("
@@ -87,7 +83,6 @@ namespace EdiDbUploader
 
         private NpgsqlCommand SqlCommand850Detail(PurchaseOrder850Detail detail)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.po_850_dtl("
                     + "po_no, seq, line, qty, company_id, msrmnt, unit_price, gtin13, retailer_item_no, vendor_item_no, description, extended_cost"
                     + ")values("
@@ -111,7 +106,6 @@ namespace EdiDbUploader
 
         private NpgsqlCommand SqCommand850(PurchaseOrder850 po850)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.po_850("
                + "po_no, po_dt, promotion_deal_no, department_no, vendor_no, order_type, net_day, "
                + "delivery_ref_no, ship_not_before, ship_no_later, must_arrive_by, carrier_detail, "

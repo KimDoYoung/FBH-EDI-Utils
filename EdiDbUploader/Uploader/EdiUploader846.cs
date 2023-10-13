@@ -16,10 +16,11 @@ namespace EdiDbUploader.Uploader
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
             var logList = new List<string>();
-            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
-                NpgsqlTransaction tran = BeginTransaction();
+                cmd = new NpgsqlCommand();
+                cmd.Connection = OpenConnection();
+                cmd.Transaction = BeginTransaction();
                 var item = ediDoc as Inquiry846;
                 try
                 {
@@ -28,32 +29,30 @@ namespace EdiDbUploader.Uploader
                     if (count > 0)
                     {
                         logList.Add($"HK: {item.HubGroupDocumentNumber} is alread exist in table");
-                        tran.Commit();
+                        cmd?.Transaction?.Commit();
                         continue;
                     }
 
                     cmd = SqCommand846(item);
-                    cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
 
                     foreach (Inquiry846Detail detail in item.Details)
                     {
                         cmd = SqlCommand846Detail(detail);
-                        cmd.Transaction = tran;
                         cmd.ExecuteNonQuery();
                     }
 
-                    tran.Commit();
+                    cmd?.Transaction?.Commit();
                     logList.Add($"OK: {item.HubGroupDocumentNumber}");
                 }
                 catch (NpgsqlException ex)
                 {
-                    tran?.Rollback();
+                    cmd?.Transaction?.Rollback();
                     logList.Add("NK:" + ex.Message);
                 }
                 finally
                 {
-                    tran?.Dispose();
+                    cmd?.Transaction?.Dispose();
                     cmd?.Connection?.Close();
                     cmd?.Dispose();
                 }
@@ -63,7 +62,6 @@ namespace EdiDbUploader.Uploader
        
         private NpgsqlCommand SqlCommand846Detail(Inquiry846Detail detail)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.inquiry_846_dtl("
                     + "hub_group_document_number, assgnd_no, sku, "
                     + "lot_code, non_committed_in, non_committed_out, on_hand_quantity, "
@@ -94,7 +92,6 @@ namespace EdiDbUploader.Uploader
 
         private NpgsqlCommand SqCommand846(Inquiry846 inquiry846)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.inquiry_846("
                     + "hub_group_document_number, date_expresses, date_time_qualifier, date, warehouse_name, warehouse_id, address_information, city, state, zipcode, created_by"
                     + ")values("

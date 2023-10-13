@@ -12,10 +12,11 @@ namespace EdiDbUploader
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
             var logList = new List<string>();
-            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
-                NpgsqlTransaction tran = BeginTransaction();
+                cmd = new NpgsqlCommand();
+                cmd.Connection = OpenConnection();
+                cmd.Transaction = BeginTransaction();
                 var freight210 = ediDoc as FreightInvoice210;
                 try
                 {
@@ -24,34 +25,32 @@ namespace EdiDbUploader
                     if (count > 0)
                     {
                         logList.Add($"HK: {freight210.InvoiceNo} is alread exist in table");
-                        tran.Commit();
+                        cmd.Transaction.Commit();
                         continue;
                     }
 
                     cmd = NewSqCommand210(freight210);
-                    cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
 
-                    tran.Commit();
+                    cmd.Transaction.Commit();
                     logList.Add($"OK: {freight210.InvoiceNo}");
                 }
                 catch (NpgsqlException ex)
                 {
-                    tran?.Rollback();
+                    cmd.Transaction?.Rollback();
                     logList.Add("NK:" + ex.Message);
-                    cmd?.Dispose();
                 }
                 finally
                 {
-                    tran?.Dispose();
+                    cmd.Transaction.Dispose();
                     cmd?.Connection?.Close();
+                    cmd?.Dispose();
                 }
             }
             return logList;
         }
         private NpgsqlCommand NewSqCommand210(FreightInvoice210 freight210)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.freight_210("
                 + "invoice_no, ship_id_no, ship_method_of_payment, invoice_dt, amount_to_be_paid, po_number, vics_bol_no,"
                 + "warehouse_name, warehouse_address, consignee_name, consignee_address, bill_to_name, bill_to_address,"

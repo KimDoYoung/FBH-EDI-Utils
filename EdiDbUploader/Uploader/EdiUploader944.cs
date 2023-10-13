@@ -14,10 +14,11 @@ namespace EdiDbUploader.Uploader
         public override List<String> Insert(List<EdiDocument> ediDocumentList)
         {
             List<String> logList = new List<string>();
-            cmd = new NpgsqlCommand();
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
-                NpgsqlTransaction tran = BeginTransaction();
+                cmd = new NpgsqlCommand();
+                cmd.Connection = OpenConnection();
+                cmd.Transaction = BeginTransaction();
                 var item = ediDoc as Transfer944;
                 try
                 {
@@ -27,33 +28,31 @@ namespace EdiDbUploader.Uploader
                     if (count > 0)
                     {
                         logList.Add($"HK: {item.HubGroupsOrderNumber} 이미 존재합니다.");
-                        tran.Commit();
+                        cmd?.Transaction.Commit();
                         continue;
                     }
 
                     cmd = SqCommand944(item);
-                    cmd.Transaction = tran;
                     cmd.ExecuteNonQuery();
 
                     //detail insert
                     foreach (Transfer944Detail detail in item.Details)
                     {
                         cmd = SqlCommand944Detail(detail);
-                        cmd.Transaction = tran;
                         cmd.ExecuteNonQuery();
                     }
 
-                    tran.Commit();
+                    cmd?.Transaction.Commit();
                     logList.Add($"OK: {item.HubGroupsOrderNumber}");
                 }
                 catch (NpgsqlException ex)
                 {
-                    tran?.Rollback();
+                    cmd?.Transaction?.Rollback();
                     logList.Add("NK:" + ex.Message);
                 }
                 finally
                 {
-                    tran?.Dispose();
+                    cmd?.Transaction?.Dispose();
                     cmd?.Connection?.Close();
                     cmd?.Dispose();
                 }
@@ -64,8 +63,6 @@ namespace EdiDbUploader.Uploader
 
         private NpgsqlCommand SqlCommand944Detail(Transfer944Detail detail)
         {
-            //NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.transfer_944_dtl("
                     + "hub_groups_order_number, assigned_number, receipt_date, stock_receipt_quantity_received, "
                     + "stock_receipt_unit_of_measure_code, stock_receipt_sku, stock_receipt_lot_batch_code, exception_quantity,"
@@ -93,8 +90,6 @@ namespace EdiDbUploader.Uploader
 
         private NpgsqlCommand SqCommand944(Transfer944 tr944)
         {
-            //NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.transfer_944("
                 + "hub_groups_order_number, receipt_date, customer_order_id, customers_bol_number, hub_groups_warehousename, "
                 +"hub_groups_customers_warehouse_id, destination_address_information, destination_city, destination_state, "

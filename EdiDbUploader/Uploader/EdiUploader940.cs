@@ -17,7 +17,8 @@ namespace EdiDbUploader.Uploader
             foreach (EdiDocument ediDoc in ediDocumentList)
             {
                 cmd = new NpgsqlCommand();
-                NpgsqlTransaction tran = null;
+                cmd.Connection = OpenConnection();
+                cmd.Transaction = BeginTransaction();
                 var item = ediDoc as ShippingOrder940;
                 try
                 {
@@ -28,29 +29,26 @@ namespace EdiDbUploader.Uploader
                         logList.Add($"HK: {item.OrderId} is alread exist in table");
                         continue;
                     }
-                    tran = BeginTransaction();
-                    cmd.Transaction = tran;
-                    cmd = SqCommand940(item);
+                    SqCommand940(item);
                     cmd.ExecuteNonQuery();
                     //detail insert
                     foreach (ShippingOrder940Detail detail in item.Details)
                     {
-                        cmd = SqlCommand940Detail(detail);
-                        cmd.Transaction = tran;
+                        SqlCommand940Detail(detail);
                         cmd.ExecuteNonQuery();
                     }
 
-                    tran.Commit();
+                    cmd?.Transaction?.Commit();
                     logList.Add($"OK: {item.OrderId}");
                 }
                 catch (NpgsqlException ex)
                 {
-                    tran?.Rollback();
+                    cmd?.Transaction?.Rollback();
                     logList.Add("NK:" + ex.Message);
                 }
                 finally
                 {
-                    tran?.Dispose();
+                    cmd?.Transaction?.Dispose();
                     cmd?.Connection?.Close();
                     cmd?.Dispose();
                 }
@@ -58,9 +56,8 @@ namespace EdiDbUploader.Uploader
             return logList;
         }
 
-        private NpgsqlCommand SqlCommand940Detail(ShippingOrder940Detail detail)
+        private void SqlCommand940Detail(ShippingOrder940Detail detail)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.shipping_order_940_dtl("
                     + "order_id, seq, quantity_ordered, unit_of_measure, upc_code, sku, retailers_item_code, lot_number,"
                     +"scc14, free_form_description, retail_price, cost_price, misc1_number_of_pack, misc1_size_of_units,"
@@ -97,12 +94,10 @@ namespace EdiDbUploader.Uploader
             cmd.Parameters.Add(NewSafeParameter("@misc3_size_of_units", detail.Misc3SizeOfUnits));
             cmd.Parameters.Add(NewSafeParameter("@misc3_size_unit", detail.Misc3SizeUnit));
             cmd.Parameters.Add(NewSafeParameter("@misc3_color_description", detail.Misc3ColorDescription));
-            return cmd;
         }
 
-        private NpgsqlCommand SqCommand940(ShippingOrder940 so940)
+        private void SqCommand940(ShippingOrder940 so940)
         {
-            cmd.Connection = OpenConnection();
             cmd.CommandText = "insert into edi.shipping_order_940("
                 + "order_id, order_no, balsong_chasu, buyer_po_number, warehouse_info, ship_to, "
                 + "reference_identification, requested_pickup_date, requested_delivery_date,"
@@ -131,8 +126,6 @@ namespace EdiDbUploader.Uploader
             cmd.Parameters.Add(NewSafeParameter("@memo", so940.Memo));
             cmd.Parameters.Add(NewSafeParameter("@file_name", so940.FileName));
             cmd.Parameters.Add(NewSafeParameter("@created_by", "DbUploader"));
-
-            return cmd;
         }
     }
 }
