@@ -327,7 +327,7 @@ namespace FBH.EDI.Common
                 item.InvoiceAmount= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "H"));
                 item.DatePaid= CommonUtil.MdyToYmd(worksheet.GetString(row, "I"));
                 item.DiscountUsd = CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "J"));
-                item.AmountPaidUsd= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "K"));
+                item.AmountPaidUsd = CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "K"));
                 item.DeductionCode= worksheet.GetString(row, "L");
 
                 list.Add(item);
@@ -777,7 +777,15 @@ namespace FBH.EDI.Common
             invoice210.ShipIdNo = worksheet.GetString("B5");
             invoice210.ShipMethodOfPayment = worksheet.GetString("B6");
             invoice210.InvoiceDt = worksheet.GetString("B7");
-            invoice210.AmountToBePaid = CommonUtil.ToIntOrNull(worksheet.GetString("B8"));
+            decimal? amount = CommonUtil.ToDecimalOrNull(worksheet.GetString("B8"));
+            if(amount != null)
+            {
+                invoice210.AmountToBePaid = amount / 100;
+            }
+            else
+            {
+                invoice210.AmountToBePaid = null;
+            }
 
             invoice210.PoNumber = worksheet.GetString("D4");
             invoice210.VicsBolNo = worksheet.GetString("D5");
@@ -810,7 +818,17 @@ namespace FBH.EDI.Common
             invoice210.TotalWeight = CommonUtil.ToDecimalOrNull(worksheet.GetString("B13"));
             invoice210.TotalWeightUnit = worksheet.GetString("C13");
             invoice210.WeightQualifier = worksheet.GetString("B14");
-            invoice210.AmountCharged = CommonUtil.ToDecimalOrNull(worksheet.GetString("B15"));
+            
+            decimal? amount1 = CommonUtil.ToDecimalOrNull(worksheet.GetString("B15"));
+            if (amount1 != null)
+            {
+                invoice210.AmountCharged = amount1 / 100;
+            }
+            else
+            {
+                invoice210.AmountCharged = null;
+            }
+
             invoice210.Qty = CommonUtil.ToIntOrNull(worksheet.GetString("B16"));
 
 
