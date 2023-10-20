@@ -75,7 +75,14 @@ namespace FBH.EDI.Common
                 var a1 = o.ToString().Trim().ToUpper();
                 o = worksheet.GetString("C2");
                 var c2 = o.ToString().Trim().ToUpper();
-                if (a1.Contains("FREIGHT"))
+                if (a1.Contains("REMITTANCE"))
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Payment_820;
+                    EdiDocument doc = Create820(worksheet);
+                    doc.FileName = Path.GetFileName(ediFile);
+                    parsingResult.Add(doc);
+                }
+                else if (a1.Contains("FREIGHT"))
                 {
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Freight_Invoice_210;
                     EdiDocument doc = Create210(worksheet);
@@ -195,6 +202,13 @@ namespace FBH.EDI.Common
                 ReleaseExcelObject(workbook);
                 ReleaseExcelObject(app);
             }
+        }
+
+        private static Payment820 Create820(Worksheet worksheet)
+        {
+            Payment820 item = new Payment820();
+
+            return item;
         }
 
         /// <summary>

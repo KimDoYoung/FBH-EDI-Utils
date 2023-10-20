@@ -125,6 +125,7 @@
     <Compile Include="Uploader\EdiUploader.cs" />
     <Compile Include="Uploader\EdiFactory.cs" />
     <Compile Include="Uploader\EdiUploader210.cs" />
+    <Compile Include="Uploader\EdiUploader820.cs" />
     <Compile Include="Uploader\EdiUploader846.cs" />
     <Compile Include="Uploader\EdiUploader850.cs" />
     <Compile Include="Uploader\EdiUploader940.cs" />
