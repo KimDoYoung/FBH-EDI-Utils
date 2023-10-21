@@ -207,6 +207,63 @@ namespace FBH.EDI.Common
         private static Payment820 Create820(Worksheet worksheet)
         {
             Payment820 item = new Payment820();
+            item.TraceId= worksheet.GetString("B4");
+            item.PaymentMethod= worksheet.GetString("B5");
+            item.PaymentIssuanceDate= worksheet.GetString("B6");
+            item.Amount = CommonUtil.ToDecimalOrNull ( worksheet.GetString("B7") );
+            item.CreditDebit= worksheet.GetString("B8");
+            item.Currency= worksheet.GetString("B9");
+
+            item.Payer = worksheet.GetString("E4");
+            item.PayerLocationNo= worksheet.GetString("E5");
+            item.PayeeName= worksheet.GetString("E6");
+            var s = worksheet.GetString("E8").Trim();
+            if (s.Length > 8)
+            {
+                item.Received820Date = s.Substring(0, 8).Trim();
+                item.Received820Time = s.Substring(8).Trim();
+            }
+            //details
+            int row = 12;
+            while (true)
+            {
+                Payment820Detail detail = new Payment820Detail();
+                //마지막 라인 체크
+                var value = worksheet.GetString(row, "A");
+                if (CommonUtil.IsValidCellValue(value) == false) break;
+
+                detail.TraceId = item.TraceId;
+                detail.InvoiceNo= worksheet.GetString(row,"A");
+                detail.InvoiceDt= worksheet.GetString(row,"B");
+                detail.EntityNo= CommonUtil.ToIntOrNull(worksheet.GetString(row,"C"));
+                detail.AmountPaid= CommonUtil.ToDecimalOrNull( worksheet.GetString(row,"D") );
+                detail.AmountInvoice= CommonUtil.ToDecimalOrNull(worksheet.GetString(row,"E"));
+                detail.AmountOfTermsDiscount= CommonUtil.ToDecimalOrNull(worksheet.GetString(row,"F"));
+                detail.DivicionId= worksheet.GetString(row,"G");
+                detail.DepartmentNo= worksheet.GetString(row,"H");
+
+                detail.MerchandiseTypeCode = worksheet.GetString(row, "I");
+                detail.PurchaseOrderNo= worksheet.GetString(row, "J");
+                detail.StoreNo= worksheet.GetString(row, "K");
+                detail.MicrofileNo= worksheet.GetString(row, "L");
+                detail.AdjustmentAmount= CommonUtil.ToDecimalOrNull(worksheet.GetString(row, "M"));
+                detail.AdjustmentReasonCode = worksheet.GetString(row, "N");
+                detail.AdjustmentMemo = worksheet.GetString(row, "O");
+                
+                detail.AdjustmentMemoType= worksheet.GetString(row, "P");
+                detail.CrossRefCode= worksheet.GetString(row, "Q");
+                detail.MicrofilmNoOfAdjustment= worksheet.GetString(row, "R");
+
+
+                item.Details.Add(detail);
+
+                row++;
+                if (row > 5000)
+                {
+                    throw new EdiException("parsing fail 5000 row over at Payment820");
+                }
+
+            }
 
             return item;
         }
