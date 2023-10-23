@@ -23,7 +23,7 @@ namespace EdiDbUploader
                     int count = Convert.ToInt32(alreadyCount);
                     if (count > 0)
                     {
-                        //logList.Add($"HK: {item.PoNo} is alread exist in table");
+                        logList.Add($"HK: {item.TraceId} is alread exist in table");
                         cmd?.Transaction?.Commit();
                         continue;
                     }
@@ -68,7 +68,9 @@ namespace EdiDbUploader
                 + "po_number,invoice_no,dc_no,store_no,division,microfilm_no,invoice_dt,invoice_amount,date_paid,discount_usd,amount_paid_usd,deduction_code,memo,"
                 + "file_name, created_by"
                 + ")values("
-                + "@po_number,@invoice_no,@dc_no,@store_no,@division,@microfilm_no,@invoice_dt,@invoice_amount,@date_paid,@discount_usd,@amount_paid_usd,@deduction_code,@memo,"
+                + "@po_number,@invoice_no,@dc_no,@store_no,@division,@microfilm_no,@invoice_dt,@invoice_amount,@date_paid,@discount_usd,@amount_paid_usd,"
+                + "(SELECT nm FROM codes.edi_code ec WHERE  cd1='pay820' AND cd2 = 'crc' AND cd = @cd)," 
+                + "@memo,"
                 + "@file_name, @created_by"
                 + ")";
             cmd.Parameters.Clear();
@@ -80,10 +82,10 @@ namespace EdiDbUploader
             cmd.Parameters.Add(NewSafeParameter("@microfilm_no", detail.MicrofileNo));
             cmd.Parameters.Add(NewSafeParameter("@invoice_dt", detail.InvoiceDt));
             cmd.Parameters.Add(NewSafeParameter("@invoice_amount", detail.AmountInvoice));
-            cmd.Parameters.Add(NewSafeParameter("@date_paid", ""));
+            cmd.Parameters.Add(NewSafeParameter("@date_paid", item.PaymentIssuanceDate));
             cmd.Parameters.Add(NewSafeParameter("@discount_usd", detail.AmountOfTermsDiscount));
             cmd.Parameters.Add(NewSafeParameter("@amount_paid_usd", detail.AmountPaid));
-            cmd.Parameters.Add(NewSafeParameter("@deduction_code", ""));
+            cmd.Parameters.Add(NewSafeParameter("@cd", detail.CrossRefCode));
             cmd.Parameters.Add(NewSafeParameter("@memo", ""));
             cmd.Parameters.Add(NewSafeParameter("@file_name", item.FileName));
             cmd.Parameters.Add(NewSafeParameter("@created_by", "dbupload"));
