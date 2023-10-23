@@ -19,5 +19,6 @@ namespace FBH.EDI.Common
         WALMART_810_PAYMENT = 999,
         Delivery_Appointment = 998,
         Aging_Origin = 1000,
+        Payment_820 = 1001,
     }
 }

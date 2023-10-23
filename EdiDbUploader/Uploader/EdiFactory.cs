@@ -14,6 +14,9 @@ namespace EdiDbUploader
             {
                 case EdiDocumentNo.Unknown:
                     throw new EdiException("Unknown document type");
+                case EdiDocumentNo.Payment_820:
+                    uploader = new EdiUploader820();
+                    break;
                 case EdiDocumentNo.Freight_Invoice_210:
                     uploader = new EdiUploader210();
                     break;
