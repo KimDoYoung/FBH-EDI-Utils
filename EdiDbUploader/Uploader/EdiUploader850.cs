@@ -112,16 +112,18 @@ namespace EdiDbUploader
                + "location, ship_payment, description, note, "
                + "bt_gln, dc_no, bt_nm, bt_addr, bt_city, bt_state, bt_zip, bt_country, "
                + "st_gln, st_nm, st_addr, st_city, st_state, st_zip, st_country, "
-               + "company_name, week_of_year, memo, file_name, "
-               + "created_by"
+               + "week_of_year, memo, file_name, "
+               + "created_by,yyyy"
                + ")values("
                + "@po_no, @po_dt, @promotion_deal_no, @department_no, @vendor_no, @order_type, @net_day, "
                + "@delivery_ref_no, @ship_not_before, @ship_no_later, @must_arrive_by, @carrier_detail, "
                + "@location, @ship_payment, @description, @note, "
                + "@bt_gln, @dc_no, @bt_nm, @bt_addr, @bt_city, @bt_state, @bt_zip, @bt_country, "
                + "@st_gln, @st_nm, @st_addr, @st_city, @st_state, @st_zip, @st_country, "
-               + "@company_name, @week_of_year, @memo, @file_name,"
-               + "@created_by"
+               + "(select woy from codes.week_of_year woy where @po_dt between start_day and to_char( to_date(start_day ,'YYYYMMDD') + INTERVAL '6 days', 'YYYYMMDD')),"
+               + "@memo, @file_name,"
+               + "@created_by,"
+               + "(select year from codes.week_of_year woy where @po_dt between start_day and to_char( to_date(start_day ,'YYYYMMDD') + INTERVAL '6 days', 'YYYYMMDD'))"
                + ")";
             cmd.Parameters.Clear();
             cmd.Parameters.Add(NewSafeParameter("@po_no", po850.PoNo));
@@ -155,8 +157,8 @@ namespace EdiDbUploader
             cmd.Parameters.Add(NewSafeParameter("@st_state", po850.StState));
             cmd.Parameters.Add(NewSafeParameter("@st_zip", po850.StZip));
             cmd.Parameters.Add(NewSafeParameter("@st_country", po850.StCountry));
-            cmd.Parameters.Add(NewSafeParameter("@company_name", po850.CompanyName));
-            cmd.Parameters.Add(NewSafeParameter("@week_of_year", po850.WeekOfYear));
+            //cmd.Parameters.Add(NewSafeParameter("@company_name", po850.CompanyName));
+            //cmd.Parameters.Add(NewSafeParameter("@week_of_year", po850.WeekOfYear));
             cmd.Parameters.Add(NewSafeParameter("@memo", po850.Memo));
             cmd.Parameters.Add(NewSafeParameter("@file_name", po850.FileName));
             cmd.Parameters.Add(NewSafeParameter("@created_by", "DbUploader"));
