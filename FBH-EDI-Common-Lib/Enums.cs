@@ -20,5 +20,6 @@ namespace FBH.EDI.Common
         Delivery_Appointment = 998,
         Aging_Origin = 1000,
         Payment_820 = 1001,
+        Hub_System_Data = 1002,
     }
 }

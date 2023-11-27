@@ -47,6 +47,10 @@ namespace EdiDbUploader
                 case EdiDocumentNo.Aging_Origin:
                     uploader = new EdiUploaderAgingOrigin();
                     break;
+                case EdiDocumentNo.Hub_System_Data:
+                    uploader = new EdiUploaderHubSystemData();
+                    break;
+
                 default:
                     break;
             }

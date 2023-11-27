@@ -118,6 +118,7 @@
     <Compile Include="Model\FreightInvoice210.cs" />
     <Compile Include="Model\Inquiry846.cs" />
     <Compile Include="Model\Inquiry846Detail.cs" />
+    <Compile Include="Model\HubSystemData.cs" />
     <Compile Include="Model\Payment820Detail.cs" />
     <Compile Include="Model\Payment820.cs" />
     <Compile Include="Model\Invoice810.cs" />

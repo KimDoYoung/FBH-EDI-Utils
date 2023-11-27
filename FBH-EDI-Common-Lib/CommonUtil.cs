@@ -238,7 +238,33 @@ namespace FBH.EDI.Common
             Regex regex = new Regex(@"^\d+$");
             return regex.IsMatch(s);
         }
-
+        /// <summary>
+        /// 06-08-2023 형태의 날짜를 20230608 로 리턴함.
+        /// </summary>
+        /// <param name="s">MM-dd-YYYY형태의 문자열</param>
+        /// <param name="gubun">MM-dd-YYYY인 경우 '-'</param>
+        /// <returns>yyyy</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static string MmddyyyyToYmd(string s, char gubun)
+        {
+            if (string.IsNullOrEmpty(s)) return "";
+            string[] tmp = s.Split(gubun);
+            if (tmp.Length == 3)
+            {
+                string mm = tmp[0];
+                if(mm.Length < 2)
+                {
+                    mm = '0' + tmp[0];
+                }
+                string dd = tmp[1];
+                if(dd.Length < 2)
+                {
+                    dd = '0' + tmp[1];
+                }
+                return tmp[2] + mm + dd;
+            }
+            return s;
+        }
         /// <summary>
         /// 06-08-2023 형태의 날짜를 20230608 로 리턴함.
         /// </summary>
@@ -247,13 +273,7 @@ namespace FBH.EDI.Common
         /// <exception cref="NotImplementedException"></exception>
         public static string MmddyyyyToYmd(string s)
         {
-            if (string.IsNullOrEmpty(s)) return "";
-            string[] tmp = s.Split('-');
-            if (tmp.Length == 3)
-            {
-                return tmp[2] + tmp[0] + tmp[1];
-            }
-            return s;
+            return MmddyyyyToYmd(s, '-');
         }
 
         public static string SubstringFromLast(string s, int idxFromLast, int length)

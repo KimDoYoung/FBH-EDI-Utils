@@ -75,7 +75,19 @@ namespace FBH.EDI.Common
                 var a1 = o.ToString().Trim().ToUpper();
                 o = worksheet.GetString("C2");
                 var c2 = o.ToString().Trim().ToUpper();
-                if (a1.Contains("REMITTANCE"))
+                if (a1.Contains("WH ACTIVITY")) //hub system data
+                {
+                    parsingResult.EdiDocumentNumber = EdiDocumentNo.Hub_System_Data;
+                    List<HubSystemData> list = CreateHubSystemData(worksheet);
+                    foreach (HubSystemData item in list)
+                    {
+                        item.FileId = extractFileIdFromHubSystemDataFile(ediFile);
+                        item.FileName = Path.GetFileName(ediFile);
+                        parsingResult.Add(item);
+                    }
+
+                }
+                else if (a1.Contains("REMITTANCE"))
                 {
                     parsingResult.EdiDocumentNumber = EdiDocumentNo.Payment_820;
                     EdiDocument doc = Create820(worksheet);
@@ -202,6 +214,54 @@ namespace FBH.EDI.Common
                 ReleaseExcelObject(workbook);
                 ReleaseExcelObject(app);
             }
+        }
+
+        private static string extractFileIdFromHubSystemDataFile(string ediFile)
+        {
+            int p1 = ediFile.LastIndexOf("_");
+            int p2 = ediFile.LastIndexOf(".");
+            string id = ediFile.Substring(p1+1, p2 - p1 - 1);
+            return id;
+
+        }
+
+        private static List<HubSystemData> CreateHubSystemData(Worksheet worksheet)
+        {
+            var list = new List<HubSystemData>();
+            int row = 2;
+            while (true)
+            {
+                var item = new HubSystemData();
+                //마지막 라인 체크
+                var value = worksheet.GetString(row, "A");
+                if (CommonUtil.IsValidCellValue(value) == false) break;
+
+                item.Seq = row - 1;
+                item.WhActivityDate = CommonUtil.MmddyyyyToYmd(worksheet.GetString(row, "A"),'/');
+                item.ReqDeliveryDate = CommonUtil.MmddyyyyToYmd(worksheet.GetString(row, "B"), '/');
+                item.ActualDeliveryDate= CommonUtil.MmddyyyyToYmd(worksheet.GetString(row, "C"), '/');
+                item.Warehouse = worksheet.GetString(row, "D");
+                item.Customer = worksheet.GetString(row, "E");
+                item.OrderId = worksheet.GetString(row, "F");
+                item.PoNo = worksheet.GetString(row, "G");
+                item.Sku = worksheet.GetString(row, "H");
+                item.LotCode = worksheet.GetString(row, "I");
+                item.Received = CommonUtil.ToIntOrNull(worksheet.GetString(row, "J"));
+                item.Shipped = CommonUtil.ToIntOrNull(worksheet.GetString(row, "K"));
+                item.Damaged= CommonUtil.ToIntOrNull(worksheet.GetString(row, "L"));
+                item.Hold= CommonUtil.ToIntOrNull(worksheet.GetString(row, "M"));
+
+                list.Add(item);
+
+                row++;
+                if (row > 5000)
+                {
+                    throw new EdiException("parsing fail 5000 row over");
+                }
+
+            }
+
+            return list;
         }
 
         private static Payment820 Create820(Worksheet worksheet)
