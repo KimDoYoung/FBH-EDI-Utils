@@ -250,6 +250,7 @@ namespace FBH.EDI.Common
                 item.Shipped = CommonUtil.ToIntOrNull(worksheet.GetString(row, "K"));
                 item.Damaged= CommonUtil.ToIntOrNull(worksheet.GetString(row, "L"));
                 item.Hold= CommonUtil.ToIntOrNull(worksheet.GetString(row, "M"));
+                item.Store = worksheet.GetString(row, "N");
 
                 list.Add(item);
 

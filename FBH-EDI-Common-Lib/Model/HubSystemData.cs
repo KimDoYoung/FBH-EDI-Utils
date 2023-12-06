@@ -23,6 +23,8 @@ namespace FBH.EDI.Common.Model
         public int? Shipped { get; set; }
         public int? Damaged { get; set; }
         public int? Hold { get; set; }
+        public string Store { get; set; }
+
         public string CreatedBy { get; set; }
         public string CreatedOn { get; set; }
 

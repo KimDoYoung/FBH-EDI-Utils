@@ -29,7 +29,7 @@ namespace EdiDbUploader
                     }
                     else
                     {
-                        cmd = InsertSqCommandHubSystemDAta(item);
+                        cmd = InsertSqCommandHubSystemData(item);
                         cmd.ExecuteNonQuery();
                     }
                     cmd.Transaction.Commit();
@@ -50,13 +50,13 @@ namespace EdiDbUploader
             return logList;
         }
 
-        private NpgsqlCommand InsertSqCommandHubSystemDAta(HubSystemData item)
+        private NpgsqlCommand InsertSqCommandHubSystemData(HubSystemData item)
         {
             cmd.CommandText = "insert into edi.hub_system_data("
-                + " file_id,seq,wh_activity_date,req_delivery_date,actual_delivery_date,warehouse,customer,order_id,po_no,sku,lot_code,received,shipped,damaged,hold,"
+                + " file_id,seq,wh_activity_date,req_delivery_date,actual_delivery_date,warehouse,customer,order_id,po_no,sku,lot_code,received,shipped,damaged,hold,store,"
                 + " memo,created_by,file_name"
                 + ")values("
-                + " @file_id,@seq,@wh_activity_date,@req_delivery_date,@actual_delivery_date,@warehouse,@customer,@order_id,@po_no,@sku,@lot_code,@received,@shipped,@damaged,@hold,"
+                + " @file_id,@seq,@wh_activity_date,@req_delivery_date,@actual_delivery_date,@warehouse,@customer,@order_id,@po_no,@sku,@lot_code,@received,@shipped,@damaged,@hold,@store,"
                 + " @memo,@created_by,@file_name"
                 + ")";
             cmd.Parameters.Clear();
@@ -76,6 +76,7 @@ namespace EdiDbUploader
             cmd.Parameters.Add(NewSafeParameter("@shipped", item.Shipped));
             cmd.Parameters.Add(NewSafeParameter("@damaged", item.Damaged));
             cmd.Parameters.Add(NewSafeParameter("@hold", item.Hold));
+            cmd.Parameters.Add(NewSafeParameter("@store", item.Store));
 
             cmd.Parameters.Add(NewSafeParameter("@memo", item.Memo));
             cmd.Parameters.Add(NewSafeParameter("@file_name", item.FileName));
